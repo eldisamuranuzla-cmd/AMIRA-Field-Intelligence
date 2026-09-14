@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#006b57">
+  <title>AMIRA — Afdeling Material & Rawat Intelligence</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand-mark">A</div>
+    <div class="side-title">AMIRA</div>
+    <div class="side-sub">Afdeling Material & Rawat Intelligence</div>
+    <nav id="nav">
+      <button class="active">⌂ <span>Dashboard</span></button>
+      <button>▣ <span>Upload Amanda</span></button>
+      <button>✣ <span>Rawat Execution</span></button>
+      <button>⌁ <span>CPT</span></button>
+      <button>◈ <span>WDC</span></button>
+      <button>⚒ <span>WDM</span></button>
+      <button>◒ <span>CWC</span></button>
+      <button>▤ <span>Material Usage</span></button>
+      <button>▥ <span>Material Balance</span></button>
+      <button>▥ <span>Plan vs Realization</span></button>
+      <button>⌖ <span>Field Traceability</span></button>
+      <button>▣ <span>Evidence</span></button>
+      <button>▤ <span>Master Data</span></button>
+      <button>⚙ <span>Settings</span></button>
+    </nav>
+    <div class="side-footer">Good People<br>Good Plantation<br>Brighter Tomorrow</div>
+  </aside>
+
+  <main>
+    <header class="hero">
+      <div>
+        <div class="logo">AMIRA</div>
+        <div class="tagline">Afdeling Material & Rawat Intelligence<br><small>From Field Data to Better Plantation</small></div>
+      </div>
+      <div class="hero-right">ASTRA AGRO 50<br><small id="today"></small></div>
+    </header>
+
+    <section class="filters">
+      <label>Perusahaan<select><option>PT Astra Agro Lestari Tbk</option></select></label>
+      <label>Region<select><option>Kalimantan Tengah</option></select></label>
+      <label>Kebun<select><option>YM</option></select></label>
+      <label>Afdeling<select><option>OC</option></select></label>
+      <label>Periode<select><option>September 2026</option></select></label>
+      <button id="uploadBtn" class="primary">☁ Upload Amanda CSV</button>
+      <input id="masterInput" type="file" accept=".csv,text/csv" hidden>
+      <input id="amandaInput" type="file" accept=".csv,text/csv" multiple hidden>
+    </section>
+
+    <section class="kpis">
+      <div class="kpi"><span>▰</span><p>PLAN RAWAT</p><strong id="plan">—</strong><small>Target / Master</small></div>
+      <div class="kpi"><span>▥</span><p>REALISASI</p><strong id="realization">0</strong><small>Transaksi valid</small></div>
+      <div class="kpi"><span>●</span><p>TOTAL HK</p><strong id="hk">0</strong><small>Person-days</small></div>
+      <div class="kpi"><span>▤</span><p>TOTAL TRANSAKSI</p><strong id="trx">0</strong><small id="validRate">Validasi —</small></div>
+      <div class="kpi"><span>△</span><p>TOTAL MATERIAL</p><strong id="material">0</strong><small>Item terdeteksi</small></div>
+      <div class="kpi"><span>▣</span><p>BUKTI LAPANGAN</p><strong id="evidence">0%</strong><small id="evidenceText">Foto / GPS</small></div>
+    </section>
+
+    <section class="grid top">
+      <article class="card wide">
+        <div class="card-head"><h3>Plan vs Realization</h3><span id="sourceBadge">POC — menunggu data</span></div>
+        <div class="bars" id="planChart"></div>
+      </article>
+      <article class="card">
+        <div class="card-head"><h3>Realisasi per Workstream</h3><span>Transaksi</span></div>
+        <div id="workstream"></div>
+      </article>
+      <article class="card">
+        <div class="card-head"><h3>Material Usage (Top 5)</h3><span>Lihat Semua</span></div>
+        <table><thead><tr><th>Material</th><th>Job</th><th>Qty</th></tr></thead><tbody id="materialTable"><tr><td colspan="3">Belum ada data</td></tr></tbody></table>
+      </article>
+    </section>
+
+    <section class="grid middle">
+      <article class="card">
+        <div class="card-head"><h3>Realisasi Per Afdeling / Blok</h3></div>
+        <div id="blocks"></div>
+      </article>
+      <article class="card map-card">
+        <div class="card-head"><h3>Sebaran Pekerjaan di Peta</h3><span id="gpsCount">0 GPS</span></div>
+        <div class="map" id="map"><div class="map-note">Field Traceability<br><small>GPS Amanda akan diplot di sini pada versi berikutnya.</small></div></div>
+      </article>
+      <article class="card">
+        <div class="card-head"><h3>Status Evidence</h3></div>
+        <div class="donut"><div id="evidenceDonut">0%</div></div>
+        <div id="evidenceList"></div>
+      </article>
+    </section>
+
+    <section class="grid bottom">
+      <article class="card">
+        <div class="card-head"><h3>Aktivitas Hari Ini</h3><span>Lihat Semua</span></div>
+        <div class="scroll"><table><thead><tr><th>Waktu</th><th>Pekerja</th><th>Job</th><th>Blok</th><th>Foto</th></tr></thead><tbody id="activity"><tr><td colspan="5">Upload Amanda CSV untuk melihat transaksi.</td></tr></tbody></table></div>
+      </article>
+      <article class="card">
+        <div class="card-head"><h3>Material Balance Afdeling</h3><span>Lihat Semua</span></div>
+        <table><thead><tr><th>Material</th><th>Transaksi</th><th>Status</th></tr></thead><tbody id="balance"><tr><td colspan="3">Belum ada data</td></tr></tbody></table>
+      </article>
+      <article class="card">
+        <div class="card-head"><h3>Alerts & Notes</h3><span>System</span></div>
+        <div id="alerts"><div class="alert info">ⓘ Upload Master Rawat dan 3 CSV Amanda untuk mengaktifkan engine.</div></div>
+      </article>
+    </section>
+
+    <footer>AMIRA &nbsp;|&nbsp; Afdeling Material & Rawat Intelligence &nbsp;|&nbsp; Astra Agro Lestari</footer>
+  </main>
+</div>
+<script src="js/amira-core.js"></script>
+<script src="js/csv-parser.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

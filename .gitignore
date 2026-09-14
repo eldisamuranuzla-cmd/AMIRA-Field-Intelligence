@@ -1,0 +1,3 @@
+data/real/
+*.csv
+!data/sample/.gitkeep
