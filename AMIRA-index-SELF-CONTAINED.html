@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AMIRA — Afdeling Material & Rawat Intelligence</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:#f2f6f4;color:#123b35}.app{display:flex;min-height:100vh}.sidebar{width:225px;background:#004f42;color:#fff;padding:22px 14px;position:fixed;inset:0 auto 0 0}.brand-mark{font-size:42px;font-weight:900;color:#b6e2c2}.side-title{font-size:24px;font-weight:900}.side-sub{font-size:10px;opacity:.7;margin-bottom:25px}.sidebar nav{display:grid;gap:4px}.sidebar button{border:0;background:transparent;color:#e7f6f1;text-align:left;padding:11px 10px;border-radius:7px;font-size:14px;cursor:pointer}.sidebar button.active,.sidebar button:hover{background:#087c65}.sidebar button span{margin-left:8px}.side-footer{position:absolute;bottom:22px;font-size:12px;line-height:1.5;opacity:.85}main{margin-left:225px;width:calc(100% - 225px);padding-bottom:30px}.hero{height:92px;background:linear-gradient(90deg,#f6faf8,#dceee7);display:flex;justify-content:space-between;align-items:center;padding:10px 28px;border-bottom:1px solid #d7e3df}.logo{font-size:44px;font-weight:950;letter-spacing:-3px;color:#00715d}.tagline{display:inline-block;margin-left:15px;font-weight:750;font-size:16px;vertical-align:top;margin-top:8px}.tagline small{font-weight:500;color:#55716b}.hero-right{text-align:right;font-weight:800;color:#18564c}.hero-right small{font-weight:500}.filters{display:grid;grid-template-columns:1.5fr 1fr .7fr .7fr 1fr auto;gap:10px;padding:18px 18px 8px;align-items:end}.filters label{font-size:12px;font-weight:700}.filters select{display:block;width:100%;margin-top:5px;border:1px solid #d5e1dd;border-radius:6px;padding:10px;background:#fff;color:#173f38}.primary{background:#006b57;color:white;border:0;border-radius:7px;padding:12px 18px;font-weight:800;cursor:pointer}.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:10px 18px}.kpi{background:#fff;border:1px solid #e0ebe7;border-radius:8px;padding:13px;min-height:105px;box-shadow:0 2px 8px #073e3010}.kpi span{float:left;font-size:24px;color:#16805f;margin-right:9px}.kpi p{font-size:10px;font-weight:800;margin:2px 0 5px}.kpi strong{display:block;font-size:24px}.kpi small{color:#71857f;font-size:10px}.grid{display:grid;gap:10px;padding:0 18px 10px}.grid.top{grid-template-columns:2fr 1.15fr 1.15fr}.grid.middle{grid-template-columns:1.25fr 1.55fr .9fr}.grid.bottom{grid-template-columns:1.35fr 1fr .85fr}.card{background:#fff;border:1px solid #dfeae6;border-radius:8px;padding:12px;min-height:190px;overflow:hidden}.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.card-head h3{font-size:14px;margin:0}.card-head span{font-size:10px;color:#588078}.bars{height:155px;display:flex;align-items:end;gap:8px;padding:12px 5px 0}.bars:empty:after{content:"Upload data untuk membangun chart";color:#879a95;font-size:12px;margin:auto}.ws{margin:11px 0}.ws>div:first-child{display:flex;justify-content:space-between;font-size:12px}.meter{height:7px;background:#e8efed;border-radius:5px;margin-top:4px}.meter i{display:block;height:100%;background:#17825f;border-radius:5px}.block{display:grid;grid-template-columns:70px 1fr 35px;gap:8px;align-items:center;font-size:11px;margin:10px 0}.block div{height:9px;background:#e9efed;border-radius:5px}.block i{display:block;height:100%;background:#2b9869;border-radius:5px}.map{height:165px;border-radius:7px;background:linear-gradient(135deg,#537b55,#8eab72 48%,#466a4e);position:relative;overflow:hidden}.map-note{position:absolute;left:15px;bottom:15px;background:#fff;padding:9px;border-radius:6px;font-size:11px;font-weight:700;box-shadow:0 3px 12px #0002}.map-note small{font-weight:500;color:#627a73}.donut{width:110px;height:110px;margin:12px auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#14835e 0 0%,#e7eeeb 0);position:relative}.donut:after{content:"";position:absolute;inset:16px;background:#fff;border-radius:50%}.donut div{position:relative;z-index:1;font-size:18px;font-weight:900}.legend{display:flex;justify-content:space-between;font-size:11px;padding:5px 0}.legend b{font-weight:800}.scroll{max-height:180px;overflow:auto}table{width:100%;border-collapse:collapse;font-size:10px}th,td{padding:8px 6px;border-bottom:1px solid #edf2f0;text-align:left}th{color:#59756e;font-size:9px}.alert{padding:9px;margin:7px 0;border-radius:6px;font-size:10px}.alert.info{background:#e8f2f0}.muted{color:#8a9b96;font-size:11px}footer{text-align:center;color:#7d928c;font-size:10px;padding:12px}@media(max-width:1000px){.sidebar{width:180px}.sidebar button{font-size:11px}main{margin-left:180px;width:calc(100% - 180px)}.filters{grid-template-columns:repeat(3,1fr)}.kpis{grid-template-columns:repeat(3,1fr)}.grid.top,.grid.middle,.grid.bottom{grid-template-columns:1fr 1fr}.hero{height:auto}}@media(max-width:700px){.sidebar{position:static;width:100%;height:auto}.app{display:block}.sidebar nav{grid-template-columns:repeat(2,1fr)}.side-footer{display:none}main{margin:0;width:100%}.filters,.kpis,.grid.top,.grid.middle,.grid.bottom{grid-template-columns:1fr}.filters{padding:12px}.kpis{padding:12px}.hero{padding:14px}.logo{font-size:34px}.tagline{font-size:12px}.hero-right{display:none}}
+.banner-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32;pointer-events:none}.hero{position:relative;overflow:hidden}.hero>div,.hero>.hero-right{position:relative;z-index:2}.amira-logo{width:310px;height:78px;object-fit:contain;object-position:left center;display:inline-block;vertical-align:middle}.map{background:#54795b}.map>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.map-note{z-index:2}.logo{display:none}
+
+</style>
+<style>.banner-art svg{width:100%;height:100%;display:block}.amira-logo svg{width:150px;height:auto;display:block}.inline-map{width:100%;height:100%}.inline-map svg{width:100%;height:100%;display:block}</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand-mark">A</div><div class="side-title">AMIRA</div>
+  <div class="side-sub">Afdeling Material & Rawat Intelligence</div>
+  <nav>
+    <button class="active">⌂ <span>Dashboard</span></button>
+    <button>▣ <span>Upload Amanda</span></button>
+    <button>⌁ <span>Rawat Execution</span></button>
+    <button>✦ <span>CPT</span></button><button>◈ <span>WDC</span></button>
+    <button>⚒ <span>WDM</span></button><button>♧ <span>CWC</span></button>
+    <button>▣ <span>Material Usage</span></button><button>◉ <span>Material Balance</span></button>
+    <button>▥ <span>Plan vs Realization</span></button><button>⌖ <span>Field Traceability</span></button>
+    <button>▣ <span>Evidence</span></button><button>▤ <span>Master Data</span></button>
+    <button>⚙ <span>Settings</span></button>
+  </nav>
+  <div class="side-footer">Good People<br>Good Plantation<br>Brighter Tomorrow</div>
+</aside>
+<main>
+<header class="hero"><div class="banner-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 240"><defs><linearGradient id="b" y1="0" y2="1"><stop stop-color="#dcefe6"/><stop offset="1" stop-color="#8db69d"/></linearGradient></defs><rect width="1200" height="240" fill="url(#b)"/><g opacity=".8" fill="#2d704e"><path d="M80 240q30-150 65-190-10 110-65 190M150 240q-10-130 30-180 25 95-30 180M260 240q30-150 80-195-10 120-80 195M380 240q-5-140 35-185 30 110-35 185M520 240q25-160 70-205-15 125-70 205M690 240q-5-150 40-195 25 115-40 195M840 240q25-150 75-195-10 120-75 195M1010 240q0-145 45-190 20 115-45 190"/></g><g fill="#1d5a3f" opacity=".9"><circle cx="130" cy="120" r="38"/><circle cx="300" cy="105" r="45"/><circle cx="650" cy="115" r="48"/><circle cx="930" cy="105" r="42"/></g></svg></div>
+  <div><div class="amira-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 180"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#006b57"/><stop offset="1" stop-color="#24a56e"/></linearGradient></defs><rect width="700" height="180" rx="22" fill="#f5faf8"/><path d="M45 135 83 45l39 90h-24l-8-20H69l-8 20zM75 95h9l-4-13z" fill="url(#g)"/><text x="135" y="112" font-family="Arial,sans-serif" font-weight="900" font-size="88" fill="#006b57">MIRA</text><text x="145" y="145" font-family="Arial,sans-serif" font-size="20" fill="#52736b">Afdeling Material &amp; Rawat Intelligence</text></svg></div><span class="tagline">Afdeling Material & Rawat Intelligence<br><small>From Field Data to Better Plantation</small></span></div>
+  <div class="hero-right"><span id="today"></span><br><small>OC · YM</small></div>
+</header>
+
+<section class="filters">
+<label>Perusahaan<select><option>PT Astra Agro Lestari Tbk</option></select></label>
+<label>Region<select><option>Kalimantan Tengah</option></select></label>
+<label>Kebun<select><option>YM</option></select></label>
+<label>Afdeling<select><option>OC</option></select></label>
+<label>Periode<select><option>September 2026</option></select></label>
+<button id="uploadBtn" class="primary">☁ Upload Amanda CSV</button>
+<input id="masterInput" type="file" accept=".csv,text/csv" hidden>
+<input id="amandaInput" type="file" accept=".csv,text/csv" multiple hidden>
+</section>
+
+<section class="kpis">
+<div class="kpi"><span>🌱</span><p>REALISASI</p><strong id="realization">0</strong><small>Valid transaction rows</small></div>
+<div class="kpi"><span>▥</span><p>TOTAL HK / WORKER</p><strong id="hk">0</strong><small>Unique workers</small></div>
+<div class="kpi"><span>▤</span><p>TOTAL TRANSAKSI</p><strong id="trx">0</strong><small id="validRate">POC — menunggu data</small></div>
+<div class="kpi"><span>⚗</span><p>TOTAL MATERIAL</p><strong id="materialCount">0</strong><small>Detected items</small></div>
+<div class="kpi"><span>📷</span><p>BUKTI LAPANGAN</p><strong id="evidence">0%</strong><small id="evidenceText">0 foto • 0 GPS</small></div>
+<div class="kpi"><span>⌖</span><p>GPS</p><strong id="gpsCount">0</strong><small>Coordinates detected</small></div>
+</section>
+
+<div class="grid top">
+<section class="card wide"><div class="card-head"><h3>Plan vs Realization</h3><span id="sourceBadge">POC — menunggu data</span></div><div class="bars" id="bars"></div></section>
+<section class="card"><div class="card-head"><h3>Realisasi per Workstream</h3></div><div id="workstream"></div></section>
+<section class="card"><div class="card-head"><h3>Material Usage (Top 5)</h3><span>Lihat Semua</span></div>
+<table><thead><tr><th>Material</th><th>Workstream</th><th>Qty</th></tr></thead><tbody id="materialTable"><tr><td colspan="3">Belum ada data</td></tr></tbody></table></section>
+</div>
+
+<div class="grid middle">
+<section class="card"><div class="card-head"><h3>Realisasi Per Afdeling / Blok</h3></div><div id="blocks"></div></section>
+<section class="card"><div class="card-head"><h3>Sebaran Pekerjaan di Peta</h3></div><div class="map"><div class="inline-map"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420"><defs><linearGradient id="m" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#436b50"/><stop offset=".5" stop-color="#829b68"/><stop offset="1" stop-color="#345b48"/></linearGradient></defs><rect width="900" height="420" fill="url(#m)"/><path d="M0 90 900 20M0 230 900 160M0 360 900 280M120 0 70 420M330 0 270 420M570 0 500 420M790 0 720 420" stroke="#d4dfad" stroke-width="7" opacity=".35"/><g fill="#159267" stroke="#fff" stroke-width="4"><circle cx="180" cy="130" r="10"/><circle cx="330" cy="250" r="10"/><circle cx="470" cy="115" r="10"/><circle cx="620" cy="290" r="10"/><circle cx="770" cy="170" r="10"/></g><g fill="#f4bd38" stroke="#fff" stroke-width="4"><circle cx="250" cy="320" r="10"/><circle cx="540" cy="210" r="10"/></g><g fill="#ef6c24" stroke="#fff" stroke-width="4"><circle cx="700" cy="335" r="10"/></g></svg></div><div class="map-note">Field Traceability<br><small id="mapInfo">Upload data untuk melihat GPS</small></div></div></section>
+<section class="card"><div class="card-head"><h3>Status Evidence</h3></div><div class="donut"><div id="evidenceDonut">0%</div></div><div id="evidenceList"></div></section>
+</div>
+
+<div class="grid bottom">
+<section class="card"><div class="card-head"><h3>Aktivitas Hari Ini</h3><span>Lihat Semua</span></div><div class="scroll"><table><thead><tr><th>Waktu</th><th>Pekerja</th><th>Job</th><th>Blok</th><th>Foto</th></tr></thead><tbody id="activity"></tbody></table></div></section>
+<section class="card"><div class="card-head"><h3>Material Balance Afdeling</h3><span>Lihat Semua</span></div><table><thead><tr><th>Material</th><th>Transaksi</th><th>Status</th></tr></thead><tbody id="balance"></tbody></table></section>
+<section class="card"><div class="card-head"><h3>Alerts & Notes</h3><span>Lihat Semua</span></div><div id="alerts"></div></section>
+</div>
+<footer>AMIRA &nbsp;|&nbsp; Afdeling Material & Rawat Intelligence &nbsp;|&nbsp; Astra Agro Lestari</footer>
+</main></div>
+<script>
+window.AMIRA={
+ state:{master:null,amanda:[],jobs:new Map(),materials:new Map(),rows:[],stats:null},
+ workstreams:["CPT","WDC","WDM","CWC"],
+ classify(code,name=""){
+  const n=String(name).toUpperCase(),c=String(code);
+  if(/TPH|PATH|INFRASTRUKTUR|RORAK|CEKDAM|PENGALIRAN|FLATBAT|JALAN/.test(n)||["220401","220402","220404","220408","220501","220502","220503","220504","230601","230701","230801","230901"].includes(c))return"WDC";
+  if(/CIRCLE|CPT/.test(n)||["220601","220602"].includes(c))return"CPT";
+  if(/WEEDING|WIPPING|BABAT|DONGKEL|NEPROLEPHIS|LALANG|ANAK KAYU/.test(n)||["230101","230102","230103","230201","230202","230301"].includes(c))return"WDM";
+  if(/PUPUK|PEMUPUKAN|NPK|PRUNING|SISIP|INFUS/.test(n)||["230501","230502","231001","240101"].includes(c))return"CWC";
+  return"OTHER";
+ },
+ num(v){const x=parseFloat(String(v??"").replace(/,/g,""));return Number.isFinite(x)?x:0}
+};
+</script>
+<script>
+window.AMIRAParser=(()=>{
+ function split(line){
+  const o=[];let c="",q=false;
+  for(let i=0;i<line.length;i++){
+   const x=line[i];
+   if(x==='"'){
+    if(q&&line[i+1]==='"'){c+='"';i++}else q=!q;
+   }else if(x===','&&!q){o.push(c);c=""}else c+=x;
+  }
+  o.push(c);return o;
+ }
+ function lines(t){
+  return String(t??"").replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim()).map(split);
+ }
+ function sectionName(cell){
+  const m=String(cell??"").trim().match(/^\s*=*\s*\[([^\]]+)\]\s*$/);
+  return m?m[1].trim():null;
+ }
+ function parseMaster(t){
+  const ls=lines(t),data={},headers={};let s=null;
+  for(const c of ls){
+   const sec=sectionName(c[0]);
+   if(sec){s=sec;data[s]=[];headers[s]=null;continue}
+   if(!s)continue;
+   if(!headers[s]){headers[s]=c.map(x=>x.trim());continue}
+   const r={};
+   headers[s].forEach((h,i)=>{if(h)r[h]=(c[i]??"").trim()});
+   if(Object.values(r).some(v=>v!==""))data[s].push(r);
+  }
+  return{sections:data,headers};
+ }
+ function parseAmanda(t){
+  const ls=lines(t);
+  let i=ls.findIndex(r=>r.some(c=>String(c).trim()==="EMPNO"));
+  if(i<0)i=ls.findIndex(r=>r.some(c=>String(c).trim()==="JOBCODE"));
+  if(i<0)return[];
+  const h=ls[i].map(x=>x.trim()),out=[];
+  for(let j=i+1;j<ls.length;j++){
+   const sec=sectionName(ls[j][0]); if(sec)break;
+   const c=ls[j],r={};
+   h.forEach((x,k)=>{if(x)r[x]=(c[k]??"").trim()});
+   if(r.JOBCODE||r.EMPNO||r.NAMA)out.push(r);
+  }
+  return out;
+ }
+ return{parseMaster,parseAmanda};
+})();
+</script>
+<script>
+(()=>{
+ const $=x=>document.getElementById(x);
+ const fmt=n=>new Intl.NumberFormat("id-ID",{maximumFractionDigits:1}).format(Number(n)||0);
+ const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+ function render(){
+  const s=AMIRA.state.stats||{total:0,valid:0,workers:0,photos:0,gps:0,byWS:{},byBlock:{},byMat:{}};
+  $("trx").textContent=fmt(s.total);
+  $("hk").textContent=fmt(s.workers);
+  $("realization").textContent=fmt(s.valid);
+  $("validRate").textContent=s.total?`Valid ${fmt(s.valid/s.total*100)}%`:"POC — menunggu data";
+  $("evidence").textContent=s.valid?fmt(s.photos/s.valid*100)+"%":"0%";
+  $("evidenceText").textContent=`${fmt(s.photos)} foto • ${fmt(s.gps)} GPS`;
+  $("gpsCount").textContent=fmt(s.gps);
+  $("materialCount").textContent=Object.keys(s.byMat).filter(k=>k!=="—").length;
+  $("sourceBadge").textContent=s.total?`Amanda ${fmt(s.total)} transaksi`:"POC — menunggu data";
+  $("mapInfo").textContent=s.gps?`${fmt(s.gps)} titik GPS terdeteksi`:"Upload data untuk melihat GPS";
+
+  const wsMax=Math.max(...AMIRA.workstreams.map(w=>s.byWS[w]||0),1);
+  $("workstream").innerHTML=AMIRA.workstreams.map(w=>`
+   <div class="ws"><div><b>${w}</b><span>${fmt(s.byWS[w]||0)}</span></div>
+   <div class="meter"><i style="width:${Math.min(100,(s.byWS[w]||0)/wsMax*100)}%"></i></div></div>
+  `).join("")+`<div class="ws"><div><b>OTHER</b><span>${fmt(s.byWS.OTHER||0)}</span></div></div>`;
+
+  const mats=Object.entries(s.byMat).filter(([m])=>m!=="—").sort((a,b)=>b[1]-a[1]).slice(0,5);
+  $("materialTable").innerHTML=mats.length
+   ?mats.map(([m,n])=>`<tr><td>${esc(m)}</td><td>Master Job</td><td>${fmt(n)}</td></tr>`).join("")
+   :`<tr><td colspan="3">Material belum terdeteksi dari transaksi Amanda</td></tr>`;
+  $("balance").innerHTML=mats.length
+   ?mats.map(([m,n])=>`<tr><td>${esc(m)}</td><td>${fmt(n)}</td><td>Detected</td></tr>`).join("")
+   :`<tr><td colspan="3">Belum ada material usage</td></tr>`;
+
+  const bs=Object.entries(s.byBlock).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const mx=Math.max(...bs.map(x=>x[1]),1);
+  $("blocks").innerHTML=bs.length
+   ?bs.map(([b,n])=>`<div class="block"><span>${esc(b)}</span><div><i style="width:${n/mx*100}%"></i></div><b>${fmt(n)}</b></div>`).join("")
+   :"<p class='muted'>Belum ada transaksi.</p>";
+
+  $("activity").innerHTML=AMIRA.state.rows.filter(r=>r._valid).slice(0,15).map(r=>`
+   <tr><td>${esc(r.ATTTIME||r.S_TIME||"—")}</td>
+   <td>${esc(r.NAMA||r.EMPCODE||r.EMPNO||"—")}</td>
+   <td>${esc(r.JOBCODE||"—")}</td><td>${esc(r.BLOKCODE||"—")}</td>
+   <td>${r.PHOTO_PATH||r.PHOTO_PATH2?"●":"—"}</td></tr>
+  `).join("")||`<tr><td colspan="5">Upload Amanda CSV untuk melihat transaksi.</td></tr>`;
+
+  const ev=s.valid?Math.round(s.photos/s.valid*100):0;
+  $("evidenceDonut").textContent=ev+"%";
+  $("evidenceList").innerHTML=`
+   <div class="legend">● Foto <b>${fmt(s.photos)}</b></div>
+   <div class="legend">● GPS <b>${fmt(s.gps)}</b></div>
+   <div class="legend">● Tanpa foto <b>${fmt(Math.max(0,s.valid-s.photos))}</b></div>`;
+
+  $("alerts").innerHTML=s.total
+   ?`<div class="alert info">ⓘ ${fmt(s.valid)} transaksi valid dari ${fmt(s.total)} baris Amanda.</div>`
+   :`<div class="alert info">ⓘ Upload Master Rawat lalu pilih CSV Amanda untuk mengaktifkan engine.</div>`;
+
+  // POC visual: transaction rows are the current realization proxy.
+  const bars=$("bars");
+  bars.innerHTML=s.total?`
+   <div style="height:${Math.max(8,Math.min(100,s.valid/(Math.max(s.total,1))*100))}%;flex:1;background:#17825f;border-radius:5px 5px 0 0;position:relative">
+    <span style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px">Valid</span>
+   </div>
+   <div style="height:${Math.max(8,Math.min(100,(s.total-s.valid)/(Math.max(s.total,1))*100))}%;flex:1;background:#c9d8d2;border-radius:5px 5px 0 0;position:relative">
+    <span style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px">Review</span>
+   </div>`:"";
+ }
+ async function readFiles(files){return Promise.all([...files].map(f=>f.text()))}
+
+ $("uploadBtn").onclick=()=>{
+  const master=$("masterInput");
+  master.click();
+  master.onchange=async()=>{
+   if(!master.files[0])return;
+   const m=AMIRAParser.parseMaster(await master.files[0].text());
+   const amanda=$("amandaInput");
+   amanda.click();
+   amanda.onchange=async()=>{
+    if(!amanda.files.length)return;
+    const aa=(await readFiles(amanda.files)).map(AMIRAParser.parseAmanda);
+    const jobs=new Map((m.sections.M_JOB||[]).map(r=>[String(r.JOBCODE||"").trim(),r]));
+    const rows=aa.flat().map(r=>{
+     const j=jobs.get(String(r.JOBCODE||"").trim())||{};
+     const ws=AMIRA.classify(r.JOBCODE,j.DESCRIPTION||j.JOBNAME||j.JOBDESC||"");
+     return {...r,_job:j,_ws:ws,_valid:!!r.JOBCODE&&(!!r.EMPNO||!!r.NAMA)};
+    });
+    const v=rows.filter(r=>r._valid);
+    const workers=new Set(v.map(r=>r.EMPNO||r.EMPCODE||r.NAMA).filter(Boolean));
+    const byWS={},byBlock={},byMat={};
+    v.forEach(r=>{
+     byWS[r._ws]=(byWS[r._ws]||0)+1;
+     const bl=r.BLOKCODE||"—"; byBlock[bl]=(byBlock[bl]||0)+1;
+     const mat=r.MATERIAL||r.MATERIALCODE||r.ITEMBACODE||r._job.ITEMBACODE||"—";
+     byMat[mat]=(byMat[mat]||0)+1;
+    });
+    AMIRA.state={master:m,amanda:aa,jobs,rows,stats:{
+     total:rows.length,valid:v.length,workers:workers.size,
+     photos:v.filter(r=>r.PHOTO_PATH||r.PHOTO_PATH2).length,
+     gps:v.filter(r=>AMIRA.num(r.LAT)||AMIRA.num(r.LONG)).length,
+     byWS,byBlock,byMat
+    }};
+    render();
+   };
+  };
+ };
+ $("today").textContent=new Date().toLocaleDateString("id-ID",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});
+ render();
+})();
+</script>
+</body></html>
