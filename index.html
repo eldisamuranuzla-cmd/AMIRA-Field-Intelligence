@@ -64,9 +64,12 @@ function csvRows(t){return String(t||'').replace(/^\uFEFF/,'').split(/\r?\n/).fi
 function parseSections(t){let rows=csvRows(t),sec=null,sections={},headers={};for(const cols of rows){let f=clean(cols[0]),m=f.match(/^=+\s*\[([^\]]+)\]/);if(m){sec=m[1].trim();sections[sec]=[];headers[sec]=null;continue}if(!sec)continue;if(!headers[sec]){headers[sec]=cols.map(clean);continue}let o={};headers[sec].forEach((h,i)=>{if(h)o[h]=clean(cols[i]??'')});if(Object.keys(o).length)sections[sec].push(o)}return{sections,headers}}
 function parseMaster(t){return parseSections(t)} function parseAmanda(t){return parseSections(t)}
 function classify(code,name=''){const c=clean(code),n=String(name).toUpperCase();
- if(['220601','220602'].includes(c)||/CIRCLE|CPT/.test(n))return'CPT';
- if(['220401','220402','220503'].includes(c)||/PATH|TPH.*CHEMIS|CHEMIS.*PATH|INFRASTRUKTUR|RORAK|CEKDAM|PENGALIRAN|FLATBAT|JALAN/.test(n))return'WDC';
- if(['230101','230102','230103','230201','230202','230301'].includes(c)||/WEEDING|WIPPING|BABAT|DONGKEL|NEPROLEPHIS|LALANG|ANAK KAYU/.test(n))return'WDM';
+ // CPT is the umbrella workstream for all chemist CPT jobs.
+ // CWC = Circle Chemist; PTC = Path/TPH Chemist.
+ if(['220401','220402','220503','220601','220602'].includes(c)||/CIRCLE CHEMIST|PATH CHEMIS|PATH CONTROL CHEMIS|TPH CHEMIS|CPT/.test(n))return'CPT';
+ // WDC = Weeding Chemis; WDM = manual weeding / wiping.
+ if(['230201','230202'].includes(c)||/WEEDING CHEMIS|FOLLOW UP WEEDING CHEMIS/.test(n))return'WDC';
+ if(['230101','230102','230103','230301'].includes(c)||/WEEDING|WIPPING|BABAT|DONGKEL|NEPROLEPHIS|LALANG|ANAK KAYU/.test(n))return'WDM';
  // OTHER RAWAT = PRUNING (JOBCODE 240101). Other unmapped jobs remain OTHER only as a fallback.
  if(c==='240101'||/PRUNING/.test(n))return'OTHER';
  return'OTHER'}
