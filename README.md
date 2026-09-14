@@ -1,24 +1,21 @@
 # AMIRA — Afdeling Material & Rawat Intelligence
 
-POC aplikasi frontend untuk menggabungkan:
+POC frontend inspired by the architecture and interaction pattern of Adriana V24, but maintained as a separate repository.
 
-1. **Master Rawat** sebagai pondasi JOBCODE, job description, UOM, material dan rule.
-2. **3 CSV Amanda Rawat** sebagai transaction engine aktual.
-3. Classification JOBCODE menjadi CPT / WDC / WDM / CWC.
-4. Dashboard field execution, HK, transaksi, blok, material, evidence dan GPS.
+## Data foundation
+- Master Rawat = foundation for JOBCODE, job description, UOM, material and rules.
+- Three Amanda Rawat CSV files = actual field transaction engine.
+- Browser-side parsing and calculation; operational CSV files are not stored in the repository.
 
-## Cara pakai
+## Flow
+Master Rawat → JOBCODE mapping → Amanda Rawat → CPT/WDC/WDM/CWC → HK / transaction / material / block / GPS / evidence → dashboard.
 
-1. Buka `index.html` di browser atau deploy ke GitHub Pages.
-2. Klik **Upload Amanda CSV**.
-3. Pilih **Master Rawat** terlebih dahulu.
-4. Pilih 3 CSV Amanda Rawat sekaligus.
-5. Dashboard akan membaca file di browser dan menghitung data secara lokal.
+## Usage
+1. Open `index.html` or deploy through GitHub Pages.
+2. Click **Upload Amanda CSV**.
+3. Select the Master Rawat CSV first.
+4. Select the three Amanda Rawat CSV files.
+5. The POC processes the data locally in the browser.
 
-> Data CSV tidak perlu disimpan di repository. Untuk data operasional riil, gunakan upload lokal/browser.
-
-## Catatan POC
-
-Parser dibuat toleran terhadap baris CSV Amanda yang mempunyai jumlah kolom tidak konsisten. Mapping job menggunakan `JOBCODE` dari `M_JOB` pada Master Rawat.
-
-Architecture reference: Adriana V24 — AMIRA tetap berdiri sebagai repository terpisah.
+## Note
+The repository is intentionally separate from Adriana V24. Adriana is an architecture/reference pattern, not a data source.

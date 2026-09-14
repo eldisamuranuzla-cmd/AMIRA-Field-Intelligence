@@ -1,3 +1,4 @@
-data/real/
 *.csv
-!data/sample/.gitkeep
+*.xlsx
+*.xls
+.DS_Store

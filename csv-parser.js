@@ -1,41 +1,7 @@
-window.AMIRAParser = (() => {
-  function splitCSVLine(line) {
-    const out=[]; let cur="", q=false;
-    for(let i=0;i<line.length;i++){
-      const ch=line[i];
-      if(ch === '"'){ if(q && line[i+1]==='"'){cur+='"';i++;} else q=!q; }
-      else if(ch===',' && !q){out.push(cur);cur="";} else cur+=ch;
-    }
-    out.push(cur); return out;
-  }
-  function parseLines(text){
-    return text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim()!=="").map(splitCSVLine);
-  }
-  function parseMaster(text){
-    const lines=parseLines(text), sections={}, headers={}, data={};
-    let section=null;
-    for(const cells of lines){
-      const first=(cells[0]||"").trim();
-      if(first.startsWith("[") && first.endsWith("]")){ section=first.slice(1,-1); data[section]=[]; continue; }
-      if(!section) continue;
-      if(!headers[section]){ headers[section]=cells.map(x=>x.trim()); continue; }
-      const row={}; headers[section].forEach((h,i)=>row[h]=(cells[i]??"").trim());
-      data[section].push(row);
-    }
-    return {sections:data,headers};
-  }
-  function parseAmanda(text){
-    const lines=parseLines(text);
-    let idx=lines.findIndex(r => r.some(c=>String(c).trim()==="EMPNO"));
-    if(idx<0) idx=lines.findIndex(r=>r.some(c=>String(c).trim()==="JOBCODE"));
-    if(idx<0) return [];
-    const headers=lines[idx].map(x=>x.trim()), rows=[];
-    for(let i=idx+1;i<lines.length;i++){
-      const c=lines[i]; if(!c.length) continue;
-      const row={}; headers.forEach((h,j)=>row[h]=(c[j]??"").trim());
-      if(row.JOBCODE || row.EMPNO || row.NAMA) rows.push(row);
-    }
-    return rows;
-  }
-  return {parseMaster,parseAmanda};
+window.AMIRAParser=(()=>{
+ function split(line){const o=[];let c="",q=false;for(let i=0;i<line.length;i++){let x=line[i];if(x=='"'){if(q&&line[i+1]=='"'){c+='"';i++}else q=!q}else if(x==','&&!q){o.push(c);c=""}else c+=x}o.push(c);return o}
+ function lines(t){return t.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim()).map(split)}
+ function parseMaster(t){const ls=lines(t),data={},headers={};let s=null;for(const c of ls){let f=(c[0]||"").trim();if(f.startsWith("[")&&f.endsWith("]")){s=f.slice(1,-1);data[s]=[];continue}if(!s)continue;if(!headers[s]){headers[s]=c.map(x=>x.trim());continue}let r={};headers[s].forEach((h,i)=>r[h]=(c[i]??"").trim());data[s].push(r)}return{sections:data,headers}}
+ function parseAmanda(t){const ls=lines(t);let i=ls.findIndex(r=>r.some(c=>String(c).trim()=="EMPNO"));if(i<0)i=ls.findIndex(r=>r.some(c=>String(c).trim()=="JOBCODE"));if(i<0)return[];let h=ls[i].map(x=>x.trim()),out=[];for(let j=i+1;j<ls.length;j++){let c=ls[j],r={};h.forEach((x,k)=>r[x]=(c[k]??"").trim());if(r.JOBCODE||r.EMPNO||r.NAMA)out.push(r)}return out}
+ return{parseMaster,parseAmanda}
 })();
