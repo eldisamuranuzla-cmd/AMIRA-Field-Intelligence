@@ -1,17 +1,14 @@
-AMIRA V31 — Engine 05 Material Allocation + Engine 07 Balance Fix
+AMIRA V31 - CPT ENGINE 05/06/07 FIX
 
-Engine 05:
-- T_MATERIAL remains the sole actual material source.
-- When T_MATERIAL has no block field, material quantity is allocated across the related SIC blocks using proportional P4 contribution.
-- Total allocated quantity remains exactly equal to the original T_MATERIAL quantity.
-- All actual material-containing blocks can appear in Material Usage.
+ENGINE 05 = source of truth T_MATERIAL actual usage. Block is taken directly from T_MATERIAL when available; SIC is only fallback.
+ENGINE 06 = source of truth Excel prescription, retaining CWC1-4 and PTC1-4 internally plus WDC1-4.
+ENGINE 07 = actual material minus base material per block and spray family.
 
-Engine 06 / Engine 07:
-- Base is prescription only.
-- CPT reporting combines CWC + Path Chemist + TPH Chemist.
-- CPT base combines matching CWC + PTC subtype (CWC1 + PTC1, etc.).
-- WDC remains independent.
-- Material Balance starts from actual Engine 05 rows; no actual material means no Balance row.
+CPT reporting:
+- CWC + PTC (Path Chemist + TPH Chemist) are reported as CPT.
+- CPT1 base = CWC1 + PTC1; CPT2 = CWC2 + PTC2; CPT3 = CWC3 + PTC3; CPT4 = CWC4 + PTC4.
+- Actual CWC and PTC usage is combined by block + subtype + material before reconciliation.
+- WDC is reconciled separately against WDC1-4.
+- Material Balance includes every block that has actual material in T_MATERIAL, including blocks without material base (shown as NO BASE rather than hidden).
 
-History:
-- Existing date + afdeling historical logic retained.
+History remains local IndexedDB in this build. Supabase cloud sync is not included in V31.
