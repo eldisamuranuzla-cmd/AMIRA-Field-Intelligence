@@ -1,4 +1,4 @@
-const CACHE="amira-v17-worker-item-v1";
+const CACHE="amira-v18-worker-item-v1";
 const ASSETS=["./","./index.html","./manifest.webmanifest","./astra-agro-50-header.png","./astra-agro-logo-compact.png","./astra-agro-logo.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
