@@ -246,63 +246,83 @@ function renderPages(){let d=state.data||buildData();const workerItemHa=new Map(
  const normBalanceMat=s=>{let n=String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const alias={'GLIPHOSATE':'GLYPHOSATE','METHIL':'METIL','AMMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT'};return alias[n]||n};
  const rawMaterialRows=[]; (d.mats||[]).forEach(r=>{const date=normDate(r.TANGGAL)||normDate(r.DATE)||d.date||'—'; const directBlock=clean(r.BLOKCODE||r.BLOCKCODE||r.BLOCK); const resolvedBlocks=[...(d.sicByKeyMap?.[[clean(r.JOBCODE),clean(r.MANDORCODE),normDate(r.TANGGAL||r.DATE)].join('|')]||[])].filter(Boolean); const block=directBlock||resolvedBlocks[0]||'—'; for(let i=1;i<=6;i++){const code=clean(r['MAT'+i]||r['MATERIALCODE'+i]); const qty=num(r['QTYMAT'+i]||r['QTY'+i]); if(!code||!qty)continue; const md=mat(code); rawMaterialRows.push({date,block,job:clean(r.JOBCODE)||'—',code,material:md.DESCRIPTION||code,qty,uom:md.UOM||'—'});}});
  $('materialDetail').innerHTML=rawMaterialRows.sort((a,b)=>String(a.date).localeCompare(String(b.date))||a.block.localeCompare(b.block,undefined,{numeric:true})||a.job.localeCompare(b.job)||a.code.localeCompare(b.code)).map(v=>`<tr><td>${v.date}</td><td>${v.block}</td><td>${itemName(v.job)}</td><td><b>${v.material}</b></td><td>${v.code}</td><td>${fmt(v.qty)}</td><td>${v.uom}</td><td>${v.job}</td></tr>`).join('')||`<tr><td colspan="8" class="empty">Belum ada racun aktual dari T_MATERIAL.</td></tr>`;
- // MATERIAL BALANCE: Engine 05 actual vs Engine 06 base.
- // CPT is the reporting family. CWC + PTC (Path/TPH) base is paired
- // by block + prescription subtype + material; actual CWC/PTC usage is combined.
- const balanceRows=[];const baseMap=new Map();
- const activeCsvBlocks=new Set([
-   ...(d.sic||[]).map(r=>clean(r.BLOKCODE)),
-   ...(d.valid||[]).map(r=>clean(r.BLOKCODE))
- ].filter(Boolean));
+ // MATERIAL BALANCE — SOURCE = ENGINE 05 T_MATERIAL ONLY.
+ // Rule: every row in Balance MUST originate from actual material usage.
+ // Engine 06 is lookup/base only. No material actual = no Balance row.
+ // CPT reporting = CWC + PATH CHEMIST + TPH CHEMIST, while base combines
+ // matching CWC + PTC prescription subtype (1↔1, 2↔2, 3↔3, 4↔4).
+ const balanceRows=[];
  const sprayFamily=c=>{c=clean(c);if(['220601','220602'].includes(c))return'CWC';if(['220401','220402','220503'].includes(c))return'PTC';if(['230201','230202'].includes(c))return'WDC';return null};
  const familyOfType=t=>String(t||'').match(/^(CWC|PTC|WDC)/)?.[1]||null;
  const subtypeOfType=t=>{const m=String(t||'').match(/^(?:CWC|PTC|WDC)([1-4])$/);return m?m[1]:''};
- const activeSprayFamilies=new Set((d.mats||[]).map(r=>sprayFamily(r.JOBCODE)).filter(Boolean));
-
- const actualMap=new Map();
- Object.values(d.actualSprayUsage||{}).forEach(x=>{
-   if(!x.block||x.block==='—'||!activeCsvBlocks.has(clean(x.block)))return;
-   const family=familyOfType(x.type),reportFamily=family==='CWC'||family==='PTC'?'CPT':family;
-   if(!reportFamily)return;
-   if(family==='WDC'&&!activeSprayFamilies.has('WDC'))return;
-   if((family==='CWC'||family==='PTC')&&!([...activeSprayFamilies].some(f=>f==='CWC'||f==='PTC')))return;
-   const canonical=normBalanceMat(x.material||x.displayMaterial||x.code),suffix=subtypeOfType(x.type);
-   const k=[x.block,reportFamily,suffix,canonical].join('|');
-   const prev=actualMap.get(k);
-   if(prev){prev.qty+=x.qty;prev.date=[prev.date,x.date].filter(Boolean).sort().at(-1)||prev.date;}
-   else actualMap.set(k,{...x,canonical,family:reportFamily,subtype:suffix});
- });
-
- // Pair CWC1 + PTC1, CWC2 + PTC2, etc. Do NOT sum unrelated subtypes.
- const baseGroups=new Map();
+ const reportFamily=f=>f==='CWC'||f==='PTC'?'CPT':f;
+ const baseByKey=new Map();
+ const baseByBlockFamilySub={};
  Object.values(d.prescriptionByBlock||{}).forEach(p=>{
-   if(!activeCsvBlocks.has(clean(p.block)))return;
-   const internal=String(p.type||'').toUpperCase(),family=familyOfType(internal),reportFamily=family==='CWC'||family==='PTC'?'CPT':family;
-   if(!reportFamily)return;
-   if(family==='WDC'&&!activeSprayFamilies.has('WDC'))return;
-   if((family==='CWC'||family==='PTC')&&!([...activeSprayFamilies].some(f=>f==='CWC'||f==='PTC')))return;
-   const suffix=subtypeOfType(internal);
-   p.items.forEach(x=>{
-     const canonical=normBalanceMat(x.material),k=[p.block,reportFamily,suffix,canonical].join('|');
-     const prev=baseGroups.get(k);
-     if(prev){prev.total+=num(x.total);prev.dose+=num(x.dose);prev.cost+=num(x.cost);prev.ha=Math.max(prev.ha,num(p.ha));}
-     else baseGroups.set(k,{block:p.block,type:reportFamily,subtype:suffix,material:x.material,canonical,total:num(x.total),dose:num(x.dose),cost:num(x.cost),ha:num(p.ha),uom:x.uom||'',price:num(x.price)});
-   });
+   const internal=String(p.type||'').toUpperCase(), fam=familyOfType(internal), rf=reportFamily(fam), sub=subtypeOfType(internal);
+   if(!fam||!rf)return;
+   if(rf==='CPT'){
+     const k=[clean(p.block),rf,sub].join('|');
+     baseByBlockFamilySub[k]??={block:p.block,type:'CPT',subtype:sub,ha:0,totalByMat:{},doseByMat:{},priceByMat:{},uomByMat:{}};
+     const g=baseByBlockFamilySub[k];g.ha=Math.max(g.ha,num(p.ha));
+     p.items.forEach(x=>{const m=normBalanceMat(x.material);g.totalByMat[m]=(g.totalByMat[m]||0)+num(x.total);g.doseByMat[m]=(g.doseByMat[m]||0)+num(x.dose);g.priceByMat[m]=num(x.price);g.uomByMat[m]=x.uom||g.uomByMat[m]||'';});
+   } else if(fam==='WDC'){
+     const k=[clean(p.block),rf,sub].join('|');
+     baseByBlockFamilySub[k]??={block:p.block,type:'WDC',subtype:sub,ha:0,totalByMat:{},doseByMat:{},priceByMat:{},uomByMat:{}};
+     const g=baseByBlockFamilySub[k];g.ha=Math.max(g.ha,num(p.ha));
+     p.items.forEach(x=>{const m=normBalanceMat(x.material);g.totalByMat[m]=(g.totalByMat[m]||0)+num(x.total);g.doseByMat[m]=(g.doseByMat[m]||0)+num(x.dose);g.priceByMat[m]=num(x.price);g.uomByMat[m]=x.uom||g.uomByMat[m]||'';});
+   }
  });
- baseGroups.forEach((b,k)=>{if(actualMap.has(k))baseMap.set(k,b)});
-
- const keys=new Set([...baseMap.keys(),...actualMap.keys()]);
- keys.forEach(k=>{
-   const b=baseMap.get(k),a=actualMap.get(k),block=b?.block||a?.block||'—',type=b?.type||a?.family||'—';
-   const material=b?.material||a?.displayMaterial||a?.material||a?.code||'—',uom=b?.uom||a?.uom||mat(a?.code||'').UOM||'—';
-   const baseQty=num(b?.total),actual=num(a?.qty),diff=actual-baseQty,ha=num(b?.ha)||0;
-   balanceRows.push({block,type,typeInternal:b?.subtype||a?.subtype||'',material,uom,base:baseQty,actual,diff,price:num(b?.price),ha,baseExists:!!b,actualExists:!!a});
+ // Create candidate prescription types using MATERIAL SET from Engine 05, not from activity/HA.
+ const actualMap=new Map();
+ const unmappedActual=[];
+ const matsByContext=new Map();
+ (d.mats||[]).forEach(r=>{
+   const c=clean(r.JOBCODE),fam=sprayFamily(c),rf=reportFamily(fam); if(!fam||!rf)return;
+   const date=normDate(r.TANGGAL||r.DATE)||d.date||'';
+   const mandor=clean(r.MANDORCODE);
+   const directBlock=clean(r.BLOKCODE||r.BLOCKCODE||r.BLOCK);
+   const sicKey=[c,mandor,date].join('|');
+   const sicBlocks=[...(d.sicByKeyMap?.[sicKey]||[])].filter(Boolean);
+   const block=directBlock||(sicBlocks.length===1?sicBlocks[0]:'');
+   const items=[]; for(let i=1;i<=6;i++){const mc=clean(r['MAT'+i]||r['MATERIALCODE'+i]),q=num(r['QTYMAT'+i]||r['QTY'+i]);if(mc&&q)items.push({mc,q});}
+   if(!items.length)return;
+   if(!block){unmappedActual.push({reason:'BLOCK_NOT_RESOLVED',job:c,mandor,date,items});return;}
+   const ctx=[block,rf,date,mandor,c].join('|');
+   matsByContext.set(ctx,{block,rf,date,mandor,job:c,fam,items:[...(matsByContext.get(ctx)?.items||[]),...items]});
+ });
+ matsByContext.forEach(g=>{
+   const matSet=[...new Set(g.items.map(it=>normBalanceMat(mat(it.mc).DESCRIPTION||it.mc)))].sort();
+   const candidates=[];
+   ['1','2','3','4'].forEach(sub=>{
+     const bg=baseByBlockFamilySub[[g.block,g.rf,sub].join('|')];
+     if(!bg)return;
+     const baseSet=Object.keys(bg.totalByMat).sort();
+     if(baseSet.length===matSet.length&&baseSet.every((m,i)=>m===matSet[i]))candidates.push(sub);
+   });
+   const subtype=candidates.length===1?candidates[0]:'';
+   g.items.forEach(it=>{
+     const md=mat(it.mc),display=md.DESCRIPTION||it.mc,canonical=normBalanceMat(display),key=[g.block,g.rf,subtype||'UNMAPPED',canonical].join('|');
+     const prev=actualMap.get(key);
+     if(prev)prev.actual+=it.q;
+     else actualMap.set(key,{block:g.block,type:g.rf,subtype,material:display,canonical,uom:md.UOM||'',actual:it.q,date:g.date,job:g.job,mapped:!!subtype});
+   });
+   if(!subtype)unmappedActual.push({reason:'PRESCRIPTION_NOT_UNIQUE',block:g.block,family:g.rf,job:g.job,date:g.date,materials:matSet,candidates});
+ });
+ // Balance is driven by actual keys only. Base is attached where a matching block/family/subtype/material exists.
+ actualMap.forEach(a=>{
+   const bg=baseByBlockFamilySub[[a.block,a.type,a.subtype].join('|')];
+   const baseQty=num(bg?.totalByMat?.[a.canonical]);
+   const dose=num(bg?.doseByMat?.[a.canonical]);
+   const uom=bg?.uomByMat?.[a.canonical]||a.uom||'—';
+   const diff=a.actual-baseQty;
+   const status=!bg||!Object.prototype.hasOwnProperty.call(bg.totalByMat,a.canonical)?'🟡 NO BASE':diff>0.000001?'🔴 OVER BASE':'🟢 ≤ BASE';
+   balanceRows.push({block:a.block,type:a.type,typeInternal:a.subtype,material:bg?.type==='CPT'?a.material:(bg?.type? a.material:a.material),base:baseQty,actual:a.actual,diff,price:num(bg?.priceByMat?.[a.canonical]),ha:num(bg?.ha),uom,status,mapped:a.mapped});
  });
  $('balanceDetail').innerHTML=balanceRows.sort((a,b)=>a.block.localeCompare(b.block,undefined,{numeric:true})||a.type.localeCompare(b.type)||a.material.localeCompare(b.material)).map(r=>{
-   const dose=r.ha? r.actual/r.ha:0;const over=r.diff>0.000001;
-   const status=!r.actualExists?'🟡 NO ACTUAL':!r.baseExists?'🟡 NO BASE':over?'🔴 OVER BASE':'🟢 ≤ BASE';
-   return`<tr class="${over?'overRow':''}"><td>${r.block}</td><td>${r.type}</td><td><b>${r.material}</b></td><td>${fmt(r.base)}</td><td>${fmt(r.actual)}</td><td>${fmt(r.diff)}</td><td>${fmt(dose)} ${/GR|G/.test(String(r.uom).toUpperCase())?'Gr/Ha':'L/Ha'}</td><td>${r.uom}</td><td>${status}</td></tr>`;
- }).join('')||`<tr><td colspan="9" class="empty">Belum ada data actual/base.</td></tr>`;
+   const dose=r.ha?r.actual/r.ha:0;
+   return`<tr class="${r.status.includes('OVER BASE')?'overRow':''}"><td>${r.block}</td><td>${r.type}</td><td><b>${r.material}</b></td><td>${fmt(r.base)}</td><td>${fmt(r.actual)}</td><td>${fmt(r.diff)}</td><td>${fmt(dose)} ${/GR|G/.test(String(r.uom).toUpperCase())?'Gr/Ha':'L/Ha'}</td><td>${r.uom}</td><td>${r.status}</td></tr>`;
+ }).join('')||`<tr><td colspan="9" class="empty">Belum ada actual material dari Engine 05.</td></tr>`;
  $('planDetail').innerHTML=`<table><thead><tr><th>WS</th><th>Plan Ha</th><th>Real Ha</th><th>Achievement</th></tr></thead><tbody>${WS.map(w=>`<tr><td>${w}</td><td>${fmt(d.planWS[w])}</td><td>${fmt(d.actualWS[w])}</td><td>${d.planWS[w]?fmt(pct(d.actualWS[w],d.planWS[w]))+'%':'—'}</td></tr>`).join('')}</tbody></table>`;
  const ihr=itemHKRows();$('itemHKDetail').innerHTML=ihr.map(x=>{const ha=x.hk?((workerItemHa.get([x.date,x.block,x.code].join('|'))||0)):0;return`<tr><td>${x.date||'—'}</td><td>${x.block}</td><td>${x.ws}</td><td><b>${itemName(x.code)}</b></td><td>${x.code}</td><td>${fmt(x.hk)}</td><td>${fmt(ha)}</td><td>${x.hk?fmt(ha/x.hk):'—'}</td></tr>`}).join('')||`<tr><td colspan="8" class="empty">Belum ada item activity.</td></tr>`;
  $('workerDetail').innerHTML=(d.workerItemRows||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))||a.b.localeCompare(b.b,undefined,{numeric:true})||a.code.localeCompare(b.code)||a.worker.localeCompare(b.worker)).map(r=>`<tr><td>${r.date||'—'}</td><td>${r.worker}</td><td>${job(r.code).DESCRIPTION||r.code}</td><td><b>${itemName(r.code)}</b></td><td>${r.w}</td><td>${r.b}</td><td>${fmt(r.ha)}</td></tr>`).join('')||`<tr><td colspan="7" class="empty">Belum ada worker.</td></tr>`;

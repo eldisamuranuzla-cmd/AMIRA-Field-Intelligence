@@ -1,11 +1,11 @@
-AMIRA V30 — CPT + History Bug Fix
+AMIRA V31 — Engine 05 Material Balance Fix
 
-Fixes:
-1. Material Balance: CPT is now the reporting family. Base for CPT pairs the same prescription subtype: CWC1 + PTC1, CWC2 + PTC2, etc. Actual CWC/PTC material is reconciled together.
-2. Realisasi per Blok: racun is shown only when actual material exists; jobs without racun show — instead of 0.
-3. Akumulasi Pekerjaan: active locked dataset is included once in Multi Afdeling accumulation, so the active block (including OC017) appears.
-4. Historical save: deterministic date+afdeling dataset ID, clearer save error handling, and historical raw/master payloads are stored as Blob in IndexedDB to reduce storage pressure. Same date + different afdeling remains separate.
-
-Important:
-- History in this build is still browser-local IndexedDB. It is NOT yet cross-device cloud history.
-- Supabase integration requires a separate cloud configuration/table and should not use a secret key in this static frontend.
+Main rule:
+1. Engine 05 / T_MATERIAL is the ONLY source of Actual material usage for Material Balance.
+2. Engine 06 / Base Racun is lookup/reference only.
+3. Balance rows are created ONLY when actual material exists in Engine 05.
+4. For CPT reporting, base is combined by block + prescription subtype: CWC1+PTC1, CWC2+PTC2, CWC3+PTC3, CWC4+PTC4.
+5. WDC remains WDC and uses its own WDC1-4 base.
+6. A work-only block without material does NOT appear in Material Balance.
+7. If actual material exists but cannot be matched to a unique base subtype, actual still appears with NO BASE instead of inventing a prescription.
+8. Existing HA/P4/HK, Multi Afdeling, and historical logic are preserved.
