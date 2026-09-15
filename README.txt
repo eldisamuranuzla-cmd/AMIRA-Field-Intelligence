@@ -1,11 +1,17 @@
-AMIRA V31 — Engine 05 Material Balance Fix
+AMIRA V31 — Engine 05 Material Allocation + Engine 07 Balance Fix
 
-Main rule:
-1. Engine 05 / T_MATERIAL is the ONLY source of Actual material usage for Material Balance.
-2. Engine 06 / Base Racun is lookup/reference only.
-3. Balance rows are created ONLY when actual material exists in Engine 05.
-4. For CPT reporting, base is combined by block + prescription subtype: CWC1+PTC1, CWC2+PTC2, CWC3+PTC3, CWC4+PTC4.
-5. WDC remains WDC and uses its own WDC1-4 base.
-6. A work-only block without material does NOT appear in Material Balance.
-7. If actual material exists but cannot be matched to a unique base subtype, actual still appears with NO BASE instead of inventing a prescription.
-8. Existing HA/P4/HK, Multi Afdeling, and historical logic are preserved.
+Engine 05:
+- T_MATERIAL remains the sole actual material source.
+- When T_MATERIAL has no block field, material quantity is allocated across the related SIC blocks using proportional P4 contribution.
+- Total allocated quantity remains exactly equal to the original T_MATERIAL quantity.
+- All actual material-containing blocks can appear in Material Usage.
+
+Engine 06 / Engine 07:
+- Base is prescription only.
+- CPT reporting combines CWC + Path Chemist + TPH Chemist.
+- CPT base combines matching CWC + PTC subtype (CWC1 + PTC1, etc.).
+- WDC remains independent.
+- Material Balance starts from actual Engine 05 rows; no actual material means no Balance row.
+
+History:
+- Existing date + afdeling historical logic retained.

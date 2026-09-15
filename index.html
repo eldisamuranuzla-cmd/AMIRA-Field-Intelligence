@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMIRA V30 — CPT + History Bug Fix</title>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMIRA V31 — CPT + History Bug Fix</title>
 <style>
 :root{--g:#005844;--g2:#087c65;--g3:#e6f3ed;--ink:#163b35;--muted:#71857f;--line:#dfeae6;--bg:#f3f7f5;--white:#fff;--warn:#9a6500;--red:#b23a2d}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}button,select,input{font:inherit}.app{display:flex;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:220px;background:linear-gradient(180deg,#004f42,#003f35);color:#fff;padding:18px 12px;overflow:auto}.brand{padding:4px 8px 18px;border-bottom:1px solid #ffffff16}.brand img{width:165px;height:56px;object-fit:contain;object-position:left center;filter:brightness(0) invert(1);opacity:.96}.brand strong{display:block;font-size:23px;letter-spacing:.3px}.brand small{opacity:.72;font-size:10px}.nav{display:grid;gap:4px;margin-top:16px}.nav button{border:0;background:transparent;color:#eaf8f2;text-align:left;padding:10px 11px;border-radius:8px;cursor:pointer;font-size:12px}.nav button:hover,.nav button.active{background:#087c65}.nav button span{margin-left:7px}.sidefoot{position:sticky;margin-top:35px;bottom:0;font-size:10px;line-height:1.5;opacity:.72;padding:8px}
@@ -38,7 +38,7 @@ main{margin-left:220px;width:calc(100% - 220px);padding-bottom:25px}.topbar{heig
 <section id="page-history" class="page"><div class="eyebrow">CONTROL</div><div class="title">Dataset & History</div><div class="meta">Satu tanggal + afdeling = satu dataset. Tanggal yang sama pada OC/OA/OB/OD/OE disimpan terpisah berdasarkan code afdeling; upload afdeling lain tidak menimpa historical afdeling sebelumnya.</div><div class="card" style="margin-top:14px"><div class="head"><h3>Historical Dataset</h3><span>LOCKED snapshots</span></div><div id="historyList"><div class="empty">Belum ada historical dataset.</div></div></div></section>
 <section id="page-execution" class="page"><div class="eyebrow">ENGINE 01</div><div class="title">Rawat Execution</div><div class="meta">Seluruh transaksi aktual yang lolos reconciliation dari dataset aktif.</div><div class="card" style="margin-top:14px"><div class="scroll"><table><thead><tr><th>Waktu</th><th>Worker</th><th>Job</th><th>WS</th><th>Blok</th><th>GPS</th><th>Foto</th></tr></thead><tbody id="executionTable"></tbody></table></div></div></section>
 <section id="page-cpt" class="page"></section><section id="page-wdc" class="page"></section><section id="page-wdm" class="page"></section><section id="page-other" class="page"></section>
-<section id="page-material" class="page"><div class="eyebrow">ENGINE 05 · MAIN ACTUAL</div><div class="title">Material Usage</div><div class="meta">MAIN actual racun yang benar-benar dilaporkan di T_MATERIAL. Engine 06 hanya menjadi Base Prescription; Engine 07 menghitung Actual − Base.</div><div class="card" style="margin-top:14px"><div class="scroll"><table><thead><tr><th>Tanggal</th><th>Blok</th><th>Jenis</th><th>Nama Material</th><th>Kode</th><th>Qty</th><th>UOM</th><th>Job</th></tr></thead><tbody id="materialDetail"></tbody></table></div></div></section>
+<section id="page-material" class="page"><div class="eyebrow">ENGINE 05 · MAIN ACTUAL</div><div class="title">Material Usage</div><div class="meta">MAIN actual racun yang benar-benar dilaporkan di T_MATERIAL per blok; jika CSV tidak membawa BLOKCODE, AMIRA mengalokasikan qty berdasarkan kontribusi P4 T_SIC. Engine 06 hanya menjadi Base Prescription; Engine 07 menghitung Actual − Base.</div><div class="card" style="margin-top:14px"><div class="scroll"><table><thead><tr><th>Tanggal</th><th>Blok</th><th>Jenis</th><th>Nama Material</th><th>Kode</th><th>Qty</th><th>UOM</th><th>Job</th></tr></thead><tbody id="materialDetail"></tbody></table></div></div></section>
 <section id="page-racun" class="page"><div class="eyebrow">ENGINE 06 · MATERIAL CONTROL</div><div class="title">Base Racun & Material Settings</div><div class="meta">BASE Prescription OC/YM embedded dari Excel "dosis per blok dan cost blok.xlsx" · Input Per Blok + Cost Per Blok · 832 baris · 32 blok.</div>
 <div class="detailKpis"><div class="detailKpi"><small>Blok OC/YM</small><b id="rxBlocks">0</b></div><div class="detailKpi"><small>Prescription</small><b id="rxRows">0</b></div><div class="detailKpi"><small>Material</small><b id="rxMaterials">0</b></div><div class="detailKpi"><small>Type CPT/WDC</small><b id="rxTypes">0</b></div></div>
 <div class="card"><div class="head"><h3>Setting Base Racun</h3><span>Source: Excel embedded · Input Per Blok + Cost Per Blok</span></div><div class="notice"><b>Logika:</b> Blok → Ha → Jenis Semprot (CPT/WDC) → Racun → Dosis/Ha → Base Requirement. Untuk CPT, base racun ditampilkan sebagai <b>gabungan CWC + Path Chemist + TPH Chemist</b> dari pasangan prescription yang sama; subtype internal tetap dipakai untuk matching actual.</div>
@@ -59,7 +59,7 @@ main{margin-left:220px;width:calc(100% - 220px);padding-bottom:25px}.topbar{heig
 <div class="card" style="margin-top:14px"><div class="head"><h3>Catatan Penggunaan</h3><span>Basis keputusan</span></div><div class="notice">Materi referensi menyebutkan bahwa herbisida disesuaikan dengan golongan gulma. AMIRA akan menggunakan library ini sebagai referensi identifikasi; dosis dan prescription tetap mengikuti norma yang tersimpan di AMIRA.</div></div></section>
 <section id="page-master" class="page"><div class="eyebrow">REFERENCE</div><div class="title">Master Data</div><div class="meta">M_JOB, M_MATERIAL, M_FIELD dari Master Rawat aktif.</div><div class="detailKpis"><div class="detailKpi"><small>JOBCODE</small><b id="mJobs">0</b></div><div class="detailKpi"><small>Material</small><b id="mMats">0</b></div><div class="detailKpi"><small>Field/Block</small><b id="mFields">0</b></div><div class="detailKpi"><small>Sections</small><b id="mSections">0</b></div></div><div class="card"><div class="scroll"><table><thead><tr><th>Job Code</th><th>Description</th><th>UOM</th><th>CGP</th><th>Workstream</th></tr></thead><tbody id="jobMaster"></tbody></table></div></div></section>
 <section id="page-settings" class="page"><div class="eyebrow">SYSTEM</div><div class="title">Settings</div><div class="card" style="margin-top:14px"><div class="notice"><b>Dataset rule:</b> maksimal 4 file Rawat, tanggal dalam satu dataset harus sama, dan dataset harus di-CLOSE & LOCK sebelum menjadi historical.</div><div class="notice"><b>Historical key:</b> 1 tanggal + 1 afdeling = 1 dataset. Dataset aktif tidak menimpa afdeling lain pada tanggal yang sama.</div><div class="notice"><b>Field Traceability:</b> sementara nonaktif sebagai peta visual. Google Maps / Google Earth akan menjadi engine berikutnya.</div></div></section>
-<footer class="footer">AMIRA v30 · CPT Base Reconciliation · Worker × Item HK · Engine 05 Actual → Engine 06 Base → Engine 07 Balance · Static GitHub Pages application</footer>
+<footer class="footer">AMIRA v31 · CPT Material Reconciliation · Worker × Item HK · Engine 05 Actual → Engine 06 Base → Engine 07 Balance · Static GitHub Pages application</footer>
 </div></main></div>
 <input id="masterInput" type="file" accept=".csv,text/csv" hidden><input id="rawatInput" type="file" accept=".csv,text/csv" multiple hidden>
 <script>
@@ -145,8 +145,6 @@ function buildData(){
  mats.forEach(r=>{const c=clean(r.JOBCODE),w=classify(c,job(c).DESCRIPTION||'');for(let i=1;i<=6;i++){const mc=clean(r['MAT'+i]||r['MATERIALCODE'+i]),q=num(r['QTYMAT'+i]||r['QTY'+i]);if(!mc||!q)continue;const md=mat(mc),key=mc;materialUsage[key]??={code:mc,desc:md.DESCRIPTION||mc,uom:md.UOM||'',qty:0,ws:new Set(),qtyWS:makeObj()};materialUsage[key].qty+=q;materialUsage[key].ws.add(w);materialUsage[key].qtyWS[w]+=q}});
  // Attribute material to a block only when JOBCODE + MANDORCODE + date resolves to one unique SIC block. Never invent a block.
  const sicByKey={};sic.forEach(r=>{const key=[clean(r.JOBCODE),clean(r.MANDORCODE),normDate(r.TANGGAL||r.DATE)].join('|');(sicByKey[key]??=new Set()).add(clean(r.BLOKCODE))});
- const racunWS=makeObj(),racunByBlock={};
- mats.forEach(r=>{const c=clean(r.JOBCODE),w=classify(c,job(c).DESCRIPTION||''),key=[c,clean(r.MANDORCODE),clean(r.TANGGAL)].join('|'),blocks=[...(sicByKey[key]||[])].filter(Boolean);for(let i=1;i<=6;i++){const mc=clean(r['MAT'+i]||r['MATERIALCODE'+i]),q=num(r['QTYMAT'+i]||r['QTY'+i]);if(!mc||!q||String(mat(mc).UOM||'').toUpperCase()!=='L')continue;racunWS[w]+=q;if(blocks.length===1){const b=blocks[0];racunByBlock[b]??={Racun:0,RacunWS:makeObj()};racunByBlock[b].Racun+=q;racunByBlock[b].RacunWS[w]+=q}}});
  const hkWS=workersWS;
 
  // Resolve T_MATERIAL → Block + exact prescription family.
@@ -161,38 +159,49 @@ function buildData(){
  const normMat=s=>{let n=String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const alias={'GLIPHOSATE':'GLYPHOSATE','METHIL':'METIL','AMONIUMGLUFOSINAT':'AMONIUMGLUFOSINAT','AMMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT'};return alias[n]||n};
  const familyForJob=c=>{c=clean(c);if(['220601','220602'].includes(c))return'CWC';if(['220401','220402','220503'].includes(c))return'PTC';return null};
  const baseTypeItems=(block,type)=>prescriptionByBlock[[block,type].join('|')]?.items||[];
- const actualSprayUsage={},unmappedMaterial=[],materialByBlock={};
+ const actualSprayUsage={},unmappedMaterial=[],materialByBlock={},materialActualRows=[];
+ const sicBlockWeight={};
+ sic.forEach(r=>{const c=clean(r.JOBCODE),m=clean(r.MANDORCODE),dt=normDate(r.TANGGAL||r.DATE),b=clean(r.BLOKCODE),ha=num(r.P4);if(!c||!m||!dt||!b||!ha)return;const k=[c,m,dt,b].join('|');sicBlockWeight[k]=(sicBlockWeight[k]||0)+ha;});
+ function materialBlockAllocations(r){
+   const c=clean(r.JOBCODE),m=clean(r.MANDORCODE),dt=normDate(r.TANGGAL||r.DATE)||dateFromParsed({sections:state.sections})||'';
+   const direct=clean(r.BLOKCODE||r.BLOCKCODE||r.BLOCK);if(direct)return[{block:direct,share:1}];
+   const blocks=[...new Set(sic.filter(x=>clean(x.JOBCODE)===c&&clean(x.MANDORCODE)===m&&normDate(x.TANGGAL||x.DATE)===dt).map(x=>clean(x.BLOKCODE)).filter(Boolean))];
+   if(!blocks.length)return[];
+   const weighted=blocks.map(block=>({block,weight:num(sicBlockWeight[[c,m,dt,block].join('|')])}));
+   const totalW=weighted.reduce((a,x)=>a+x.weight,0);
+   if(totalW>0)return weighted.map(x=>({...x,share:x.weight/totalW}));
+   const share=1/weighted.length;return weighted.map(x=>({...x,share}));
+ }
+ const materialSubtypeCandidates=(block,family,matSet)=>{const out=[];for(const sub of ['1','2','3','4']){const bs=new Set(baseTypeItems(block,family+sub).map(x=>normMat(x.material)));if(bs.size===matSet.size&&[...matSet].every(m=>bs.has(m)))out.push(sub);}return out;};
  mats.forEach(r=>{
-   const c=clean(r.JOBCODE),w=classify(c,job(c).DESCRIPTION||''),family=familyForJob(c)||(w==='WDC'?'WDC':null),key=[c,clean(r.MANDORCODE),normDate(r.TANGGAL||r.DATE)].join('|');
-   const blocks=[...(sicByKey[key]||[])].filter(Boolean);
-   const items=[]; for(let i=1;i<=6;i++){const mc=clean(r['MAT'+i]||r['MATERIALCODE'+i]),q=num(r['QTYMAT'+i]||r['QTY'+i]);if(mc&&q)items.push({mc,q})}
+   const c=clean(r.JOBCODE),w=classify(c,job(c).DESCRIPTION||''),family=familyForJob(c)||(w==='WDC'?'WDC':null);if(!family)return;
+   const date=normDate(r.TANGGAL||r.DATE)||dateFromParsed({sections:state.sections})||'',allocs=materialBlockAllocations(r),items=[];
+   for(let i=1;i<=6;i++){const mc=clean(r['MAT'+i]||r['MATERIALCODE'+i]),q=num(r['QTYMAT'+i]||r['QTY'+i]);if(mc&&q)items.push({mc,q});}
    if(!items.length)return;
-   if(blocks.length!==1){unmappedMaterial.push({reason:'BLOCK_NOT_UNIQUE',key,items,family});return}
-   const block=blocks[0];
+   if(!allocs.length){unmappedMaterial.push({reason:'BLOCK_NOT_RESOLVED',job:c,mandor:clean(r.MANDORCODE),date,items});return;}
    const matSet=new Set(items.map(x=>normMat(mat(x.mc).DESCRIPTION||x.mc)));
-   const candidates=[];
-   for(const type of ['CWC1','CWC2','CWC3','CWC4','PTC1','PTC2','PTC3','PTC4','WDC1','WDC2','WDC3','WDC4']){
-     if(family && !type.startsWith(family))continue;
-     const bs=new Set(baseTypeItems(block,type).map(x=>normMat(x.material)));
-     if(bs.size===matSet.size && [...matSet].every(m=>bs.has(m)))candidates.push(type);
-   }
-   if(candidates.length!==1){unmappedMaterial.push({reason:'PRESCRIPTION_NOT_UNIQUE',block,w,family,key,items,candidates});return}
-   const type=candidates[0];
-   items.forEach(it=>{
-     const md=mat(it.mc),name=md.DESCRIPTION||it.mc,canonical=normMat(name),k=[block,type,canonical].join('|');
-     actualSprayUsage[k]??={block,type,material:canonical,displayMaterial:name,code:it.mc,qty:0,ws:w,date:clean(r.TANGGAL),job:c};
-     actualSprayUsage[k].qty+=it.q;
-     materialByBlock[block]??={}; materialByBlock[block][it.mc]=(materialByBlock[block][it.mc]||0)+it.q;
+   allocs.forEach(al=>{
+     const block=al.block,subs=materialSubtypeCandidates(block,family,matSet),subtype=subs.length===1?subs[0]:'';
+     if(!subtype){unmappedMaterial.push({reason:'PRESCRIPTION_NOT_UNIQUE',block,family,job:c,date,materials:[...matSet],candidates:subs});return;}
+     items.forEach(it=>{
+       const md=mat(it.mc),display=md.DESCRIPTION||it.mc,canonical=normMat(display),qty=it.q*al.share;
+       const rawKey=[date,block,c,it.mc].join('|'),prev=materialActualRows.find(x=>x._key===rawKey);
+       if(prev)prev.qty+=qty;else materialActualRows.push({_key:rawKey,date,block,job:c,workstream:w,material:display,code:it.mc,qty,uom:md.UOM||'—',allocationShare:al.share});
+       const k=[block,family,subtype,canonical].join('|'),ap=actualSprayUsage[k];
+       if(ap)ap.qty+=qty;else actualSprayUsage[k]={block,type:family,subtype,material:canonical,displayMaterial:display,code:it.mc,qty,ws:w,date,job:c};
+       materialByBlock[block]??={};materialByBlock[block][it.mc]=(materialByBlock[block][it.mc]||0)+qty;
+     });
    });
  });
-
+ const racunWS=makeObj(),racunByBlock={};
+ materialActualRows.forEach(x=>{if(String(x.uom||'').toUpperCase()!=='L')return;racunWS[x.workstream]+=x.qty;racunByBlock[x.block]??={Racun:0,RacunWS:makeObj()};racunByBlock[x.block].Racun+=x.qty;racunByBlock[x.block].RacunWS[x.workstream]+=x.qty;});
  const gps=[],seenGPS=new Set();function addGps(lat,lon,meta){const a=num(lat),o=num(lon);if(!a||!o)return;const k=a.toFixed(6)+','+o.toFixed(6);if(!seenGPS.has(k)){seenGPS.add(k);gps.push({lat:a,lon:o,...meta})}};
  valid.forEach(r=>addGps(r.LAT||r.S_LAT,r.LONG||r.S_LONG,{block:r.BLOKCODE,ws:r._ws,worker:r.NAMA}));sic.forEach(r=>{for(let i=1;i<=4;i++)addGps(r['LAT'+i],r['LON'+i],{block:r.BLOKCODE,ws:classify(r.JOBCODE,job(r.JOBCODE).DESCRIPTION||''),worker:r.EMPNO})});
  const photos=valid.filter(r=>clean(r.PHOTO_PATH)||clean(r.PHOTO_PATH2)).length;
  const blocks=new Set([...Object.keys(actualBlock),...Object.keys(planBlock),...Object.keys(byBlock)]);
  const blockRows=[...blocks].filter(x=>x!=='—').map(b=>{const master=state.fields.get(b)||{};const hesti=hestiForBlock(b);const haTanam=hestiHa(b,'HESTI')||num(master.HECTPLANTED);const jobs=Object.values(jobBlock).filter(x=>x.block===b);const overJobs=jobs.filter(x=>haTanam>0&&x.ha>haTanam+0.0001);const maxCoverage=haTanam?Math.max(...jobs.map(x=>x.ha/haTanam*100),0):0;return {block:b,haTanam,CPT:actualBlock[b]?.CPT||0,WDC:actualBlock[b]?.WDC||0,WDM:actualBlock[b]?.WDM||0,OTHER:actualBlock[b]?.OTHER||0,HK:byBlock[b]?.HK?.size||0,HKWS:byBlock[b]?.HKWS||{},Racun:racunByBlock[b]?.Racun||0,RacunWS:racunByBlock[b]?.RacunWS||makeObj(),over:overJobs.length>0,overJobs,maxCoverage};});
  const overHaAlerts=blockRows.filter(r=>r.over);
- return {date:normDate(dateFromParsed({sections:state.sections})),emp,valid,sic,plans,mats,rows,byWS,byBlock,actualWS,planWS,actualBlock,planBlock,materialUsage,racunWS,hkWS,gps,photos,workers:new Set(valid.map(r=>r.EMPNO||r.EMPCODE||r.NAMA).filter(Boolean)),blockRows,planCount:plans.length,sicCount:sic.length,materialRows:mats.length,sections:Object.keys(state.sections),prescriptionByBlock,actualSprayUsage,materialByBlock,unmappedMaterial,sicByKeyMap:Object.fromEntries(Object.entries(sicByKey).map(([k,v])=>[k,[...v]])),itemHK,workerItemRows:Object.values(sicWorker)}
+ return {date:normDate(dateFromParsed({sections:state.sections})),emp,valid,sic,plans,mats,rows,byWS,byBlock,actualWS,planWS,actualBlock,planBlock,materialUsage,racunWS,hkWS,gps,photos,workers:new Set(valid.map(r=>r.EMPNO||r.EMPCODE||r.NAMA).filter(Boolean)),blockRows,planCount:plans.length,sicCount:sic.length,materialRows:mats.length,sections:Object.keys(state.sections),prescriptionByBlock,actualSprayUsage,materialActualRows,materialByBlock,unmappedMaterial,sicByKeyMap:Object.fromEntries(Object.entries(sicByKey).map(([k,v])=>[k,[...v]])),itemHK,workerItemRows:Object.values(sicWorker)}
 }
 function inferAfdelingFromSections(sections){const blocks=[];for(const sec of ['T_SIC','EMPATT','PLANHARIAN','T_MATERIAL'])for(const r of (sections?.[sec]||[])){const b=clean(r.BLOKCODE||r.BLOCKCODE||r.BLOCK);if(b)blocks.push(b)}const a=[...new Set(blocks.map(afdelingOfBlock).filter(x=>x&&x!=='—'))];return a.length===1?a[0]:a.length>1?'MULTI':''}
 function snapAfdeling(s){return String(s?.afdeling||inferAfdelingFromFiles(s?.files)||'').toUpperCase()}
@@ -244,85 +253,20 @@ function renderDashboard(){let d=state.data||buildData();$('kHa').textContent=fm
 function renderPages(){let d=state.data||buildData();const workerItemHa=new Map();(d.workerItemRows||[]).forEach(z=>{const k=[z.date,z.b,z.code].join('|');workerItemHa.set(k,(workerItemHa.get(k)||0)+z.ha)});$('executionTable').innerHTML=d.valid.length?d.valid.map(r=>`<tr><td>${r.ATTTIME||r.S_TIME||'—'}</td><td>${r.NAMA||r.EMPNO||'—'}</td><td>${r.JOBCODE}</td><td>${r._ws}</td><td>${r.BLOKCODE||'—'}</td><td>${(r.LAT||r.S_LAT)&& (r.LONG||r.S_LONG)?'✓':'—'}</td><td>${clean(r.PHOTO_PATH)||clean(r.PHOTO_PATH2)?'✓':'—'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">Belum ada data.</td></tr>`;
  WS.forEach(w=>{let x=workData(w),el=$('page-'+(w==='OTHER'?'other':w.toLowerCase()));el.innerHTML=`<div class="eyebrow">WORKSTREAM</div><div class="detailTitle">${w==='OTHER'?'PRUNING':w}</div><div class="meta">Detail aktual dari dataset aktif · klik menu lain untuk berpindah engine.</div><div class="detailKpis"><div class="detailKpi"><small>Luas</small><b>${fmt(x.ha)} Ha</b></div><div class="detailKpi"><small>Blok</small><b>${fmt(x.blocks)}</b></div><div class="detailKpi"><small>HK / Worker</small><b>${fmt(x.hk)}</b></div><div class="detailKpi"><small>Racun</small><b>${fmt(x.racun)} L</b></div></div><div class="card"><div class="head"><h3>Realisasi per Blok</h3><span>${w}</span></div><table><thead><tr><th>Blok</th><th>Ha</th><th>Worker</th><th>Racun L</th></tr></thead><tbody>${d.blockRows.filter(r=>r[w]>0).map(r=>`<tr><td>${r.block}</td><td>${fmt(r[w])}</td><td>${fmt(r.HKWS?.[w]?.size||0)}</td><td>${(r.RacunWS?.[w]||0)>0?fmt(r.RacunWS[w]):'—'}</td></tr>`).join('')||`<tr><td colspan="4" class="empty">Tidak ada transaksi ${w==='OTHER'?'PRUNING':w}.</td></tr>`}</tbody></table></div><div class="card" style="margin-top:10px"><div class="head"><h3>HK per Item</h3><span>1 worker = 1 HK pada item</span></div><div class="scroll"><table><thead><tr><th>Tanggal</th><th>Blok</th><th>Item</th><th>HK</th><th>Ha</th><th>Ha/HK</th></tr></thead><tbody>${itemHKRows().filter(x=>x.ws===w).map(x=>{const ha=(workerItemHa.get([x.date,x.block,x.code].join('|'))||0);return`<tr><td>${x.date}</td><td>${x.block}</td><td>${itemName(x.code)}</td><td>${fmt(x.hk)}</td><td>${fmt(ha)}</td><td>${x.hk?fmt(ha/x.hk):'—'}</td></tr>`}).join('')||`<tr><td colspan="6" class="empty">Tidak ada item ${w==='OTHER'?'PRUNING':w}.</td></tr>`}</tbody></table></div></div>`});
  const normBalanceMat=s=>{let n=String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const alias={'GLIPHOSATE':'GLYPHOSATE','METHIL':'METIL','AMMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT'};return alias[n]||n};
- const rawMaterialRows=[]; (d.mats||[]).forEach(r=>{const date=normDate(r.TANGGAL)||normDate(r.DATE)||d.date||'—'; const directBlock=clean(r.BLOKCODE||r.BLOCKCODE||r.BLOCK); const resolvedBlocks=[...(d.sicByKeyMap?.[[clean(r.JOBCODE),clean(r.MANDORCODE),normDate(r.TANGGAL||r.DATE)].join('|')]||[])].filter(Boolean); const block=directBlock||resolvedBlocks[0]||'—'; for(let i=1;i<=6;i++){const code=clean(r['MAT'+i]||r['MATERIALCODE'+i]); const qty=num(r['QTYMAT'+i]||r['QTY'+i]); if(!code||!qty)continue; const md=mat(code); rawMaterialRows.push({date,block,job:clean(r.JOBCODE)||'—',code,material:md.DESCRIPTION||code,qty,uom:md.UOM||'—'});}});
+ const rawMaterialRows=(d.materialActualRows||[]).map(v=>({...v}));
  $('materialDetail').innerHTML=rawMaterialRows.sort((a,b)=>String(a.date).localeCompare(String(b.date))||a.block.localeCompare(b.block,undefined,{numeric:true})||a.job.localeCompare(b.job)||a.code.localeCompare(b.code)).map(v=>`<tr><td>${v.date}</td><td>${v.block}</td><td>${itemName(v.job)}</td><td><b>${v.material}</b></td><td>${v.code}</td><td>${fmt(v.qty)}</td><td>${v.uom}</td><td>${v.job}</td></tr>`).join('')||`<tr><td colspan="8" class="empty">Belum ada racun aktual dari T_MATERIAL.</td></tr>`;
- // MATERIAL BALANCE — SOURCE = ENGINE 05 T_MATERIAL ONLY.
- // Rule: every row in Balance MUST originate from actual material usage.
- // Engine 06 is lookup/base only. No material actual = no Balance row.
- // CPT reporting = CWC + PATH CHEMIST + TPH CHEMIST, while base combines
- // matching CWC + PTC prescription subtype (1↔1, 2↔2, 3↔3, 4↔4).
+ // ENGINE 07 = Engine 05 Actual minus Engine 06 Base. Every row starts from actual material.
+ // CPT reporting combines CWC + Path Chemist + TPH Chemist; Base CPT combines matching CWC + PTC subtype.
  const balanceRows=[];
- const sprayFamily=c=>{c=clean(c);if(['220601','220602'].includes(c))return'CWC';if(['220401','220402','220503'].includes(c))return'PTC';if(['230201','230202'].includes(c))return'WDC';return null};
  const familyOfType=t=>String(t||'').match(/^(CWC|PTC|WDC)/)?.[1]||null;
  const subtypeOfType=t=>{const m=String(t||'').match(/^(?:CWC|PTC|WDC)([1-4])$/);return m?m[1]:''};
- const reportFamily=f=>f==='CWC'||f==='PTC'?'CPT':f;
- const baseByKey=new Map();
- const baseByBlockFamilySub={};
- Object.values(d.prescriptionByBlock||{}).forEach(p=>{
-   const internal=String(p.type||'').toUpperCase(), fam=familyOfType(internal), rf=reportFamily(fam), sub=subtypeOfType(internal);
-   if(!fam||!rf)return;
-   if(rf==='CPT'){
-     const k=[clean(p.block),rf,sub].join('|');
-     baseByBlockFamilySub[k]??={block:p.block,type:'CPT',subtype:sub,ha:0,totalByMat:{},doseByMat:{},priceByMat:{},uomByMat:{}};
-     const g=baseByBlockFamilySub[k];g.ha=Math.max(g.ha,num(p.ha));
-     p.items.forEach(x=>{const m=normBalanceMat(x.material);g.totalByMat[m]=(g.totalByMat[m]||0)+num(x.total);g.doseByMat[m]=(g.doseByMat[m]||0)+num(x.dose);g.priceByMat[m]=num(x.price);g.uomByMat[m]=x.uom||g.uomByMat[m]||'';});
-   } else if(fam==='WDC'){
-     const k=[clean(p.block),rf,sub].join('|');
-     baseByBlockFamilySub[k]??={block:p.block,type:'WDC',subtype:sub,ha:0,totalByMat:{},doseByMat:{},priceByMat:{},uomByMat:{}};
-     const g=baseByBlockFamilySub[k];g.ha=Math.max(g.ha,num(p.ha));
-     p.items.forEach(x=>{const m=normBalanceMat(x.material);g.totalByMat[m]=(g.totalByMat[m]||0)+num(x.total);g.doseByMat[m]=(g.doseByMat[m]||0)+num(x.dose);g.priceByMat[m]=num(x.price);g.uomByMat[m]=x.uom||g.uomByMat[m]||'';});
-   }
- });
- // Create candidate prescription types using MATERIAL SET from Engine 05, not from activity/HA.
- const actualMap=new Map();
- const unmappedActual=[];
- const matsByContext=new Map();
- (d.mats||[]).forEach(r=>{
-   const c=clean(r.JOBCODE),fam=sprayFamily(c),rf=reportFamily(fam); if(!fam||!rf)return;
-   const date=normDate(r.TANGGAL||r.DATE)||d.date||'';
-   const mandor=clean(r.MANDORCODE);
-   const directBlock=clean(r.BLOKCODE||r.BLOCKCODE||r.BLOCK);
-   const sicKey=[c,mandor,date].join('|');
-   const sicBlocks=[...(d.sicByKeyMap?.[sicKey]||[])].filter(Boolean);
-   const block=directBlock||(sicBlocks.length===1?sicBlocks[0]:'');
-   const items=[]; for(let i=1;i<=6;i++){const mc=clean(r['MAT'+i]||r['MATERIALCODE'+i]),q=num(r['QTYMAT'+i]||r['QTY'+i]);if(mc&&q)items.push({mc,q});}
-   if(!items.length)return;
-   if(!block){unmappedActual.push({reason:'BLOCK_NOT_RESOLVED',job:c,mandor,date,items});return;}
-   const ctx=[block,rf,date,mandor,c].join('|');
-   matsByContext.set(ctx,{block,rf,date,mandor,job:c,fam,items:[...(matsByContext.get(ctx)?.items||[]),...items]});
- });
- matsByContext.forEach(g=>{
-   const matSet=[...new Set(g.items.map(it=>normBalanceMat(mat(it.mc).DESCRIPTION||it.mc)))].sort();
-   const candidates=[];
-   ['1','2','3','4'].forEach(sub=>{
-     const bg=baseByBlockFamilySub[[g.block,g.rf,sub].join('|')];
-     if(!bg)return;
-     const baseSet=Object.keys(bg.totalByMat).sort();
-     if(baseSet.length===matSet.length&&baseSet.every((m,i)=>m===matSet[i]))candidates.push(sub);
-   });
-   const subtype=candidates.length===1?candidates[0]:'';
-   g.items.forEach(it=>{
-     const md=mat(it.mc),display=md.DESCRIPTION||it.mc,canonical=normBalanceMat(display),key=[g.block,g.rf,subtype||'UNMAPPED',canonical].join('|');
-     const prev=actualMap.get(key);
-     if(prev)prev.actual+=it.q;
-     else actualMap.set(key,{block:g.block,type:g.rf,subtype,material:display,canonical,uom:md.UOM||'',actual:it.q,date:g.date,job:g.job,mapped:!!subtype});
-   });
-   if(!subtype)unmappedActual.push({reason:'PRESCRIPTION_NOT_UNIQUE',block:g.block,family:g.rf,job:g.job,date:g.date,materials:matSet,candidates});
- });
- // Balance is driven by actual keys only. Base is attached where a matching block/family/subtype/material exists.
- actualMap.forEach(a=>{
-   const bg=baseByBlockFamilySub[[a.block,a.type,a.subtype].join('|')];
-   const baseQty=num(bg?.totalByMat?.[a.canonical]);
-   const dose=num(bg?.doseByMat?.[a.canonical]);
-   const uom=bg?.uomByMat?.[a.canonical]||a.uom||'—';
-   const diff=a.actual-baseQty;
-   const status=!bg||!Object.prototype.hasOwnProperty.call(bg.totalByMat,a.canonical)?'🟡 NO BASE':diff>0.000001?'🔴 OVER BASE':'🟢 ≤ BASE';
-   balanceRows.push({block:a.block,type:a.type,typeInternal:a.subtype,material:bg?.type==='CPT'?a.material:(bg?.type? a.material:a.material),base:baseQty,actual:a.actual,diff,price:num(bg?.priceByMat?.[a.canonical]),ha:num(bg?.ha),uom,status,mapped:a.mapped});
- });
- $('balanceDetail').innerHTML=balanceRows.sort((a,b)=>a.block.localeCompare(b.block,undefined,{numeric:true})||a.type.localeCompare(b.type)||a.material.localeCompare(b.material)).map(r=>{
-   const dose=r.ha?r.actual/r.ha:0;
-   return`<tr class="${r.status.includes('OVER BASE')?'overRow':''}"><td>${r.block}</td><td>${r.type}</td><td><b>${r.material}</b></td><td>${fmt(r.base)}</td><td>${fmt(r.actual)}</td><td>${fmt(r.diff)}</td><td>${fmt(dose)} ${/GR|G/.test(String(r.uom).toUpperCase())?'Gr/Ha':'L/Ha'}</td><td>${r.uom}</td><td>${r.status}</td></tr>`;
- }).join('')||`<tr><td colspan="9" class="empty">Belum ada actual material dari Engine 05.</td></tr>`;
+ const sprayFamily=c=>{c=clean(c);if(['220601','220602'].includes(c))return'CWC';if(['220401','220402','220503'].includes(c))return'PTC';if(['230201','230202'].includes(c))return'WDC';return null};
+ const baseAgg=new Map();
+ Object.values(d.prescriptionByBlock||{}).forEach(p=>{const it=String(p.type||'').toUpperCase(),fam=familyOfType(it),sub=subtypeOfType(it);if(!fam||!sub)return;const report=(fam==='CWC'||fam==='PTC')?'CPT':fam,k=[clean(p.block),report,sub].join('|');let g=baseAgg.get(k);if(!g){g={block:p.block,type:report,subtype:sub,ha:num(p.ha),totalByMat:{},uomByMat:{},priceByMat:{}};baseAgg.set(k,g);}g.ha=Math.max(g.ha,num(p.ha));p.items.forEach(x=>{const m=normBalanceMat(x.material);g.totalByMat[m]=(g.totalByMat[m]||0)+num(x.total);g.uomByMat[m]=x.uom||g.uomByMat[m]||'';g.priceByMat[m]=num(x.price)||g.priceByMat[m]||0;});});
+ const actualAgg=new Map();
+ Object.values(d.actualSprayUsage||{}).forEach(x=>{if(!x.block||x.block==='—'||!x.subtype)return;const k=[x.block,x.type,x.subtype,normBalanceMat(x.material||x.displayMaterial||x.code)].join('|');let a=actualAgg.get(k);if(a)a.actual+=num(x.qty);else actualAgg.set(k,{...x,canonical:normBalanceMat(x.material||x.displayMaterial||x.code),actual:num(x.qty)});});
+ actualAgg.forEach(a=>{const bg=baseAgg.get([a.block,a.type,a.subtype].join('|')),hasBase=!!bg&&Object.prototype.hasOwnProperty.call(bg.totalByMat,a.canonical),baseQty=hasBase?num(bg.totalByMat[a.canonical]):0,uom=bg?.uomByMat?.[a.canonical]||a.uom||'—',diff=a.actual-baseQty;balanceRows.push({block:a.block,type:a.type,subtype:a.subtype,material:a.displayMaterial||a.material,base:baseQty,actual:a.actual,diff,price:num(bg?.priceByMat?.[a.canonical]),ha:num(bg?.ha),uom,status:!hasBase?'🟡 NO BASE':diff>0.000001?'🔴 OVER BASE':'🟢 ≤ BASE'});});
+ $('balanceDetail').innerHTML=balanceRows.sort((a,b)=>a.block.localeCompare(b.block,undefined,{numeric:true})||a.type.localeCompare(b.type)||a.material.localeCompare(b.material)).map(r=>{const dose=r.ha?r.actual/r.ha:0;return`<tr class="${r.status.includes('OVER BASE')?'overRow':''}"><td>${r.block}</td><td>${r.type}</td><td><b>${r.material}</b></td><td>${fmt(r.base)}</td><td>${fmt(r.actual)}</td><td>${fmt(r.diff)}</td><td>${fmt(dose)} ${/GR|G/.test(String(r.uom).toUpperCase())?'Gr/Ha':'L/Ha'}</td><td>${r.uom}</td><td>${r.status}</td></tr>`;}).join('')||`<tr><td colspan="9" class="empty">Belum ada actual material dari Engine 05.</td></tr>`;
  $('planDetail').innerHTML=`<table><thead><tr><th>WS</th><th>Plan Ha</th><th>Real Ha</th><th>Achievement</th></tr></thead><tbody>${WS.map(w=>`<tr><td>${w}</td><td>${fmt(d.planWS[w])}</td><td>${fmt(d.actualWS[w])}</td><td>${d.planWS[w]?fmt(pct(d.actualWS[w],d.planWS[w]))+'%':'—'}</td></tr>`).join('')}</tbody></table>`;
  const ihr=itemHKRows();$('itemHKDetail').innerHTML=ihr.map(x=>{const ha=x.hk?((workerItemHa.get([x.date,x.block,x.code].join('|'))||0)):0;return`<tr><td>${x.date||'—'}</td><td>${x.block}</td><td>${x.ws}</td><td><b>${itemName(x.code)}</b></td><td>${x.code}</td><td>${fmt(x.hk)}</td><td>${fmt(ha)}</td><td>${x.hk?fmt(ha/x.hk):'—'}</td></tr>`}).join('')||`<tr><td colspan="8" class="empty">Belum ada item activity.</td></tr>`;
  $('workerDetail').innerHTML=(d.workerItemRows||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))||a.b.localeCompare(b.b,undefined,{numeric:true})||a.code.localeCompare(b.code)||a.worker.localeCompare(b.worker)).map(r=>`<tr><td>${r.date||'—'}</td><td>${r.worker}</td><td>${job(r.code).DESCRIPTION||r.code}</td><td><b>${itemName(r.code)}</b></td><td>${r.w}</td><td>${r.b}</td><td>${fmt(r.ha)}</td></tr>`).join('')||`<tr><td colspan="7" class="empty">Belum ada worker.</td></tr>`;
