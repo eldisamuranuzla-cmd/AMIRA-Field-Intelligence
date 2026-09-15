@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMIRA V23 — Material Balance Fix</title>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMIRA V24 — Material Balance Block Fix</title>
 <style>
 :root{--g:#005844;--g2:#087c65;--g3:#e6f3ed;--ink:#163b35;--muted:#71857f;--line:#dfeae6;--bg:#f3f7f5;--white:#fff;--warn:#9a6500;--red:#b23a2d}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}button,select,input{font:inherit}.app{display:flex;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:220px;background:linear-gradient(180deg,#004f42,#003f35);color:#fff;padding:18px 12px;overflow:auto}.brand{padding:4px 8px 18px;border-bottom:1px solid #ffffff16}.brand img{width:165px;height:56px;object-fit:contain;object-position:left center;filter:brightness(0) invert(1);opacity:.96}.brand strong{display:block;font-size:23px;letter-spacing:.3px}.brand small{opacity:.72;font-size:10px}.nav{display:grid;gap:4px;margin-top:16px}.nav button{border:0;background:transparent;color:#eaf8f2;text-align:left;padding:10px 11px;border-radius:8px;cursor:pointer;font-size:12px}.nav button:hover,.nav button.active{background:#087c65}.nav button span{margin-left:7px}.sidefoot{position:sticky;margin-top:35px;bottom:0;font-size:10px;line-height:1.5;opacity:.72;padding:8px}
@@ -214,16 +214,25 @@ function renderDashboard(){let d=state.data||buildData();$('kHa').textContent=fm
 function renderPages(){let d=state.data||buildData();const workerItemHa=new Map();(d.workerItemRows||[]).forEach(z=>{const k=[z.date,z.b,z.code].join('|');workerItemHa.set(k,(workerItemHa.get(k)||0)+z.ha)});$('executionTable').innerHTML=d.valid.length?d.valid.map(r=>`<tr><td>${r.ATTTIME||r.S_TIME||'—'}</td><td>${r.NAMA||r.EMPNO||'—'}</td><td>${r.JOBCODE}</td><td>${r._ws}</td><td>${r.BLOKCODE||'—'}</td><td>${(r.LAT||r.S_LAT)&& (r.LONG||r.S_LONG)?'✓':'—'}</td><td>${clean(r.PHOTO_PATH)||clean(r.PHOTO_PATH2)?'✓':'—'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">Belum ada data.</td></tr>`;
  WS.forEach(w=>{let x=workData(w),el=$('page-'+(w==='OTHER'?'other':w.toLowerCase()));el.innerHTML=`<div class="eyebrow">WORKSTREAM</div><div class="detailTitle">${w==='OTHER'?'PRUNING':w}</div><div class="meta">Detail aktual dari dataset aktif · klik menu lain untuk berpindah engine.</div><div class="detailKpis"><div class="detailKpi"><small>Luas</small><b>${fmt(x.ha)} Ha</b></div><div class="detailKpi"><small>Blok</small><b>${fmt(x.blocks)}</b></div><div class="detailKpi"><small>HK / Worker</small><b>${fmt(x.hk)}</b></div><div class="detailKpi"><small>Racun</small><b>${fmt(x.racun)} L</b></div></div><div class="card"><div class="head"><h3>Realisasi per Blok</h3><span>${w}</span></div><table><thead><tr><th>Blok</th><th>Ha</th><th>Worker</th><th>Racun L</th></tr></thead><tbody>${d.blockRows.filter(r=>r[w]>0).map(r=>`<tr><td>${r.block}</td><td>${fmt(r[w])}</td><td>${fmt(r.HKWS?.[w]?.size||0)}</td><td>${fmt(r.RacunWS?.[w]||0)}</td></tr>`).join('')||`<tr><td colspan="4" class="empty">Tidak ada transaksi ${w==='OTHER'?'PRUNING':w}.</td></tr>`}</tbody></table></div><div class="card" style="margin-top:10px"><div class="head"><h3>HK per Item</h3><span>1 worker = 1 HK pada item</span></div><div class="scroll"><table><thead><tr><th>Tanggal</th><th>Blok</th><th>Item</th><th>HK</th><th>Ha</th><th>Ha/HK</th></tr></thead><tbody>${itemHKRows().filter(x=>x.ws===w).map(x=>{const ha=(workerItemHa.get([x.date,x.block,x.code].join('|'))||0);return`<tr><td>${x.date}</td><td>${x.block}</td><td>${itemName(x.code)}</td><td>${fmt(x.hk)}</td><td>${fmt(ha)}</td><td>${x.hk?fmt(ha/x.hk):'—'}</td></tr>`}).join('')||`<tr><td colspan="6" class="empty">Tidak ada item ${w==='OTHER'?'PRUNING':w}.</td></tr>`}</tbody></table></div></div>`});
  const normBalanceMat=s=>{let n=String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const alias={'GLIPHOSATE':'GLYPHOSATE','METHIL':'METIL','AMMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT'};return alias[n]||n};
- const rawMaterialRows=[]; (d.mats||[]).forEach(r=>{const date=normDate(r.TANGGAL)||normDate(r.DATE)||d.date||'—'; const block=[...(d.sicByKeyMap?.[[clean(r.JOBCODE),clean(r.MANDORCODE),clean(r.TANGGAL)].join('|')]||[])][0]||'—'; for(let i=1;i<=6;i++){const code=clean(r['MAT'+i]||r['MATERIALCODE'+i]); const qty=num(r['QTYMAT'+i]||r['QTY'+i]); if(!code||!qty)continue; const md=mat(code); rawMaterialRows.push({date,block,job:clean(r.JOBCODE)||'—',code,material:md.DESCRIPTION||code,qty,uom:md.UOM||'—'});}});
+ const rawMaterialRows=[]; (d.mats||[]).forEach(r=>{const date=normDate(r.TANGGAL)||normDate(r.DATE)||d.date||'—'; const directBlock=clean(r.BLOKCODE||r.BLOCKCODE||r.BLOCK); const resolvedBlocks=[...(d.sicByKeyMap?.[[clean(r.JOBCODE),clean(r.MANDORCODE),normDate(r.TANGGAL||r.DATE)].join('|')]||[])].filter(Boolean); const block=directBlock||resolvedBlocks[0]||'—'; for(let i=1;i<=6;i++){const code=clean(r['MAT'+i]||r['MATERIALCODE'+i]); const qty=num(r['QTYMAT'+i]||r['QTY'+i]); if(!code||!qty)continue; const md=mat(code); rawMaterialRows.push({date,block,job:clean(r.JOBCODE)||'—',code,material:md.DESCRIPTION||code,qty,uom:md.UOM||'—'});}});
  $('materialDetail').innerHTML=rawMaterialRows.sort((a,b)=>String(a.date).localeCompare(String(b.date))||a.block.localeCompare(b.block,undefined,{numeric:true})||a.job.localeCompare(b.job)||a.code.localeCompare(b.code)).map(v=>`<tr><td>${v.date}</td><td>${v.block}</td><td>${itemName(v.job)}</td><td><b>${v.material}</b></td><td>${v.code}</td><td>${fmt(v.qty)}</td><td>${v.uom}</td><td>${v.job}</td></tr>`).join('')||`<tr><td colspan="8" class="empty">Belum ada racun aktual dari T_MATERIAL.</td></tr>`;
  // MATERIAL BALANCE FIX: preserve V21 logic, only repair reconciliation/display.
  const balanceRows=[];const baseMap=new Map();
- Object.values(d.prescriptionByBlock||{}).forEach(p=>p.items.forEach(x=>{
-   const canonical=normBalanceMat(x.material);
-   baseMap.set([p.block,p.type,canonical].join('|'),{...x,displayMaterial:x.material,canonical});
- }));
+ // Material Balance hanya memakai blok yang benar-benar muncul pada CSV dataset aktif.
+ const activeCsvBlocks=new Set([
+   ...(d.sic||[]).map(r=>clean(r.BLOKCODE)),
+   ...(d.valid||[]).map(r=>clean(r.BLOKCODE))
+ ].filter(Boolean));
+ Object.values(d.prescriptionByBlock||{}).forEach(p=>{
+   if(!activeCsvBlocks.has(clean(p.block)))return;
+   p.items.forEach(x=>{
+     const canonical=normBalanceMat(x.material);
+     baseMap.set([p.block,p.type,canonical].join('|'),{...x,displayMaterial:x.material,canonical});
+   });
+ });
  const actualMap=new Map();
  Object.values(d.actualSprayUsage||{}).forEach(x=>{
+   if(!x.block||x.block==='—'||!activeCsvBlocks.has(clean(x.block)))return;
    const canonical=normBalanceMat(x.material||x.displayMaterial||x.code);
    const k=[x.block,x.type,canonical].join('|');
    const prev=actualMap.get(k);
