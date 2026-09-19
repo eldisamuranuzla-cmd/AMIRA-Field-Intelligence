@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMIRA V46.2 — 5 Afdeling + Pupuk + Pruning + Supabase</title>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMIRA V46.1 — 5 Afdeling + Pupuk + Pruning</title>
 <style>
 :root{--g:#005844;--g2:#087c65;--g3:#e6f3ed;--ink:#163b35;--muted:#71857f;--line:#dfeae6;--bg:#f3f7f5;--white:#fff;--warn:#9a6500;--red:#b23a2d}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}button,select,input{font:inherit}.app{display:flex;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:220px;background:linear-gradient(180deg,#004f42,#003f35);color:#fff;padding:18px 12px;overflow:auto}.brand{padding:4px 8px 18px;border-bottom:1px solid #ffffff16}.brand img{width:165px;height:56px;object-fit:contain;object-position:left center;filter:brightness(0) invert(1);opacity:.96}.brand strong{display:block;font-size:23px;letter-spacing:.3px}.brand small{opacity:.72;font-size:10px}.nav{display:grid;gap:4px;margin-top:16px}.nav button{border:0;background:transparent;color:#eaf8f2;text-align:left;padding:10px 11px;border-radius:8px;cursor:pointer;font-size:12px}.nav button:hover,.nav button.active{background:#087c65}.nav button span{margin-left:7px}.sidefoot{position:sticky;margin-top:35px;bottom:0;font-size:10px;line-height:1.5;opacity:.72;padding:8px}
@@ -78,22 +78,10 @@ main{margin-left:220px;width:calc(100% - 220px);padding-bottom:25px}.topbar{heig
 <div class="card" style="margin-top:14px"><div class="head"><h3>Weed Library</h3><span>Referensi</span></div><div class="filters"><label>Search<input id="weedSearch" placeholder="Cari nama gulma..."></label><label>Kelompok<select id="weedGroupFilter"><option value="">Semua kelompok</option></select></label></div><div class="scroll"><table><thead><tr><th>Nama Gulma</th><th>Nama Lokal / Keterangan</th><th>Kelompok</th><th>Referensi Pengendalian</th></tr></thead><tbody id="weedLibraryTable"></tbody></table></div></div>
 <div class="card" style="margin-top:14px"><div class="head"><h3>Catatan Penggunaan</h3><span>Basis keputusan</span></div><div class="notice">Materi referensi menyebutkan bahwa herbisida disesuaikan dengan golongan gulma. AMIRA akan menggunakan library ini sebagai referensi identifikasi; dosis dan prescription tetap mengikuti norma yang tersimpan di AMIRA.</div></div></section>
 <section id="page-master" class="page"><div class="eyebrow">REFERENCE</div><div class="title">Master Data</div><div class="meta">M_JOB, M_MATERIAL, M_FIELD dari Master Rawat aktif.</div><div class="detailKpis"><div class="detailKpi"><small>JOBCODE</small><b id="mJobs">0</b></div><div class="detailKpi"><small>Material</small><b id="mMats">0</b></div><div class="detailKpi"><small>Field/Block</small><b id="mFields">0</b></div><div class="detailKpi"><small>Sections</small><b id="mSections">0</b></div></div><div class="card"><div class="scroll"><table><thead><tr><th>Job Code</th><th>Description</th><th>UOM</th><th>CGP</th><th>Workstream</th></tr></thead><tbody id="jobMaster"></tbody></table></div></div></section>
-<section id="page-settings" class="page"><div class="eyebrow">SYSTEM</div><div class="title">Settings</div><div class="card" style="margin-top:14px"><div class="notice"><b>Dataset rule:</b> maksimal 4 file Rawat, minimal 1 file sudah dapat di-CLOSE & LOCK, tanggal dalam satu dataset harus sama, dan dataset menjadi historical setelah LOCKED.</div><div class="notice"><b>Historical key:</b> 1 tanggal + 1 afdeling = 1 dataset. Dataset aktif tidak menimpa afdeling lain pada tanggal yang sama.</div><div class="notice"><b>Field Traceability:</b> sementara nonaktif sebagai peta visual. Google Maps / Google Earth akan menjadi engine berikutnya.</div>
-<div class="notice" style="margin-top:12px">
-<b>Supabase Cloud Historical</b>
-<div style="margin-top:8px;font-size:12px">Local IndexedDB tetap dipertahankan sebagai cache/backup. Dataset LOCKED dapat disinkronkan ke <code>public.amira_historical</code>.</div>
-<div style="display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:8px;align-items:end;margin-top:10px">
-<label style="display:block">Publishable key
-<input id="supabasePublishableKey" type="password" autocomplete="off" placeholder="sb_publishable_..." style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:#fff"></label>
-<button class="btn secondary" id="supabaseTestBtn" type="button">Test Connection</button>
-<button class="btn" id="supabaseSaveBtn" type="button">Simpan Key</button>
-</div>
-<div id="supabaseStatus" style="margin-top:8px;font-size:12px">Cloud belum dikonfigurasi.</div>
-</div></div></section>
-<footer class="footer">AMIRA v46.2 · Engine 05 Actual → Engine 06 Base → Engine 07 Balance · 5 Afdeling · Supabase Cloud Historical</footer>
+<section id="page-settings" class="page"><div class="eyebrow">SYSTEM</div><div class="title">Settings</div><div class="card" style="margin-top:14px"><div class="notice"><b>Dataset rule:</b> maksimal 4 file Rawat, minimal 1 file sudah dapat di-CLOSE & LOCK, tanggal dalam satu dataset harus sama, dan dataset menjadi historical setelah LOCKED.</div><div class="notice"><b>Historical key:</b> 1 tanggal + 1 afdeling = 1 dataset. Dataset aktif tidak menimpa afdeling lain pada tanggal yang sama.</div><div class="notice"><b>Field Traceability:</b> sementara nonaktif sebagai peta visual. Google Maps / Google Earth akan menjadi engine berikutnya.</div></div></section>
+<footer class="footer">AMIRA v46.1 · Engine 05 Actual → Engine 06 Base → Engine 07 Balance · 5 Afdeling · CWM Fix · Fertilizer Item · Static GitHub Pages application</footer>
 </div></main></div>
 <input id="masterInput" type="file" accept=".csv,text/csv" hidden><input id="rawatInput" type="file" accept=".csv,text/csv" multiple hidden>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (()=>{
 const $=id=>document.getElementById(id), fmt=n=>Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:2}), num=v=>{const x=parseFloat(String(v??'').replace(/,/g,''));return Number.isFinite(x)?x:0}, clean=v=>String(v??'').trim(), pct=(a,b)=>b?Math.round(a/b*100):0;
@@ -247,193 +235,11 @@ function snapAfdeling(s){const raw=String(s?.afdeling||inferAfdelingFromFiles(s?
 function inferAfdelingFromFiles(files){const blocks=[];for(const f of (files||[])){try{if(f.raw instanceof Blob)continue;const p=parseAmanda(f.raw||'');for(const sec of ['T_SIC','EMPATT','PLANHARIAN','T_MATERIAL'])for(const r of (p.sections?.[sec]||[])){const b=clean(r.BLOKCODE||r.BLOCKCODE||r.BLOCK);if(b)blocks.push(b)}}catch(e){}}const a=[...new Set(blocks.map(afdelingOfBlock).filter(x=>x&&x!=='—'))];return a.length===1?a[0]:a.length>1?'MULTI':''}
 async function rawText(v){if(v instanceof Blob)return await v.text();return String(v||'')}
 async function snapshot(){const afdeling=afdelingLabel(state.dataset.afdeling||inferAfdelingFromSections(state.sections)||'MULTI');const master=state.masterRaw?new Blob([state.masterRaw],{type:'text/plain'}):'';const files=[];for(const f of state.files)files.push({name:f.name,raw:new Blob([String(f.raw||'')],{type:'text/csv'})});return {date:state.dataset.date,afdeling,id:state.dataset.id,status:'LOCKED',lockedAt:new Date().toISOString(),masterRaw:master,files}}
-
-const SUPABASE_URL='https://qjimdrqkhlvkwjozleas.supabase.co';
-const SUPABASE_KEY_STORAGE='amira_supabase_publishable_key';
-let amiraSupabase=null;
-
-function getSupabaseKey(){
-  try{return String(localStorage.getItem(SUPABASE_KEY_STORAGE)||'').trim()}catch(e){return ''}
-}
-function initSupabaseClient(){
-  const key=getSupabaseKey();
-  if(!key||!window.supabase?.createClient){amiraSupabase=null;return null}
-  try{amiraSupabase=window.supabase.createClient(SUPABASE_URL,key);return amiraSupabase}
-  catch(e){amiraSupabase=null;console.warn('Supabase init gagal',e);return null}
-}
-function setSupabaseStatus(text,ok=false){
-  const el=$('supabaseStatus');if(!el)return;
-  el.textContent=text;
-  el.style.color=ok?'var(--g)':'var(--muted)';
-}
-async function testSupabaseConnection(){
-  const client=initSupabaseClient();
-  if(!client)throw new Error('Publishable key belum disimpan.');
-  const {error}=await client.from('amira_historical').select('id',{count:'exact',head:true});
-  if(error)throw error;
-  setSupabaseStatus('CONNECTED · Data API + RLS amira_historical dapat diakses.',true);
-  return true;
-}
-async function cloudSnapshotPayload(s){
-  const master=await rawText(s.masterRaw||'');
-  const files=[];
-  for(const f of s.files||[]) files.push({name:f.name,raw:await rawText(f.raw||'')});
-  const d=state.data||buildData();
-  const ha=Object.values(d.actualWS||{}).reduce((a,b)=>a+num(b),0);
-  const hk=Object.values(d.hkWS||{}).reduce((a,b)=>a+(b?.size||0),0);
-  return {
-    tanggal:String(s.date||'').slice(0,10),
-    sitecode:'SYM1',
-    afdeling:afdelingLabel(s.afdeling||state.dataset.afdeling||''),
-    blockcode:'__DATASET__',
-    jobcode:'__SNAPSHOT__',
-    jobname:'AMIRA DATASET SNAPSHOT',
-    mandor:null,
-    worker:null,
-    p1:0,p2:0,p3:0,p4:ha,ha,hk,
-    material:[],
-    source_file:(files||[]).map(x=>x.name).join(' | ')||null,
-    source_type:'AMIRA_SNAPSHOT',
-    raw_data:{
-      schemaVersion:1,
-      snapshotId:String(s.id||`AMIRA-${s.date}-${s.afdeling}`),
-      lockedAt:s.lockedAt||new Date().toISOString(),
-      date:s.date,
-      afdeling:s.afdeling,
-      masterRaw:master,
-      files
-    }
-  };
-}
-async function cloudSaveSnapshot(s){
-  const client=initSupabaseClient();
-  if(!client)return {skipped:true};
-  const payload=await cloudSnapshotPayload(s);
-  const match=client.from('amira_historical')
-    .select('id')
-    .eq('tanggal',payload.tanggal)
-    .eq('sitecode',payload.sitecode)
-    .eq('afdeling',payload.afdeling)
-    .eq('blockcode','__DATASET__')
-    .eq('jobcode','__SNAPSHOT__')
-    .limit(1);
-  const {data:existing,error:qerr}=await match;
-  if(qerr)throw qerr;
-  if(existing?.[0]?.id){
-    const {error}=await client.from('amira_historical').update(payload).eq('id',existing[0].id);
-    if(error)throw error;
-  }else{
-    const {error}=await client.from('amira_historical').insert(payload);
-    if(error)throw error;
-  }
-  setSupabaseStatus(`SYNCED · ${payload.tanggal} · ${payload.afdeling}`,true);
-  return {skipped:false};
-}
-async function cloudAllSnaps(){
-  const client=initSupabaseClient();
-  if(!client)return [];
-  const {data,error}=await client.from('amira_historical')
-    .select('id,tanggal,sitecode,afdeling,blockcode,jobcode,source_type,raw_data,created_at,updated_at')
-    .eq('sitecode','SYM1')
-    .eq('blockcode','__DATASET__')
-    .eq('jobcode','__SNAPSHOT__')
-    .eq('source_type','AMIRA_SNAPSHOT')
-    .order('tanggal',{ascending:false});
-  if(error)throw error;
-  return (data||[]).map(row=>{
-    const r=row.raw_data||{};
-    return {
-      id:String(r.snapshotId||`AMIRA-${row.tanggal}-${row.afdeling}`),
-      cloudRowId:row.id,
-      date:r.date||row.tanggal,
-      afdeling:r.afdeling||row.afdeling,
-      status:'LOCKED',
-      lockedAt:r.lockedAt||row.updated_at||row.created_at,
-      masterRaw:r.masterRaw||'',
-      files:(r.files||[]).map(f=>({name:f.name,raw:f.raw}))
-    };
-  });
-}
-async function cloudGetSnap(id){
-  const arr=await cloudAllSnaps();
-  return arr.find(x=>String(x.id)===String(id))||null;
-}
-function initSupabaseUI(){
-  const input=$('supabasePublishableKey'),save=$('supabaseSaveBtn'),test=$('supabaseTestBtn');
-  if(!input||!save||!test)return;
-  const key=getSupabaseKey();if(key)input.value=key;
-  save.onclick=async()=>{
-    const v=input.value.trim();
-    if(!v){alert('Paste Publishable key Supabase terlebih dahulu.');return}
-    try{
-      localStorage.setItem(SUPABASE_KEY_STORAGE,v);
-      await testSupabaseConnection();
-      alert('Supabase tersambung. Historical LOCKED berikutnya akan disinkronkan ke cloud.');
-      await updateHistory();
-    }catch(e){
-      setSupabaseStatus('Gagal terhubung: '+(e?.message||e));
-      alert('Gagal terhubung ke Supabase: '+(e?.message||e));
-    }
-  };
-  test.onclick=async()=>{
-    try{await testSupabaseConnection();alert('Connection OK.')}
-    catch(e){setSupabaseStatus('Gagal terhubung: '+(e?.message||e));alert('Connection gagal: '+(e?.message||e))}
-  };
-  if(key)testSupabaseConnection().catch(()=>{});
-}
 function db(){return new Promise((res,rej)=>{let r=indexedDB.open(DB,4);r.onupgradeneeded=e=>{const dbi=r.result;if(!dbi.objectStoreNames.contains(STORE))dbi.createObjectStore(STORE,{keyPath:'date'});if(!dbi.objectStoreNames.contains(HSTORE))dbi.createObjectStore(HSTORE,{keyPath:'id'});};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);r.onblocked=()=>rej(new Error('Database AMIRA sedang dipakai tab lain. Tutup tab AMIRA lain lalu coba lagi.'))})}
 async function clearHistory(){let d=await db();return new Promise((res,rej)=>{const tx=d.transaction([HSTORE,STORE],'readwrite');tx.objectStore(HSTORE).clear();tx.objectStore(STORE).clear();tx.oncomplete=()=>{d.close();res()};tx.onerror=()=>{d.close();rej(tx.error)}})}
 async function saveSnapshotByDate(s){let d=await db();return new Promise((res,rej)=>{const tx=d.transaction([HSTORE],'readwrite');const hs=tx.objectStore(HSTORE);const targetDate=String(s.date||''),targetAf=snapAfdeling(s);const q=hs.getAll();q.onsuccess=()=>{try{for(const x of (q.result||[])){if(String(x.date||'')===targetDate&&snapAfdeling(x)===targetAf&&x.id!==s.id)hs.delete(x.id)}hs.put({...s,id:s.id||`AMIRA-${targetDate}-${targetAf}`});}catch(e){try{tx.abort()}catch(_e){}rej(e)}};q.onerror=()=>{try{tx.abort()}catch(_e){}rej(q.error||new Error('Gagal membaca historical'))};tx.oncomplete=()=>{d.close();res()};tx.onerror=()=>{d.close();rej(tx.error||new Error('Gagal menyimpan historical'))};tx.onabort=()=>{d.close();}})}
-async function allSnaps(){
-  let local=[];
-  let d=await db();
-  local=await new Promise((res,rej)=>{
-    const tx=d.transaction([HSTORE,STORE],'readonly');
-    const q1=tx.objectStore(HSTORE).getAll(),q2=tx.objectStore(STORE).getAll();
-    let a=[],b=[];
-    q1.onsuccess=()=>{a=q1.result||[]};
-    q2.onsuccess=()=>{b=q2.result||[]};
-    tx.oncomplete=()=>{
-      const byKey=new Map();
-      for(const x of [...a,...b]){
-        const y={...x,id:x.id||('LEGACY-'+String(x.date||'UNKNOWN')),afdeling:snapAfdeling(x)};
-        const k=String(y.date||'UNKNOWN')+'|'+String(y.afdeling||'');
-        const old=byKey.get(k);
-        if(!old||String(y.lockedAt||'').localeCompare(String(old.lockedAt||''))>0)byKey.set(k,y)
-      }
-      d.close();res([...byKey.values()]);
-    };
-    tx.onerror=()=>{d.close();rej(tx.error)};
-  });
-  try{
-    const cloud=await cloudAllSnaps();
-    const byKey=new Map();
-    for(const x of [...local,...cloud]){
-      const k=String(x.date||'UNKNOWN')+'|'+String(snapAfdeling(x)||'');
-      const old=byKey.get(k);
-      if(!old||String(x.lockedAt||'').localeCompare(String(old.lockedAt||''))>0)byKey.set(k,x);
-    }
-    return [...byKey.values()].sort((x,y)=>String(y.date).localeCompare(String(x.date))||String(y.afdeling).localeCompare(String(x.afdeling))||String(y.lockedAt).localeCompare(String(x.lockedAt)));
-  }catch(e){
-    console.warn('Cloud historical tidak tersedia; memakai local IndexedDB.',e);
-    return local.sort((x,y)=>String(y.date).localeCompare(String(x.date))||String(y.afdeling).localeCompare(String(x.afdeling))||String(y.lockedAt).localeCompare(String(x.lockedAt)));
-  }
-}
-async function getSnap(id){
-  let d=await db();
-  const local=await new Promise((res,rej)=>{
-    const tx=d.transaction([HSTORE,STORE],'readonly');
-    const q1=tx.objectStore(HSTORE).get(id);
-    const q2=tx.objectStore(STORE).get(String(id).replace(/^LEGACY-/,''));
-    let a,b;
-    q1.onsuccess=()=>a=q1.result;
-    q2.onsuccess=()=>b=q2.result;
-    tx.oncomplete=()=>{d.close();res(a||b||null)};
-    tx.onerror=()=>{d.close();rej(tx.error)};
-  });
-  if(local)return local;
-  try{return await cloudGetSnap(id)}catch(e){console.warn('Cloud snapshot read gagal',e);return null}
-}
+async function allSnaps(){let d=await db();return new Promise((res,rej)=>{const tx=d.transaction([HSTORE,STORE],'readonly');const q1=tx.objectStore(HSTORE).getAll(),q2=tx.objectStore(STORE).getAll();let a=[],b=[];q1.onsuccess=()=>{a=q1.result||[]};q2.onsuccess=()=>{b=q2.result||[]};tx.oncomplete=()=>{const byKey=new Map();for(const x of [...a,...b]){const y={...x,id:x.id||('LEGACY-'+String(x.date||'UNKNOWN')),afdeling:snapAfdeling(x)};const k=String(y.date||'UNKNOWN')+'|'+String(y.afdeling||'');const old=byKey.get(k);if(!old||String(y.lockedAt||'').localeCompare(String(old.lockedAt||''))>0)byKey.set(k,y)}const arr=[...byKey.values()].sort((x,y)=>String(y.date).localeCompare(String(x.date))||String(y.afdeling).localeCompare(String(x.afdeling))||String(y.lockedAt).localeCompare(String(x.lockedAt)));d.close();res(arr)};tx.onerror=()=>{d.close();rej(tx.error)}})}
+async function getSnap(id){let d=await db();return new Promise((res,rej)=>{const tx=d.transaction([HSTORE,STORE],'readonly');const q1=tx.objectStore(HSTORE).get(id);const q2=tx.objectStore(STORE).get(String(id).replace(/^LEGACY-/,''));let a,b;q1.onsuccess=()=>a=q1.result;q2.onsuccess=()=>b=q2.result;tx.oncomplete=()=>{d.close();res(a||b)};tx.onerror=()=>{d.close();rej(tx.error)}})}
 async function loadSnap(s){resetFiles();state.masterRaw=await rawText(s.masterRaw||'');if(state.masterRaw){state.master=parseMaster(state.masterRaw);state.jobs=new Map((state.master.sections.M_JOB||[]).map(r=>[clean(r.JOBCODE),r]).filter(x=>x[0]));state.materials=new Map((state.master.sections.M_MATERIAL||[]).map(r=>[clean(r.MATERIALCODE),r]).filter(x=>x[0]));state.fields=new Map((state.master.sections.M_FIELD||[]).map(r=>[clean(r.BLOKCODE),r]).filter(x=>x[0]))}for(const f of s.files||[]){const raw=await rawText(f.raw);mergeFile(parseAmanda(raw),f.name,raw)}state.dataset={status:'LOCKED',date:s.date,locked:true,id:s.id,afdeling:afdelingLabel(s.afdeling||inferAfdelingFromSections(state.sections)||'')};state.ui.afdeling=state.dataset.afdeling||state.ui.afdeling||'OCYM';renderAll()}
 function readFileText(file){return new Promise((resolve,reject)=>{const fr=new FileReader();fr.onload=()=>resolve(String(fr.result||''));fr.onerror=()=>reject(fr.error||new Error('Gagal membaca file '+file.name));fr.readAsText(file,'UTF-8')})}
 function hydrateMaster(raw){state.masterRaw=raw;state.master=parseMaster(raw);state.jobs=new Map((state.master.sections.M_JOB||[]).map(r=>[clean(r.JOBCODE),r]).filter(x=>x[0]));state.materials=new Map((state.master.sections.M_MATERIAL||[]).map(r=>[clean(r.MATERIALCODE),r]).filter(x=>x[0]));state.fields=new Map((state.master.sections.M_FIELD||[]).map(r=>[clean(r.BLOKCODE),r]).filter(x=>x[0]));}
@@ -443,7 +249,7 @@ async function uploadRaw(files){if(!files?.length)return;if(files.length>4)throw
  resetFiles();loaded.forEach(x=>mergeFile(x.parsed,x.file.name,x.raw));const inferredAfdeling=afdelingLabel(inferAfdelingFromSections(state.sections)||'MULTI');state.dataset={status:'DRAFT',date:dates[0],locked:false,id:'',afdeling:inferredAfdeling};state.ui.afdeling=inferredAfdeling==='MULTI'?state.ui.afdeling:inferredAfdeling;renderAll();}
 function updateControl(){const locked=state.dataset.status==='LOCKED'||state.dataset.locked;const st=$('datasetStatus'),meta=$('datasetMeta');st.textContent=locked?'LOCKED':'DRAFT';st.className='status '+(locked?'locked':'draft');meta.textContent=state.dataset.date?`Tanggal ${state.dataset.date} · ${state.files.length} file · maksimal 4 file Rawat · history lokal + cloud jika dikonfigurasi`: '1–4 file per dataset/afdeling · minimal 1 file untuk LOCKED · semua tanggal harus sama · history dipisahkan date + afdeling';$('lockBtn').disabled=locked||!state.files.length;$('lockBtn2').disabled=locked||!state.files.length;$('reopenBtn').style.display=locked?'inline-block':'none';const d=state.data||buildData();$('recon').innerHTML=state.files.length?`Tanggal <b>${state.dataset.date}</b> · EMPATT ${d.emp.length} · valid ${d.valid.length} · PLANHARIAN ${d.planCount} · T_SIC ${d.sicCount} · T_MATERIAL ${d.materialRows} · GPS ${d.gps.length}`:'Belum ada dataset staged.';}
 function updateHistory(){const el=$('historyList');if(!el)return;allSnaps().then(arr=>{if(!arr.length){el.innerHTML='<div class="empty">Belum ada historical dataset.</div>';return}el.innerHTML=arr.map(s=>`<div class="historyRow"><div><b>${s.date}</b> · <b>${esc(afdelingLabel(s.afdeling||snapAfdeling(s)||'—'))}</b><br><small>${s.files?.length||0} file · ${s.status||'LOCKED'}</small></div><div>${s.lockedAt?new Date(s.lockedAt).toLocaleString('id-ID'):''}</div><div>LOCKED</div><div>${s.id||'—'}</div><div><button class="btn secondary" data-load="${s.id}">Buka</button></div></div>`).join('');el.querySelectorAll('[data-load]').forEach(b=>b.onclick=async()=>{const snap=await getSnap(b.dataset.load);if(snap){await loadSnap(snap);showPage('dashboard')}})}).catch(err=>{el.innerHTML=`<div class="empty">History gagal dibaca: ${err.message}</div>`})}
-async function lock(){if(!state.files.length)throw new Error('Upload Rawat terlebih dahulu.');if(state.files.length>4)throw new Error(`Maksimal 4 file Rawat per dataset. Saat ini ${state.files.length}/4 file.`);const d=state.data||buildData();if(!state.dataset.date)state.dataset.date=d.date;if(!state.dataset.date)throw new Error('Tanggal dataset belum terbaca.');const afd=afdelingLabel(state.dataset.afdeling||inferAfdelingFromSections(state.sections)||'MULTI');if(!AMIRA_AFDELING_OPTIONS.includes(afd))throw new Error(`Dataset harus tepat 1 afdeling (${AMIRA_AFDELING_OPTIONS.join(', ')}). Terdeteksi: ${afd||'—'}`);state.dataset={...state.dataset,status:'LOCKED',locked:true,afdeling:afd,id:`AMIRA-${state.dataset.date}-${afd}`};const snap=await snapshot();await saveSnapshotByDate(snap);try{await cloudSaveSnapshot(snap)}catch(e){console.warn('Cloud sync gagal',e);setSupabaseStatus('LOCKED tersimpan lokal; cloud sync gagal: '+(e?.message||e));}renderAll();}
+async function lock(){if(!state.files.length)throw new Error('Upload Rawat terlebih dahulu.');if(state.files.length>4)throw new Error(`Maksimal 4 file Rawat per dataset. Saat ini ${state.files.length}/4 file.`);const d=state.data||buildData();if(!state.dataset.date)state.dataset.date=d.date;if(!state.dataset.date)throw new Error('Tanggal dataset belum terbaca.');const afd=afdelingLabel(state.dataset.afdeling||inferAfdelingFromSections(state.sections)||'MULTI');if(!AMIRA_AFDELING_OPTIONS.includes(afd))throw new Error(`Dataset harus tepat 1 afdeling (${AMIRA_AFDELING_OPTIONS.join(', ')}). Terdeteksi: ${afd||'—'}`);state.dataset={...state.dataset,status:'LOCKED',locked:true,afdeling:afd,id:`AMIRA-${state.dataset.date}-${afd}`};await saveSnapshotByDate(await snapshot());renderAll();}
 function dailyBasePrice(block,material,uom){
  const n=String(material||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
  const alias={'GLIPHOSATE':'GLYPHOSATE','METHIL':'METIL','AMMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT','AMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT'};
@@ -1254,7 +1060,6 @@ function initWeedFeature(){
 function showPage(page){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));let el=$('page-'+page);if(el)el.classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));window.scrollTo({top:0,behavior:'smooth'})}
 document.querySelectorAll('.nav button,.work[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 initWeedFeature();
-initSupabaseUI();
 initMultiAfdeling(); initMonthly(); initDailyDownload(); initDailyAllSummaryDownload();
 $('masterBtn').onclick=$('masterBtn2').onclick=()=>$('masterInput').click();$('rawatBtn').onclick=$('rawatBtn2').onclick=()=>$('rawatInput').click();$('lockBtn').onclick=$('lockBtn2').onclick=async()=>{try{await lock()}catch(err){console.error(err);alert('Historical gagal disimpan: '+(err?.message||err))}};$('reopenBtn').onclick=()=>{state.dataset={...state.dataset,status:'DRAFT',date:state.dataset.date,locked:false,id:'',afdeling:state.dataset.afdeling||state.ui.afdeling||''};updateControl()};$('activeBtn').onclick=()=>showPage('history');
 $('masterInput').onchange=async e=>{try{if(e.target.files[0])await uploadMaster(e.target.files[0])}catch(err){alert(err.message)}e.target.value=''};$('rawatInput').onchange=async e=>{try{if(e.target.files?.length)await uploadRaw([...e.target.files])}catch(err){alert(err.message)}e.target.value=''};
