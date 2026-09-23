@@ -690,7 +690,10 @@ async function renderMonthly(){
  const sel=$('monthlyPeriodFilter'),afdSel=$('monthlyAfdelingFilter');if(!sel)return;
  if(!sel.options.length)monthlyPeriodOptions().forEach(p=>{const o=document.createElement('option');o.value=p.key;o.textContent=p.label;sel.appendChild(o)});
  if(!sel.value){const active=monthlyActivePeriodKey();sel.value=monthlyPeriodOptions().some(p=>p.key===active)?active:(monthlyPeriodOptions()[0]?.key||'2026-09');}const mpb=$('monthlyPeriodPickerBtn');if(mpb){const pp=monthlyPeriodOptions().find(p=>p.key===sel.value)||monthlyPeriodOptions()[0];mpb.textContent=pp?.label||'Pilih periode';}
- if(afdSel&&!afdSel.options.length)AMIRA_AFDELING_OPTIONS.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;afdSel.appendChild(o)});
+ if(afdSel){
+  const existing=new Set(Array.from(afdSel.options).map(o=>o.value));
+  AMIRA_AFDELING_OPTIONS.forEach(a=>{if(!existing.has(a)){const o=document.createElement('option');o.value=a;o.textContent=a;afdSel.appendChild(o)}});
+}
  const bounds=monthlyPeriodBounds(sel.value);if(!bounds)return;
  const calHK=amiraCalendarDaysForBounds(bounds); if($('monthlyWorkDays'))$('monthlyWorkDays').value=calHK;
  const calStatus=amiraCalendarBookStatus(bounds);
