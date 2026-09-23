@@ -689,7 +689,13 @@ function monthlyDownload(rows,afRows,bounds,umk,days,afd){
 async function renderMonthly(){
  const sel=$('monthlyPeriodFilter'),afdSel=$('monthlyAfdelingFilter');if(!sel)return;
  if(!sel.options.length)monthlyPeriodOptions().forEach(p=>{const o=document.createElement('option');o.value=p.key;o.textContent=p.label;sel.appendChild(o)});
- if(!sel.value){const opts=monthlyPeriodOptions(),currentKey=monthlyCurrentBookKey();sel.value=opts.some(p=>p.key===currentKey)?currentKey:(opts[0]?.key||'2026-09');}const mpb=$('monthlyPeriodPickerBtn');if(mpb){const pp=monthlyPeriodOptions().find(p=>p.key===sel.value)||monthlyPeriodOptions()[0];mpb.textContent=pp?.label||'Pilih periode';}
+ // First load must always follow the active 21–20 book period. After the user changes
+ // the period manually, subsequent re-renders (including Afdeling changes) keep that choice.
+ if(!window.__amiraMonthlyPeriodInitialized){
+   const opts=monthlyPeriodOptions(),currentKey=monthlyCurrentBookKey();
+   sel.value=opts.some(p=>p.key===currentKey)?currentKey:(opts[0]?.key||'2026-09');
+   window.__amiraMonthlyPeriodInitialized=true;
+ }const mpb=$('monthlyPeriodPickerBtn');if(mpb){const pp=monthlyPeriodOptions().find(p=>p.key===sel.value)||monthlyPeriodOptions()[0];mpb.textContent=pp?.label||'Pilih periode';}
  if(afdSel&&!afdSel.options.length)AMIRA_AFDELING_OPTIONS.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;afdSel.appendChild(o)});
  const bounds=monthlyPeriodBounds(sel.value);if(!bounds)return;
  const calHK=amiraCalendarDaysForBounds(bounds); if($('monthlyWorkDays'))$('monthlyWorkDays').value=calHK;
@@ -778,9 +784,10 @@ function initMonthly(){
    // Keep the native select as the engine value, but build the visible Android-safe picker directly from period objects.
    sel.innerHTML='';
    options.forEach(p=>{const o=document.createElement('option');o.value=p.key;o.textContent=p.label;sel.appendChild(o)});
-   if(!sel.value){
+   if(!window.__amiraMonthlyPeriodInitialized){
      const currentKey=monthlyCurrentBookKey();
      sel.value=options.some(x=>x.key===currentKey)?currentKey:(options[0]?.key||'2026-09');
+     window.__amiraMonthlyPeriodInitialized=true;
    }
    const syncButton=()=>{const p=options.find(x=>x.key===sel.value)||options[0];btn.textContent=p?.label||'Pilih periode';};
    const buildPicker=()=>{
