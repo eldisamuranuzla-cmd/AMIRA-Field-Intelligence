@@ -1494,17 +1494,23 @@ function previousPeriodKey(key){
 }
 function calculateRows(base,periodKey,umk){
  const prevKey=previousPeriodKey(periodKey),byItem=new Map();
+ // Aggregate by normalized rawat group, not JOBCODE. Different job codes/descriptions
+ // that represent the same rawat item must still match across consecutive book periods.
  for(const row of base.periodData.values()){
   if(row.period!==periodKey&&row.period!==prevKey)continue;
   if(row.group==='PRUNING'||/PRUNING/i.test(row.description||''))continue;
-  const k=[row.afdeling,row.block,row.code].join('|');
-  if(!byItem.has(k))byItem.set(k,{afdeling:row.afdeling,site:row.site,block:row.block,code:row.code,item:row.description,group:row.group,periods:new Map()});
-  byItem.get(k).periods.set(row.period,row);
+  const normalizedGroup=row.group&&row.group!=='OTHER'?row.group:('OTHER:'+String(row.description||row.code||'OTHER').trim().toUpperCase());
+  const k=[row.afdeling,row.block,normalizedGroup].join('|');
+  if(!byItem.has(k))byItem.set(k,{afdeling:row.afdeling,site:row.site,block:row.block,codeSet:new Set(),item:row.group&&row.group!=='OTHER'?({CPT:'CPT',CWM:'CWM',CWC:'Circle Weeding Chemist',PATH:'Path Chemist',TPH:'TPH Chemist',WDC:'WDC',WDM:'WDM',PUPUK:'Pupuk'}[row.group]||row.group):row.description,group:row.group,periods:new Map()});
+  const item=byItem.get(k);item.codeSet.add(row.code);
+  const agg=item.periods.get(row.period)||{ha:0,hk:0,racunL:0,racunGr:0,costRacun:0,costHK:0,days:new Set()};
+  ['ha','hk','racunL','racunGr','costRacun','costHK'].forEach(field=>add(agg,field,row[field]));
+  (row.days||new Set()).forEach(d=>agg.days.add(d));item.periods.set(row.period,agg);
  }
  const out=[];
  for(const item of byItem.values()){
   const p1=item.periods.get(prevKey),p2=item.periods.get(periodKey);
-  // Only evaluate the same rawat item when it was performed in both consecutive book periods.
+  // A rawat item is evaluated only when it has actual realization in BOTH consecutive book periods.
   if(!p1||!p2||!(p1.ha>0)||!(p2.ha>0))continue;
   const area=hestiHa(item.block,'HESTI')||num(state.fields?.get(item.block)?.HECTPLANTED)||0;
   if(!(area>0))continue;
@@ -1514,7 +1520,7 @@ function calculateRows(base,periodKey,umk){
   const costHK2=(p2.hk||0)*hkRate,costRacun2=p2.costRacun||0,totalCost2=costHK2+costRacun2;
   const cumHK=(p1.hk||0)+(p2.hk||0),cumRacunL=(p1.racunL||0)+(p2.racunL||0),cumRacunGr=(p1.racunGr||0)+(p2.racunGr||0);
   const costHK1=(p1.hk||0)*(Number(umk)||0)/Math.max(1,amiraCalendarDaysForBounds(boundsForKey(prevKey))),costRacun1=p1.costRacun||0,cumCostHK=costHK1+costHK2,cumCostRacun=costRacun1+costRacun2,cumCost=cumCostHK+cumCostRacun;
-  out.push({...item,period:periodKey,periodPrev:prevKey,periodCurrent:periodKey,periodLabel:`${prevKey} + ${periodKey}`,target:area,opening:0,obligation:area,real:totalHa,real1,real2,coveragePct,over,under,closing:under,status,
+  out.push({...item,code:[...item.codeSet].sort().join(', '),period:periodKey,periodPrev:prevKey,periodCurrent:periodKey,periodLabel:`${prevKey} + ${periodKey}`,target:area,opening:0,obligation:area,real:totalHa,real1,real2,coveragePct,over,under,closing:under,status,
    hk:p2.hk||0,cumHK,racunL:p2.racunL||0,racunGr:p2.racunGr||0,cumRacunL,cumRacunGr,costHK:costHK2,costRacun:costRacun2,totalCost:totalCost2,costHa:real2?totalCost2/real2:0,
    cumCostHK,cumCostRacun,cumCost,cumHa:totalHa,cumCostHa:totalHa?cumCost/totalHa:0,days:(p1.days?.size||0)+(p2.days?.size||0)});
  }
@@ -1535,13 +1541,13 @@ function renderMulti(rows,periodLabel,historyEnd){
  const filtered=rows.filter(r=>(!afd||r.afdeling===afd)&&(!site||r.site===site)&&(!ws||r.group===ws));
  if($('multiCarryMeta'))$('multiCarryMeta').textContent=`${periodLabel} · Historical 18 Agu 2026–${historyEnd||'data terakhir'}`;
  kpiCards($('multiCarryKpis'),filtered);
- if($('multiCarryTable'))$('multiCarryTable').innerHTML=filtered.map(r=>`<tr><td>${escHtml(r.afdeling)}</td><td><b>${escHtml(r.block)}</b></td><td>${escHtml(r.item)} <small>(${escHtml(r.code)})</small></td><td>${r.periodPrev} + ${r.periodCurrent}</td><td>${f(r.real1)}</td><td>${f(r.real2)}</td><td><b>${f(r.real)}</b></td><td>${f(r.target)}</td><td>${f(r.coveragePct)}%</td><td>${f(r.over)}</td><td>${f(r.under)}</td><td><b>${r.status}</b></td></tr>`).join('')||'<tr><td colspan="12" class="empty">Belum ada item non-Pruning yang tercatat pada kedua periode berturut-turut ini. Periksa snapshot LOCKED dan pemetaan JOBCODE.</td></tr>';
+ if($('multiCarryTable'))$('multiCarryTable').innerHTML=filtered.map(r=>`<tr><td>${escHtml(r.afdeling)}</td><td><b>${escHtml(r.block)}</b></td><td>${escHtml(r.item)} <small>(${escHtml(r.code)})</small></td><td>${r.periodPrev} + ${r.periodCurrent}</td><td>${f(r.real1)}</td><td>${f(r.real2)}</td><td><b>${f(r.real)}</b></td><td>${f(r.target)}</td><td>${f(r.coveragePct)}%</td><td>${f(r.over)}</td><td>${f(r.under)}</td><td><b>${r.status}</b></td></tr>`).join('')||'<tr><td colspan="12" class="empty">Belum ada item rawat non-Pruning yang memiliki realisasi pada kedua periode tutup buku. Periksa snapshot LOCKED, tanggal transaksi, dan pemetaan kelompok item.</td></tr>';
 }
 function renderMonthly(rows,periodLabel,historyEnd){
  const afd=$('monthlyAfdelingFilter')?.value||'',filtered=rows.filter(r=>!afd||r.afdeling===afd);
  if($('monthlyCarryMeta'))$('monthlyCarryMeta').textContent=`${periodLabel} · Historical 18 Agu 2026–${historyEnd||'data terakhir'}`;
  kpiCards($('monthlyCarryKpis'),filtered);
- if($('monthlyCarryTable'))$('monthlyCarryTable').innerHTML=filtered.map(r=>`<tr><td>${escHtml(r.afdeling)}</td><td><b>${escHtml(r.block)}</b></td><td>${escHtml(r.item)} <small>(${escHtml(r.code)})</small></td><td>${r.periodPrev} + ${r.periodCurrent}</td><td>${f(r.real1)}</td><td>${f(r.real2)}</td><td><b>${f(r.real)}</b></td><td>${f(r.target)}</td><td>${f(r.coveragePct)}%</td><td>${f(r.over)}</td><td>${f(r.under)}</td><td><b>${r.status}</b></td><td>${f(r.hk)}</td><td>${f(r.cumHK)}</td><td>${f(r.racunL)}</td><td>${f(r.racunGr)}</td><td>${f(r.cumRacunL)}</td><td>${f(r.cumRacunGr)}</td><td>Rp ${f(r.costHK)}</td><td>Rp ${f(r.costRacun)}</td><td>Rp ${f(r.totalCost)}</td><td>Rp ${f(r.costHa)}</td><td>Rp ${f(r.cumCostHK)}</td><td>Rp ${f(r.cumCostRacun)}</td><td>Rp ${f(r.cumCost)}</td><td>Rp ${f(r.cumCostHa)}</td></tr>`).join('')||'<tr><td colspan="26" class="empty">Belum ada item non-Pruning yang tercatat pada kedua periode berturut-turut ini. Periksa snapshot LOCKED dan pemetaan JOBCODE.</td></tr>';
+ if($('monthlyCarryTable'))$('monthlyCarryTable').innerHTML=filtered.map(r=>`<tr><td>${escHtml(r.afdeling)}</td><td><b>${escHtml(r.block)}</b></td><td>${escHtml(r.item)} <small>(${escHtml(r.code)})</small></td><td>${r.periodPrev} + ${r.periodCurrent}</td><td>${f(r.real1)}</td><td>${f(r.real2)}</td><td><b>${f(r.real)}</b></td><td>${f(r.target)}</td><td>${f(r.coveragePct)}%</td><td>${f(r.over)}</td><td>${f(r.under)}</td><td><b>${r.status}</b></td><td>${f(r.hk)}</td><td>${f(r.cumHK)}</td><td>${f(r.racunL)}</td><td>${f(r.racunGr)}</td><td>${f(r.cumRacunL)}</td><td>${f(r.cumRacunGr)}</td><td>Rp ${f(r.costHK)}</td><td>Rp ${f(r.costRacun)}</td><td>Rp ${f(r.totalCost)}</td><td>Rp ${f(r.costHa)}</td><td>Rp ${f(r.cumCostHK)}</td><td>Rp ${f(r.cumCostRacun)}</td><td>Rp ${f(r.cumCost)}</td><td>Rp ${f(r.cumCostHa)}</td></tr>`).join('')||'<tr><td colspan="26" class="empty">Belum ada item rawat non-Pruning yang memiliki realisasi pada kedua periode tutup buku. Periksa snapshot LOCKED, tanggal transaksi, dan pemetaan kelompok item.</td></tr>';
 }
 async function refreshMulti(){
  try{const base=await getBase(),umk=Math.max(0,num($('monthlyUmk')?.value)||3909005),rows=calculateAllPeriods(base,umk);renderMulti(rows,'Tutup buku Oktober 2026–Desember 2027',base.end);}
