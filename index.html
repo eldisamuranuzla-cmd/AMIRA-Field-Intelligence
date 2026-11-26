@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMIRA V46.6 — Activity Worker Name Update</title>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMIRA V46.15 — Multi Afdeling HA Fix</title>
 <style>
 :root{--g:#005844;--g2:#087c65;--g3:#e6f3ed;--ink:#163b35;--muted:#71857f;--line:#dfeae6;--bg:#f3f7f5;--white:#fff;--warn:#9a6500;--red:#b23a2d}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}button,select,input{font:inherit}.app{display:flex;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:220px;background:linear-gradient(180deg,#004f42,#003f35);color:#fff;padding:18px 12px;overflow:auto}.brand{padding:4px 8px 18px;border-bottom:1px solid #ffffff16}.brand img{width:165px;height:56px;object-fit:contain;object-position:left center;filter:brightness(0) invert(1);opacity:.96}.brand strong{display:block;font-size:23px;letter-spacing:.3px}.brand small{opacity:.72;font-size:10px}.nav{display:grid;gap:4px;margin-top:16px}.nav button{border:0;background:transparent;color:#eaf8f2;text-align:left;padding:10px 11px;border-radius:8px;cursor:pointer;font-size:12px}.nav button:hover,.nav button.active{background:#087c65}.nav button span{margin-left:7px}.sidefoot{position:sticky;margin-top:35px;bottom:0;font-size:10px;line-height:1.5;opacity:.72;padding:8px}
@@ -69,7 +69,7 @@ main{margin-left:220px;width:calc(100% - 220px);padding-bottom:25px}.topbar{heig
 <div class="scroll" style="max-height:420px"><table><thead><tr><th>Blok</th><th>Ha</th><th>Jenis</th><th>Racun</th><th>Produk</th><th>Dosis/Ha</th><th>Base/Rotasi</th><th>Harga</th><th>Base Cost</th><th>UOM</th></tr></thead><tbody id="rxTable"></tbody></table></div></div>
 <div class="card"><div class="head"><h3>Material Mapping</h3><span>CSV M_MATERIAL ↔ Base Excel</span></div><div class="notice">AMIRA melakukan normalisasi nama material. Jika tidak ditemukan padanan yang jelas, material tidak dipaksa masuk ke prescription.</div><div class="scroll"><table><thead><tr><th>Code</th><th>Master Description</th><th>UOM</th><th>Normalized</th><th>Status</th></tr></thead><tbody id="rxMaterialMap"></tbody></table></div></div>
 <div class="card"><div class="head"><h3>Base Racun per Blok</h3><span>Source of truth · Engine 06</span></div><div class="scroll"><table><thead><tr><th>Blok</th><th>Jenis</th><th>Racun</th><th>Base Requirement</th><th>Dosis/Ha</th><th>Harga</th><th>Base Cost</th></tr></thead><tbody id="rxStockTable"></tbody></table></div></div><div id="rxPager" class="notice" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span id="rxPageInfo">—</span><span style="display:flex;gap:6px"><button class="btn secondary" id="rxPrev">‹ Prev</button><button class="btn secondary" id="rxNext">Next ›</button></span></div></section>
-<section id="page-balance" class="page"><div class="eyebrow">ENGINE 07 · RECONCILIATION</div><div class="title">Material Balance</div><div class="meta"><b>MAIN Engine 05 Actual − Engine 06 Base</b>. Positif = over pemakaian terhadap base; negatif = masih di bawah base.</div><div class="card" style="margin-top:14px"><div class="filters" style="margin-bottom:8px"><label>Afdeling<select id="balanceAfdelingFilter"><option value="">Semua Afdeling</option><option value="OAYM">OAYM</option><option value="OBYM">OBYM</option><option value="OCYM">OCYM</option><option value="ODYM">ODYM</option><option value="OEYM">OEYM</option></select></label><label>Workstream<select id="balanceWorkstreamFilter"><option value="">Semua Workstream</option><option value="CPT">CPT (CWC / PTC / TPH)</option><option value="WDC">WDC</option></select></label><label>Periode Buku<select id="balancePeriodFilter"></select></label><div style="display:flex;align-items:end;gap:7px;flex-wrap:wrap"><button class="btn" id="balanceDownloadBtn" type="button">Download Material Balance</button><button class="btn secondary" id="balanceResetBtn" type="button">Reset Filter</button></div></div><div class="notice" id="balanceFilterInfo">Rekap kumulatif satu periode buku bulanan (21–20), mengikuti Monthly Cost & HK. Download menghasilkan satu file rekap bulanan, bukan laporan harian.</div><div class="scroll"><table><thead><tr><th>Blok</th><th>Jenis Semprot</th><th>Material</th><th>Base</th><th>Actual</th><th>Actual − Base</th><th>Dosis Actual</th><th>UOM</th><th>Status</th></tr></thead><tbody id="balanceDetail"></tbody></table></div></div></section>
+<section id="page-balance" class="page"><div class="eyebrow">ENGINE 07 · RECONCILIATION</div><div class="title">Material Balance</div><div class="meta"><b>MAIN Engine 06 Base − Engine 05 Actual</b>. Sisa negatif = over base; deviasi material positif = over dosis.</div><div class="card" style="margin-top:14px"><div class="filters" style="margin-bottom:8px"><label>Afdeling<select id="balanceAfdelingFilter"><option value="">Semua Afdeling</option><option value="OAYM">OAYM</option><option value="OBYM">OBYM</option><option value="OCYM">OCYM</option><option value="ODYM">ODYM</option><option value="OEYM">OEYM</option></select></label><label>Workstream<select id="balanceWorkstreamFilter"><option value="">Semua Workstream</option><option value="CPT">CPT (CWC / PTC / TPH)</option><option value="WDC">WDC</option></select></label><label>Periode Buku<select id="balancePeriodFilter"></select></label><div style="display:flex;align-items:end;gap:7px;flex-wrap:wrap"><button class="btn" id="balanceDownloadBtn" type="button">Download Material Balance</button><button class="btn secondary" id="balanceResetBtn" type="button">Reset Filter</button></div></div><div style="margin:10px 0"><button class="btn" type="button" id="mbHistoryBtn">Historical Sep–Des 2026</button> <button class="btn secondary" type="button" id="mbHistoryExport">Export Historical CSV</button></div><div id="mbHistoryPanel" style="display:none"></div><div class="notice" id="balanceFilterInfo">Rekap kumulatif satu periode buku bulanan (21–20), mengikuti Monthly Cost & HK. Download menghasilkan satu file rekap bulanan, bukan laporan harian.</div><div class="scroll"><table><thead><tr><th>Blok</th><th>Jenis Semprot</th><th>Material</th><th>Base</th><th>Actual</th><th>Sisa Base</th><th>HA Real</th><th>Dosis Base</th><th>Dosis Actual</th><th>Deviasi Material</th><th>UOM</th><th>Status Balance</th><th>Status Dosis</th><th>Status Komposisi</th></tr></thead><tbody id="balanceDetail"></tbody></table></div></div></section>
 <section id="page-plan" class="page"><div class="eyebrow">ENGINE 07</div><div class="title">Plan vs Realization</div><div class="meta">Per workstream dan blok, berdasarkan PLANHARIAN vs T_SIC.</div><div class="card" style="margin-top:14px"><div id="planDetail"></div></div></section>
 <section id="page-activity" class="page"><div class="eyebrow">ENGINE 08 · WORKER × ITEM</div><div class="title">Activity & Worker</div><div style="margin:10px 0"><button class="btn" type="button" onclick="amiraPdfActivityWorker()">📄 Download PDF Activity & Worker</button></div><div class="meta">HK dihitung pada level item pekerjaan: worker yang mengerjakan beberapa item pada blok/tanggal yang sama tetap 1 HK overall, sementara setiap item mempertahankan Ha-nya sendiri.</div><div class="card" style="margin-top:14px"><div class="head"><h3>Rekap Worker × Item</h3><span>Source: T_SIC · P4</span></div><div class="scroll"><table><thead><tr><th>Tanggal</th><th>Blok</th><th>WS</th><th>Item</th><th>Job Code</th><th>HK</th><th>Ha</th><th>Ha/HK</th></tr></thead><tbody id="itemHKDetail"></tbody></table></div></div><div class="card" style="margin-top:10px"><div class="head"><h3>Detail Worker Activity</h3><span>Worker dapat muncul di beberapa item</span></div><div class="scroll"><table><thead><tr><th>Tanggal</th><th>Worker</th><th>Job</th><th>Item</th><th>WS</th><th>Blok</th><th>Ha</th></tr></thead><tbody id="workerDetail"></tbody></table></div></div></section>
 <section id="page-evidence" class="page"><div class="eyebrow">ENGINE 09</div><div class="title">Evidence</div><div class="meta">Bukti lapangan tidak dibuat-buat; hanya data foto/GPS yang benar-benar ada.</div><div class="card" style="margin-top:14px"><div id="evidenceDetail"></div></div></section>
@@ -295,80 +295,45 @@ function amiraBookPeriod(dateStr){
  // This keeps Material Balance aligned to the 21–20 book period and the initial special period.
  return monthlyPeriodKey(String(dateStr||'').slice(0,10));
 }
-async function amiraCumulativeMaterialActual(d,targetPeriodOverride){
- const out=new Map();
- const family=c=>{c=clean(c);if(['220601','220602'].includes(c))return'CWC';if(['220401','220402','220503'].includes(c))return'PTC';if(['230201','230202'].includes(c))return'WDC';return null};
- const subtype=t=>{const m=String(t||'').toUpperCase().match(/^(?:CWC|PTC|WDC)([1-4])$/);return m?m[1]:''};
- const norm=s=>{let n=String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const a={'GLIPHOSATE':'GLYPHOSATE','METHIL':'METIL','AMMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT','AMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT'};return a[n]||n};
- const baseItems=(block,type)=>d.prescriptionByBlock?.[[block,type].join('|')]?.items||[];
- const process=(sic,mats,sourceDate)=>{
-   // Filter at row level as well as snapshot level. A historical upload can contain
-   // rows whose TANGGAL differs from the snapshot date; never let those rows leak
-   // into another 21–20 book period.
-   const sicInPeriod=sic.filter(r=>amiraBookPeriod(normDate(r.TANGGAL||r.DATE)||sourceDate)===targetPeriod);
-   const matsInPeriod=mats.filter(r=>amiraBookPeriod(normDate(r.TANGGAL||r.DATE)||sourceDate)===targetPeriod);
-   const sicMap={};
-   sicInPeriod.forEach(r=>{
-     const k=[clean(r.JOBCODE),clean(r.MANDORCODE),normDate(r.TANGGAL||r.DATE)||sourceDate].join('|');
-     const b=clean(r.BLOKCODE); if(b)(sicMap[k]??=new Set()).add(b);
-   });
-   matsInPeriod.forEach(r=>{
-     const jc=clean(r.JOBCODE), mdor=clean(r.MANDORCODE), dt=normDate(r.TANGGAL||r.DATE)||sourceDate;
-     const key=[jc,mdor,dt].join('|'), blocks=[...(sicMap[key]||[])].filter(Boolean), items=[];
-     for(let i=1;i<=6;i++){
-       const mc=clean(r['MAT'+i]||r['MATERIALCODE'+i]), q=num(r['QTYMAT'+i]||r['QTY'+i]);
-       if(mc&&q)items.push({code:mc,qty:q});
-     }
-     if(!items.length||!blocks.length)return;
-     const p4={};
-     sicInPeriod.filter(x=>[clean(x.JOBCODE),clean(x.MANDORCODE),normDate(x.TANGGAL||x.DATE)||sourceDate].join('|')===key&&clean(x.BLOKCODE))
-       .forEach(x=>{const b=clean(x.BLOKCODE),v=num(x.P4);if(v>0)p4[b]=(p4[b]||0)+v});
-     const totalP4=blocks.reduce((a,b)=>a+(p4[b]||0),0); if(totalP4<=0)return;
-     const jf=family(jc)||(classify(jc,job(jc).DESCRIPTION||'')==='WDC'?'WDC':null); if(!jf)return;
-     const matSet=new Set(items.map(x=>norm(mat(x.code).DESCRIPTION||x.code)));
-     const allowed=jf==='CWC'?['CWC1','CWC2','CWC3','CWC4']:jf==='PTC'?['PTC1','PTC2','PTC3','PTC4']:['WDC1','WDC2','WDC3','WDC4'];
-     blocks.forEach(block=>{
-       const share=(p4[block]||0)/totalP4;
-       const candidates=allowed.filter(type=>{
-         const bs=new Set(baseItems(block,type).map(x=>norm(x.material)));
-         return bs.size===matSet.size && [...matSet].every(m=>bs.has(m));
-       });
-       if(candidates.length!==1)return;
-       const type=candidates[0], reportFamily=(jf==='CWC'||jf==='PTC')?'CPT':'WDC', st=subtype(type);
-       items.forEach(it=>{
-         const mdesc=mat(it.code).DESCRIPTION||it.code, canonical=norm(mdesc);
-         const k=[block,reportFamily,st,canonical].join('|'), q=it.qty*share, prev=out.get(k);
-         if(prev)prev.actual+=q;
-         else out.set(k,{block,type:reportFamily,subtype:st,material:mdesc,canonical,actual:q,uom:mat(it.code).UOM||'—'});
-       });
-     });
-   });
- };
- const targetPeriod=targetPeriodOverride||amiraBookPeriod(d.date||state.dataset.date);
+function mbNorm(s){return String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'').replace(/^GLIPHOSATE$/,'GLYPHOSATE').replace(/^METHIL$/,'METIL').replace(/^GARLON$/,'TRICLOPYR').replace(/^(AMMONIUMGLUFOSINATE|AMONIUMGLUFOSINATE)$/,'AMONIUMGLUFOSINAT');}
+const MB_MASTER_SYM1={"M0101": {"name": "Gliphosate", "uom": "L"}, "M0102": {"name": "Parakuat", "uom": "L"}, "M0103": {"name": "Methil", "uom": "GR"}, "M0104": {"name": "24D-Amine", "uom": "L"}, "M0105": {"name": "Garlon", "uom": "L"}, "M0106": {"name": "Starane", "uom": "L"}, "M0108": {"name": "KAO_ADJ", "uom": "L"}, "M0113": {"name": "PRORODENT", "uom": "KG"}, "M0123": {"name": "SOLAR", "uom": "L"}, "M0124": {"name": "BENSIN", "uom": "L"}, "M0125": {"name": "WATERBASE", "uom": "L"}, "M0126": {"name": "TRICHODERMA SP & GLIOCLADIUM SP", "uom": "KG"}, "M0127": {"name": "Emulan LVA", "uom": "L"}, "M0130": {"name": "CYMBUS", "uom": "L"}, "M0131": {"name": "SIPERMETRIN", "uom": "L"}, "M0132": {"name": "CHEPATE 75 SP", "uom": "KG"}, "131000013": {"name": "DITHINE M 45", "uom": "KG"}, "131000014": {"name": "EMULGATOR", "uom": "L"}, "131000015": {"name": "FLORBAC", "uom": "L"}, "131000019": {"name": "KLERAT RMB", "uom": "KG"}, "131000021": {"name": "MARSHAL 200 EC", "uom": "L"}, "131000022": {"name": "METARHYZIUM", "uom": "KG"}, "131000026": {"name": "RACUMIN", "uom": "KG"}, "131000028": {"name": "REGENT 50 SC", "uom": "L"}, "131000032": {"name": "SEVIN", "uom": "KG"}, "131000033": {"name": "SEX PHREROMONE", "uom": "PCS"}, "131000049": {"name": "COUMATETRALIL", "uom": "KG"}, "131000052": {"name": "MARSHAL", "uom": "KG"}, "131000054": {"name": "RATGON / PYTON", "uom": "KG"}, "131000060": {"name": "DURSBAN", "uom": "L"}, "131000066": {"name": "FURADAN", "uom": "KG"}, "131000075": {"name": "IKAN ASIN", "uom": "KG"}, "131000079": {"name": "ANTRAKOL", "uom": "KG"}, "131000084": {"name": "MATADOR", "uom": "L"}, "131000088": {"name": "GREMI - G", "uom": "KG"}, "131000095": {"name": "SCORE 250 EC", "uom": "L"}, "131000141": {"name": "MARFU-P", "uom": "KG"}, "131000142": {"name": "TRICHODERMA", "uom": "PCS"}, "131000160": {"name": "AGRISTICK", "uom": "L"}, "131000177": {"name": "TRIKO-G", "uom": "KG"}, "131000205": {"name": "MANTHENE", "uom": "KG"}, "131000208": {"name": "DIPEL SC", "uom": "L"}, "131000216": {"name": "PREVATHON 50 SC", "uom": "L"}, "131000217": {"name": "PHOSTHANE", "uom": "KG"}, "131000218": {"name": "BLACK HAWK", "uom": "KG"}, "131000219": {"name": "BM PROMAX", "uom": "KG"}, "131000220": {"name": "MATARIN", "uom": "L"}, "131000221": {"name": "PETROKUM", "uom": "KG"}, "131000222": {"name": "BENLOX", "uom": "KG"}, "131000223": {"name": "STAMYCIN", "uom": "GRAM"}, "131000224": {"name": "BACTOCYN", "uom": "ML"}, "131000225": {"name": "STARNER", "uom": "GRAM"}, "131000226": {"name": "SELONTRA", "uom": "KG"}, "131000227": {"name": "CONVEY", "uom": "L"}, "131000228": {"name": "AMONIUM GLUFOSINATE", "uom": "L"}, "131000229": {"name": "TRICLOPYR", "uom": "G"}, "131000230": {"name": "FLUROKSIPIR", "uom": "G"}, "131000231": {"name": "FOX", "uom": "ML"}, "131000232": {"name": "STARLON", "uom": "L"}, "131000233": {"name": "SURFAMIN", "uom": "L"}};
+function mbIdentity(code,name,uom){
+ const official=MB_MASTER_SYM1[String(code||'').trim().toUpperCase()]; if(official){name=official.name;uom=official.uom;}
+ const n=mbNorm(name); const aliases=[[/GL[ YI]*PHOS|GLIFOS|GLYPHOS|ROUNDUP|GLIPHOS/, 'GLYPHOSATE'],[/METSULF|METAPRIMA|^METIL$|^METHIL$/, 'METIL'],[/GLUFOS|BASTNATE|BASTA/, 'AMONIUM GLUFOSINAT'],[/EMULAN/, 'EMULAN-LVA'],[/TRICLOP|TRIKLOP|GARLON/, 'TRICLOPYR'],[/STARANE|FLUROX|FLUROKS/, 'STARANE']];
+ for(const [re,label] of aliases)if(re.test(n))return {name:label,uom:uom||''};
+ return {name:name||code,uom:uom||''};
+}
+function mbFamily(c,desc){return ['220601','220602'].includes(c)?'CWC':['220401','220402','220503'].includes(c)?'PTC':(['230201','230202'].includes(c)||classify(c,desc||'')==='WDC')?'WDC':null;}
+async function amiraCumulativeMaterialActual(d,period,base){
+ const out=new Map(), groups=new Map(), seen=new Set();
+ const add=(block,type,name,uom,q,ha,reason,afd)=>{const k=[block,type,mbNorm(name),reason||'',afd||''].join('|');const x=out.get(k)||{block,type,material:name,uom,actual:0,ha:0,reason,afd,missingHa:0};x.actual+=q;x.ha+=ha;if(!q)x.missingHa+=ha;out.set(k,x);};
  const snaps=await allSnaps();
- for(const snap of snaps){
-   if(String(snap.status||'LOCKED').toUpperCase()!=='LOCKED')continue;
-   if(amiraBookPeriod(snap.date)!==targetPeriod)continue;
-   // If the current UI is already loaded from this locked snapshot, it is included once here.
-   const parsedMaster=await rawText(snap.masterRaw||'');
-   if(parsedMaster){
-     const pm=parseMaster(parsedMaster);
-     state.__amiraTempMaster=pm;
-   }
-   const sic=[],mats=[];
-   for(const f of snap.files||[]){
-     const raw=await rawText(f.raw); const p=parseAmanda(raw);
-     sic.push(...(p.sections.T_SIC||[])); mats.push(...(p.sections.T_MATERIAL||[]));
-   }
-   process(dedupRows(sic),dedupRows(mats),snap.date);
+ const activeDate=state.dataset.date,activeAfd=afdelingLabel(state.dataset.afdeling||inferAfdelingFromSections(state.sections)||'');
+ const sources=snaps.filter(x=>String(x.status||'LOCKED').toUpperCase()==='LOCKED'&&!(activeDate&&state.sections.T_MATERIAL?.length&&normDate(x.date)===normDate(activeDate)&&afdelingLabel(x.afdeling)===activeAfd));
+ if(activeDate&&!sources.some(x=>x.date===activeDate&&afdelingLabel(x.afdeling)===activeAfd))sources.push({date:activeDate,afdeling:activeAfd,active:true});
+ for(const snap of sources){
+  const afd=afdelingLabel(snap.afdeling||'');let sic=[],mats=[],mm=new Map(state.materials),jj=new Map(state.jobs);
+  if(snap.active){sic=state.sections.T_SIC||[];mats=state.sections.T_MATERIAL||[];}else{
+   const raw=await rawText(snap.masterRaw||'');if(raw){const pm=parseMaster(raw);for(const r of pm.sections.M_MATERIAL||[])mm.set(clean(r.MATERIALCODE),r);for(const r of pm.sections.M_JOB||[])jj.set(clean(r.JOBCODE),r);}
+   for(const f of snap.files||[]){const p=parseAmanda(await rawText(f.raw));sic.push(...(p.sections.T_SIC||[]));mats.push(...(p.sections.T_MATERIAL||[]));}
+  }
+  for(const [kind,rows] of [['sic',sic],['mat',mats]])for(const r of dedupRows(rows)){
+   const date=normDate(r.TANGGAL||r.DATE)||snap.date;if(amiraBookPeriod(date)!==period)continue;
+   const jc=clean(r.JOBCODE),family=mbFamily(jc,jj.get(jc)?.DESCRIPTION);if(!family)continue;
+   const sig=JSON.stringify([kind,afd,date,r]);if(seen.has(sig))continue;seen.add(sig);
+   const k=[afd,date,jc,clean(r.MANDORCODE)].join('|');const g=groups.get(k)||{afd,family:family||'OTHER',blocks:new Map(),items:new Map()};groups.set(k,g);
+   if(kind==='sic'){const block=clean(r.BLOKCODE),ha=num(r.P4);if(block&&ha>0)g.blocks.set(block,(g.blocks.get(block)||0)+ha);}
+   else for(let i=1;i<=6;i++){const code=clean(r['MAT'+i]||r['MATERIALCODE'+i]),q=num(r['QTYMAT'+i]||r['QTY'+i]);if(!code||!q)continue;const m=mm.get(code)||{},id=mbIdentity(code,m.DESCRIPTION||code,m.UOM),x=g.items.get(code)||{...id,q:0};x.q+=q;g.items.set(code,x);}
+  }
  }
- // Draft/current active dataset is not in History yet: include it once,
- // but ONLY when its dataset date belongs to the selected Monthly Cost & HK book period.
- // This prevents a daily/current upload from leaking into another month's export.
- const draftDate=state.dataset.date||d.date||'';
- const draftPeriod=amiraBookPeriod(draftDate);
- if(!state.dataset.locked && draftPeriod===targetPeriod && state.sections?.T_MATERIAL?.length){
-   process(dedupRows(state.sections.T_SIC||[]),dedupRows(state.sections.T_MATERIAL||[]),draftDate);
+ for(const g of groups.values()){
+  const total=[...g.blocks.values()].reduce((a,b)=>a+b,0),items=[...g.items.values()];
+  if(!total){for(const x of items)add('UNMAPPED',g.family,x.name,x.uom,x.q,0,'NO SIC',g.afd);continue;}
+  for(const [block,ha] of g.blocks){const candidates=Object.values(base).filter(p=>p.block===block&&p.type.startsWith(g.family));if(!items.length)continue;const names=new Set(items.map(x=>mbNorm(x.name)));const exact=candidates.filter(p=>{const n=new Set(p.items.map(x=>mbNorm(x.material)));return n.size===names.size&&[...names].every(x=>n.has(x));});const partial=candidates.filter(p=>[...names].every(n=>p.items.some(x=>mbNorm(x.material)===n)));const scored=candidates.map(p=>({p,score:[...names].filter(n=>p.items.some(x=>mbNorm(x.material)===n)).length})).sort((a,b)=>b.score-a.score);const p=exact.length===1?exact[0]:candidates.length===1?candidates[0]:partial.length===1?partial[0]:scored[0]?.score>0&&scored[0].score>(scored[1]?.score||0)?scored[0].p:null;
+   if(!p){for(const x of items)add(block,g.family,x.name,x.uom,x.q*ha/total,ha,'UNMAPPED / AMBIGUOUS');continue;}
+   const used=new Set();for(const x of items){const n=mbNorm(x.name);add(block,p.type,x.name,x.uom,x.q*ha/total,used.has(n)?0:ha,'');used.add(n);}
+   for(const x of p.items)if(!used.has(mbNorm(x.material)))add(block,p.type,x.material,x.uom,0,ha,'');
+  }
  }
  return out;
 }
@@ -377,95 +342,42 @@ let amiraBalanceRows=[];
 let amiraBalanceFilter={afdeling:'',workstream:''};
 let amiraBalancePeriod=monthlyActivePeriodKey(new Date().toISOString().slice(0,10));
 
-function renderCumulativeBalanceRows(){
- const el=$('balanceDetail'); if(!el)return;
- const afd=amiraBalanceFilter.afdeling||'', ws=amiraBalanceFilter.workstream||'';
- const rows=amiraBalanceRows.filter(r=>(!afd||r.afdeling===afd)&&(!ws||r.type===ws));
- const info=$('balanceFilterInfo');
- if(info){const pb=monthlyPeriodBounds(amiraBalancePeriod);info.textContent=`Material Balance: ${rows.length} baris · Afdeling: ${afd||'Semua'} · Workstream: ${ws||'Semua'} · Periode Buku: ${pb?.label||amiraBalancePeriod}. Material base tetap ditampilkan walaupun actual = 0.`; }
- el.innerHTML=rows.sort((a,b)=>a.afdeling.localeCompare(b.afdeling)||a.block.localeCompare(b.block,undefined,{numeric:true})||a.type.localeCompare(b.type)||a.material.localeCompare(b.material))
- .map(r=>{
-   const dose=r.ha?r.actual/r.ha:0,over=r.baseExists&&r.diff>0.000001;
-   const status=!r.baseExists?'🟡 NO BASE':over?'🔴 OVER BASE':'🟢 ≤ BASE';
-   return `<tr class="${over?'overRow':''}"><td>${r.block}</td><td>${r.type}${r.typeInternal!=='UNMAPPED'?` · ${r.typeInternal}`:''}</td><td><b>${r.material}</b></td><td>${r.baseExists?fmt(r.base):'—'}</td><td>${fmt(r.actual)}</td><td>${r.baseExists?fmt(r.diff):'—'}</td><td>${r.ha?fmt(dose)+' '+(/GR|G/.test(String(r.uom).toUpperCase())?'Gr/Ha':'L/Ha'):'—'}</td><td>${r.uom}</td><td>${status}</td></tr>`;
- }).join('')||`<tr><td colspan="9" class="empty">Tidak ada data Material Balance sesuai filter.</td></tr>`;
-}
-
-function balanceCsvCell(v){
- if(v===null||v===undefined)return '';
- if(typeof v==='number'&&Number.isFinite(v)){
-   let s=String(v);
-   if(s.includes('e')||s.includes('E'))s=v.toFixed(10);
-   s=s.replace(/0+$/,'').replace(/\.$/,'');
-   return s.replace('.',',');
- }
- let s=String(v).replace(/\r?\n/g,' ').replace(/"/g,'""');
- return `"${s}"`;
-}
-function downloadCumulativeMaterialBalance(){
- const afd=amiraBalanceFilter.afdeling||'', ws=amiraBalanceFilter.workstream||'';
- const rows=amiraBalanceRows.filter(r=>(!afd||r.afdeling===afd)&&(!ws||r.type===ws));
- if(!rows.length){alert('Tidak ada data Material Balance sesuai filter.');return;}
- const lines=[];
- const balanceBounds=monthlyPeriodBounds(amiraBalancePeriod),balancePeriodLabel=balanceBounds?.label||amiraBalancePeriod;
- lines.push(['AMIRA MATERIAL BALANCE BULANAN','Periode Buku',balancePeriodLabel,'Tanggal Mulai',balanceBounds?.start||'','Tanggal Akhir',balanceBounds?.end||'','Basis','Akumulasi 1 Periode Buku (bukan harian)','Afdeling',afd||'Semua Afdeling','Workstream',ws||'Semua'].map(balanceCsvCell).join(';'));
- lines.push(['Afdeling','Blok','Jenis Semprot','Subtype','Material','Base Per Periode','Actual Kumulatif 1 Periode','Actual − Base','Ha','Dosis Actual Per Periode','UOM','Status'].map(balanceCsvCell).join(';'));
- rows.sort((a,b)=>a.afdeling.localeCompare(b.afdeling)||a.block.localeCompare(b.block,undefined,{numeric:true})||a.type.localeCompare(b.type)||a.material.localeCompare(b.material)).forEach(r=>{
-   const dose=r.ha?r.actual/r.ha:0, over=r.baseExists&&r.diff>0.000001;
-   const status=!r.baseExists?'NO BASE':over?'OVER BASE':'≤ BASE';
-   lines.push([r.afdeling,r.block,r.type,r.typeInternal,r.material,r.baseExists?r.base:'',r.actual,r.baseExists?r.diff:'',r.ha,dose,r.uom,status].map(balanceCsvCell).join(';'));
- });
- const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
- const url=URL.createObjectURL(blob),a=document.createElement('a');
- a.href=url;a.download=`AMIRA_Material_Balance_PERIODE_BUKU_${amiraBalancePeriod}_${afd||'ALL_AFD'}_${ws||'ALL_WS'}.csv`;
- document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
+function mbRows(){return amiraBalanceRows.filter(r=>(!amiraBalanceFilter.afdeling||r.afdeling===amiraBalanceFilter.afdeling)&&(!amiraBalanceFilter.workstream||r.type===amiraBalanceFilter.workstream));}
+function mbBalanceStatus(r){if(r.reason)return r.reason;if(!r.baseExists)return 'NO BASE';if(!r.unitOK)return 'CHECK UOM';if(Math.abs(r.actual)<1e-6)return r.missingHa?'MATERIAL NOT APPLIED':'BELUM REALISASI';return r.actual>r.base+1e-6?'OVER BASE':r.actual<r.base-1e-6?'UNDER BASE':'ON BASE';}
+function mbDoseStatus(r){if(r.reason)return r.reason;if(!r.baseExists)return 'NO BASE';if(!r.unitOK)return 'CHECK UOM';if(!r.ha)return r.actual?'NO HA':'BELUM REALISASI';return r.actual>r.ha*r.dose+1e-6?'OVER DOSIS':r.actual<r.ha*r.dose-1e-6?'UNDER DOSIS':'SESUAI';}
+function mbCells(r){return [r.block,r.typeInternal,r.material,r.baseExists?fmt(r.base):'—',r.reason==='MAPPING PENDING'?'—':fmt(r.actual),r.baseExists&&r.unitOK&&r.reason!=='MAPPING PENDING'?fmt(r.base-r.actual):'—',fmt(r.ha),r.baseExists?fmt(r.dose):'—',r.ha&&r.unitOK?fmt(r.actual/r.ha):'—',r.baseExists&&r.ha&&r.unitOK?fmt(r.actual-r.ha*r.dose):'—',r.uom,mbBalanceStatus(r),mbDoseStatus(r),r.missingHa?(r.actual?'PARTIAL RECIPE':'MATERIAL NOT APPLIED'):r.reason?'MAPPING REVIEW':!r.baseExists?'NON BASE MATERIAL':r.ha?'APPLIED':'—'];}
+function renderCumulativeBalanceRows(){const el=$('balanceDetail');if(!el)return;const rows=mbRows();$('balanceFilterInfo').textContent=`${monthlyPeriodBounds(amiraBalancePeriod)?.label||amiraBalancePeriod} · ${rows.length} baris · ${amiraBalanceBaseNote||''} · Alokasi multi-blok proporsional P4.`;el.innerHTML=rows.map(r=>`<tr class="${mbBalanceStatus(r)==='OVER BASE'?'overRow':''}">${mbCells(r).map((v,i)=>`<td${i===12&&v==='OVER DOSIS'?' style="color:var(--red);font-weight:700"':''}>${esc(String(v))}</td>`).join('')}</tr>`).join('')||'<tr><td colspan="13">Tidak ada data.</td></tr>';}
+function balanceCsvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"';}
+function downloadCumulativeMaterialBalance(){const rows=mbRows();if(!rows.length)return alert('Tidak ada data.');const head=['Afdeling','Blok','Jenis','Material','Base','Actual','Sisa Base','HA Real','Dosis Base','Dosis Actual','Deviasi Material','UOM','Status Balance','Status Dosis','Status Komposisi'];const csv=[['Periode',amiraBalancePeriod,amiraBalanceBaseNote],head,...rows.map(r=>[r.afdeling,...mbCells(r)])].map(r=>r.map(balanceCsvCell).join(';')).join('\r\n');const url=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=`AMIRA_Material_Balance_${amiraBalancePeriod}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+let amiraBalanceBaseNote='',mbRun=0;
 function initMaterialBalanceControls(){
- const af=$('balanceAfdelingFilter'), wf=$('balanceWorkstreamFilter'), pf=$('balancePeriodFilter');
+ const hb=$('mbHistoryBtn'),he=$('mbHistoryExport');if(hb)hb.onclick=mbLoadHistory;if(he)he.onclick=mbExportHistory;const af=$('balanceAfdelingFilter'), wf=$('balanceWorkstreamFilter'), pf=$('balancePeriodFilter');
  if(pf&&!pf.dataset.bound){
    monthlyPeriodOptions().forEach(p=>{const o=document.createElement('option');o.value=p.key;o.textContent=p.label;pf.appendChild(o);});
    if(!monthlyPeriodOptions().some(p=>p.key===amiraBalancePeriod))amiraBalancePeriod=monthlyActivePeriodKey(new Date().toISOString().slice(0,10));
    pf.value=amiraBalancePeriod;pf.dataset.bound='1';
    pf.onchange=()=>{amiraBalancePeriod=pf.value;refreshCumulativeMaterialBalance();};
  }
- if(af&&!af.dataset.bound){af.dataset.bound='1';af.onchange=()=>{amiraBalanceFilter.afdeling=af.value;renderCumulativeBalanceRows();};}
- if(wf&&!wf.dataset.bound){wf.dataset.bound='1';wf.onchange=()=>{amiraBalanceFilter.workstream=wf.value;renderCumulativeBalanceRows();};}
+ if(af&&!af.dataset.bound){af.dataset.bound='1';af.onchange=()=>{amiraBalanceFilter.afdeling=af.value;renderCumulativeBalanceRows();mbRenderHistory();};}
+ if(wf&&!wf.dataset.bound){wf.dataset.bound='1';wf.onchange=()=>{amiraBalanceFilter.workstream=wf.value;renderCumulativeBalanceRows();mbRenderHistory();};}
  const dl=$('balanceDownloadBtn');if(dl&&!dl.dataset.bound){dl.dataset.bound='1';dl.onclick=downloadCumulativeMaterialBalance;}
  const rs=$('balanceResetBtn');if(rs&&!rs.dataset.bound){rs.dataset.bound='1';rs.onclick=()=>{amiraBalanceFilter={afdeling:'',workstream:''};if(af)af.value='';if(wf)wf.value='';renderCumulativeBalanceRows();};}
 }
 
-async function refreshCumulativeMaterialBalance(){
- try{
-   const d=state.data||buildData();
-   const normBal=s=>{let n=String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const a={'GLIPHOSATE':'GLYPHOSATE','METHIL':'METIL','AMMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT','AMONIUMGLUFOSINATE':'AMONIUMGLUFOSINAT'};return a[n]||n};
-   const subtypeBal=t=>{const m=String(t||'').toUpperCase().match(/^(?:CWC|PTC|WDC)([1-4])$/);return m?m[1]:''};
-   initMaterialBalanceControls();
-   const periodKey=amiraBalancePeriod||monthlyActivePeriodKey(new Date().toISOString().slice(0,10));
-   const agg=await amiraCumulativeMaterialActual(d,periodKey);
-   const rows=[],baseGroups=new Map(),actualMap=new Map();
-   Object.values(d.prescriptionByBlock||{}).forEach(p=>{
-     const internal=String(p.type||'').toUpperCase(), fam=internal.match(/^(CWC|PTC|WDC)/)?.[1]; if(!fam)return;
-     const report=fam==='WDC'?'WDC':'CPT', st=subtypeBal(internal);
-     p.items.forEach(x=>{
-       const canonical=normBal(x.material), k=[p.block,report,st,canonical].join('|'), prev=baseGroups.get(k);
-       if(prev){prev.total+=num(x.total);prev.cost+=num(x.cost);}
-       else baseGroups.set(k,{block:p.block,type:report,subtype:st,material:x.material,total:num(x.total),cost:num(x.cost),ha:num(p.ha),uom:x.uom||'',price:num(x.price)});
-     });
-   });
-   agg.forEach(a=>actualMap.set([a.block,a.type,a.subtype,a.canonical].join('|'),a));
-   baseGroups.forEach((b,k)=>{
-     const a=actualMap.get(k),base=num(b.total),actual=num(a?.actual),diff=actual-base,ha=num(b.ha)||hestiHa(b.block,'HESTI')||0;
-     rows.push({afdeling:afdelingLabel(afdelingOfBlock(b.block)),block:b.block,type:b.type,typeInternal:b.subtype?`${b.type}${b.subtype}`:'UNMAPPED',material:b.material,uom:b.uom||a?.uom||'—',base,actual,diff,ha,baseExists:true});
-     if(a)actualMap.delete(k);
-   });
-   actualMap.forEach(a=>{
-     const ha=hestiHa(a.block,'HESTI')||0,actual=num(a.actual);
-     rows.push({afdeling:afdelingLabel(afdelingOfBlock(a.block)),block:a.block,type:a.type,typeInternal:a.subtype?`${a.type}${a.subtype}`:'UNMAPPED',material:a.material,uom:a.uom||'—',base:0,actual,diff:actual,ha,baseExists:false});
-   });
-   amiraBalanceRows=rows;
-   renderCumulativeBalanceRows();
- }catch(e){console.warn('Cumulative Material Balance:',e)}
-}
+async function mbCalculatePeriod(period){const d=state.data||buildData(),current=monthlyActivePeriodKey(new Date().toISOString().slice(0,10));let base=d.prescriptionByBlock||{},note='Base aktif';
+ const key='AMIRA_MB_BASE_V1_'+period;let saved=null;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch(e){}
+ if(saved?.base&&period!==current){base=saved.base;note='Snapshot base '+saved.date+' (bukan bukti base asli periode)';}else if(period!==current){note='Historical: base aktif, belum tervalidasi';}else{try{localStorage.setItem(key,JSON.stringify({base,date:new Date().toISOString().slice(0,10)}));}catch(e){note='Base aktif; snapshot gagal disimpan';}}
+ const agg=await amiraCumulativeMaterialActual(d,period,base);const rows=[];
+ const unit=s=>{s=String(s||'').toUpperCase().split('/')[0].trim();return /^(L|LTR|LITER|LITRE)$/.test(s)?'L':/^(G|GR|GRAM)$/.test(s)?'GR':s;};
+ const push=(p,x,a)=>{const block=p?.block||a.block,type=p?.type||a.type,bu=unit(x?.uom),au=unit(a?.uom),factor=bu==='GR'&&au==='KG'?1000:bu==='KG'&&au==='GR'?0.001:1;const unitOK=!x||!a?.actual||!!(bu&&au&&(bu===au||factor!==1));rows.push({afdeling:a?.afd||afdelingLabel(afdelingOfBlock(block)),block,type:type.startsWith('WDC')?'WDC':/^(CWC|PTC)/.test(type)?'CPT':'OTHER',typeInternal:type,material:x?.material||a.material,uom:x?.uom||a?.uom||'—',base:num(x?.total),dose:num(x?.dose),actual:num(a?.actual)*factor,ha:num(a?.ha),missingHa:num(a?.missingHa),baseExists:!!x,unitOK,reason:a?.reason||''});};
+ for(const p of Object.values(base))for(const x of p.items){const k=[p.block,p.type,mbNorm(x.material),'',''].join('|');const a=agg.get(k);const pending=!a&&[...agg.values()].some(v=>v.block===p.block&&p.type.startsWith(v.type)&&v.reason);push(p,x,a||(pending?{reason:'MAPPING PENDING'}:undefined));agg.delete(k);}
+ for(const a of agg.values())push(null,null,a);return {rows,note};}
+async function refreshCumulativeMaterialBalance(){const run=++mbRun;try{initMaterialBalanceControls();const result=await mbCalculatePeriod(amiraBalancePeriod);if(run!==mbRun)return;amiraBalanceRows=result.rows;amiraBalanceBaseNote=result.note;renderCumulativeBalanceRows();}catch(e){if(run!==mbRun)return;amiraBalanceRows=[];$('balanceDetail').textContent='Gagal membaca Material Balance: '+e.message;}}
+let mbHistory=[];
+async function mbLoadHistory(){const panel=$('mbHistoryPanel');panel.style.display='block';panel.textContent='Membaca historical lokal…';try{const result=[];for(const period of ['2026-09','2026-10','2026-11','2026-12']){const x=await mbCalculatePeriod(period);result.push({period,...x});}mbHistory=result;mbRenderHistory();}catch(e){panel.textContent='Gagal membaca historical: '+e.message;}}
+function mbHistoryFiltered(){return mbHistory.flatMap(p=>p.rows.filter(r=>(!amiraBalanceFilter.afdeling||r.afdeling===amiraBalanceFilter.afdeling)&&(!amiraBalanceFilter.workstream||r.type===amiraBalanceFilter.workstream)).map(r=>({...r,period:p.period,note:p.note})));}
+function mbRenderHistory(){const panel=$('mbHistoryPanel');if(!mbHistory.length||panel.style.display==='none')return;const rows=mbHistoryFiltered(), map=new Map();for(const r of rows){const rawUnit=String(r.uom||'').toUpperCase().split('/')[0].trim();const u=/^(L|LTR|LITER|LITRE)$/.test(rawUnit)?'L':/^(G|GR|GRAM|KG)$/.test(rawUnit)?'GR':rawUnit;const factor=rawUnit==='KG'?1000:1;const k=[mbNorm(r.material),u].join('|');const x=map.get(k)||{name:r.material,uom:u,values:{}};x.values[r.period]=(x.values[r.period]||0)+r.actual*factor;map.set(k,x);}const periods=mbHistory.map(p=>p.period);panel.innerHTML='<div class="notice">Actual per material dan satuan, termasuk mapping review. Nol berarti tidak ada actual terbaca, bukan bukti tidak ada pemakaian. Base historical mengikuti catatan masing-masing periode.</div><div class="scroll"><table><thead><tr><th>Material</th><th>UOM</th>'+periods.map(p=>'<th>'+p+'</th>').join('')+'</tr></thead><tbody>'+[...map.values()].map(x=>{const max=Math.max(1,...Object.values(x.values));return '<tr><td>'+esc(x.name)+'</td><td>'+esc(x.uom)+'</td>'+periods.map(p=>'<td>'+fmt(x.values[p]||0)+'<div style="height:5px;background:#38a169;width:'+Math.max(0,100*(x.values[p]||0)/max)+'%"></div></td>').join('')+'</tr>';}).join('')+'</tbody></table></div>'+mbHistory.map(p=>'<div class="meta">'+p.period+' · '+esc(p.note)+'</div>').join('');}
+function mbExportHistory(){if(!mbHistory.length)return alert('Buka Historical dahulu.');const head=['Periode','Catatan Base','Afdeling','Blok','Jenis','Material','Base','Actual','Sisa Base','HA Real','Dosis Base','Dosis Actual','Deviasi Material','UOM','Status Balance','Status Dosis','Status Komposisi'];const csv=[head,...mbHistoryFiltered().map(r=>[r.period,r.note,r.afdeling,...mbCells(r)])].map(r=>r.map(balanceCsvCell).join(';')).join('\r\n');const url=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='AMIRA_Historical_Material_Sep-Dec_2026.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 
 function renderAll(){state.data=buildData();initMaterialBalanceControls();$('today').textContent=state.dataset.date?new Date(state.dataset.date+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}):'—';renderDashboard();renderPages();renderRacunPage();updateControl();updateHistory();renderMultiAfdeling().catch(e=>console.warn('Multi Afdeling:',e));refreshCumulativeMaterialBalance();}
 function workData(w){let d=state.data;return{ha:d.actualWS[w]||0,blocks:new Set(d.sic.filter(r=>classify(r.JOBCODE,job(r.JOBCODE).DESCRIPTION||'')===w).map(r=>clean(r.BLOKCODE)).filter(Boolean)).size,hk:d.hkWS[w]?.size||0,racun:d.racunWS[w]||0,dose:(d.actualWS[w]||0)?(d.racunWS[w]||0)/(d.actualWS[w]||0):0}}
@@ -545,16 +457,16 @@ function multiFilterRowsByWorkstream(rows){
  if(!ws)return rows;
  return rows.map(r=>{
    const q=ws==='CPT'?r.cpt:ws==='CWC'?r.cwc:ws==='PATH'?r.path:ws==='TPH'?r.tph:ws==='CWM'?r.cwm:ws==='WDC'?r.wdc:ws==='WDM'?r.wdm:ws==='PUPUK'?r.pupuk:ws==='PRUNING'?r.pruning:r.other;
-   return {...r,total:q};
+   return {...r,total:q,coverage:r.ha?100*q/r.ha:0};
  }).filter(r=>r.total>0);
 }
 function multiRowsFromItems(items){const map={};
  HESTI_JUNI_2026.forEach(h=>{const b=String(h.block).trim().toUpperCase(),a=afdelingLabel(afdelingOfBlock(b)),site=h.site||'SYM1',k=[site,a,b].join('|');map[k]={site,afdeling:a,block:b,cwc:0,path:0,tph:0,cpt:0,cwm:0,wdc:0,wdm:0,pruning:0,pupuk:0,other:0,total:0,dates:new Set(),cptSeen:new Set()}});
  items.forEach(x=>{const b=x.block,a=afdelingLabel(x.afdeling||afdelingOfBlock(b)),site=siteOfBlock(b),k=[site,a,b].join('|');map[k]??={site,afdeling:a,block:b,cwc:0,path:0,tph:0,cpt:0,cwm:0,wdc:0,wdm:0,pruning:0,pupuk:0,other:0,total:0,dates:new Set(),cptSeen:new Set()};const q=num(x.ha),ws=multiWorkstream(x);
-   if(ws==='CWC'||ws==='PATH'||ws==='TPH'){map[k].cptSeen.add(ws);}
-   else if(ws==='CWM')map[k].cwm+=q;else if(ws==='WDC')map[k].wdc+=q;else if(ws==='WDM')map[k].wdm+=q;else if(ws==='PRUNING')map[k].pruning+=q;else if(ws==='PUPUK')map[k].pupuk+=q;else if(ws==='CPT'){map[k].cptSeen.add('CPT');}else map[k].other+=q;
+   if(ws==='CWC'||ws==='PATH'||ws==='TPH'){map[k][ws.toLowerCase()]+=q;}
+   else if(ws==='CWM')map[k].cwm+=q;else if(ws==='WDC')map[k].wdc+=q;else if(ws==='WDM')map[k].wdm+=q;else if(ws==='PRUNING')map[k].pruning+=q;else if(ws==='PUPUK')map[k].pupuk+=q;else if(ws==='CPT'){map[k].cpt+=q;}else map[k].other+=q;
    if(x.date)map[k].dates.add(x.date)});
- return Object.values(map).map(r=>{r.ha=hestiHa(r.block,multiAfdelingState.basis)||num(state.fields.get(r.block)?.HECTPLANTED);r.cwc=r.cptSeen.has('CWC')?r.ha:0;r.path=r.cptSeen.has('PATH')?r.ha:0;r.tph=r.cptSeen.has('TPH')?r.ha:0;r.cpt=r.cptSeen.size?r.ha:0;r.total=r.cpt+r.cwm+r.wdc+r.wdm+r.pruning+r.pupuk+r.other;r.coverage=r.ha?100*r.total/r.ha:0;r.days=r.dates.size;delete r.cptSeen;return r});
+ return Object.values(map).map(r=>{r.ha=hestiHa(r.block,multiAfdelingState.basis)||num(state.fields.get(r.block)?.HECTPLANTED);const cptWorkHa=r.cwc+r.path+r.tph+r.cpt;r.cpt=Math.max(r.cwc,r.path,r.tph,r.cpt);r.total=cptWorkHa+r.cwm+r.wdc+r.wdm+r.pruning+r.pupuk+r.other;r.coverage=r.ha?100*r.total/r.ha:0;r.days=r.dates.size;delete r.cptSeen;return r});
 }
 function multiDailyRowsFromItems(items,date){const filtered=items.filter(x=>x.date===date);return multiRowsFromItems(filtered).filter(r=>r.total>0)}
 function multiEscCell(v){
@@ -562,7 +474,7 @@ function multiEscCell(v){
  if(typeof v==='number'&&Number.isFinite(v)){
    let s=String(v);
    if(/[eE]/.test(s))s=v.toFixed(10);
-   s=s.replace(/0+$/,'').replace(/\.$/,'');
+   if(s.includes('.'))s=s.replace(/0+$/,'').replace(/\.$/,'');
    return s.replace('.',',');
  }
  return '"'+String(v).replace(/\r?\n/g,' ').replace(/"/g,'""')+'"';
@@ -701,7 +613,7 @@ async function monthlyHistoricalRows(bounds){
  }
  return out;
 }
-function monthlyCsvCell(v){if(v===null||v===undefined||v==='')return '';if(typeof v==='number'&&Number.isFinite(v)){let s=String(v);if(/[eE]/.test(s))s=v.toFixed(10);s=s.replace(/0+$/,'').replace(/\.$/,'');return s.replace('.',',');}const s=String(v).replace(/\r?\n/g,' ').replace(/"/g,'""');return `"${s}"`;}
+function monthlyCsvCell(v){if(v===null||v===undefined||v==='')return '';if(typeof v==='number'&&Number.isFinite(v)){let s=String(v);if(/[eE]/.test(s))s=v.toFixed(10);if(s.includes('.'))s=s.replace(/0+$/,'').replace(/\.$/,'');return s.replace('.',',');}const s=String(v).replace(/\r?\n/g,' ').replace(/"/g,'""');return `"${s}"`;}
 function csvExcelJoin(values){return values.map(monthlyCsvCell).join(';')}
 function monthlyDownload(rows,afRows,bounds,umk,days,afd){
  const hkRate=days>0?umk/days:0;
@@ -1007,10 +919,10 @@ function renderPages(){let d=state.data||buildData();const workerItemHa=new Map(
  const cptPage=$('page-cpt');
  if(cptPage){
    const byBlock={};
-   (d.sic||[]).forEach(r=>{const g=cptReportGroup(r.JOBCODE),b=clean(r.BLOKCODE);if(!g||!b)return;byBlock[b]??={block:b,cwc:false,path:false,tph:false};byBlock[b][g.toLowerCase()]=true;});
-   const rows=Object.values(byBlock).sort((a,b)=>a.block.localeCompare(b.block,undefined,{numeric:true})).map(r=>{const h=hestiHa(r.block,'HESTI')||num(state.fields.get(r.block)?.HECTPLANTED)||0,has=r.cwc||r.path||r.tph;return{...r,ha:h,cwcHa:r.cwc?h:0,pathHa:r.path?h:0,tphHa:r.tph?h:0,cptHa:has?h:0,cwcPct:r.cwc?100:0,pathPct:r.path?100:0,tphPct:r.tph?100:0,cptPct:has?100:0};});
+   (d.sic||[]).forEach(r=>{const g=cptReportGroup(r.JOBCODE),b=clean(r.BLOKCODE);if(!g||!b)return;byBlock[b]??={block:b,cwc:0,path:0,tph:0};byBlock[b][g.toLowerCase()]+=num(r.P4);});
+   const rows=Object.values(byBlock).sort((a,b)=>a.block.localeCompare(b.block,undefined,{numeric:true})).map(r=>{const h=hestiHa(r.block,'HESTI')||num(state.fields.get(r.block)?.HECTPLANTED)||0,total=Math.max(r.cwc,r.path,r.tph);return{...r,ha:h,cwcHa:r.cwc,pathHa:r.path,tphHa:r.tph,cptHa:total,cwcPct:h?100*r.cwc/h:0,pathPct:h?100*r.path/h:0,tphPct:h?100*r.tph/h:0,cptPct:h?100*total/h:0};});
    const totalHa=rows.reduce((a,r)=>a+r.cptHa,0),totalCwc=rows.reduce((a,r)=>a+r.cwcHa,0),totalPath=rows.reduce((a,r)=>a+r.pathHa,0),totalTph=rows.reduce((a,r)=>a+r.tphHa,0);
-   cptPage.innerHTML=`<div class="eyebrow">WORKSTREAM · CPT</div><div class="detailTitle">CPT — Circle Weeding Chemist · Path Chemist · TPH Chemist</div><div class="meta">Setiap item CPT dihitung terhadap <b>Ha blok</b> dan tidak diakumulasi lintas item. Jika CWC saja dikerjakan, CWC = 100% Ha blok; Path dan TPH mengikuti aturan yang sama. <b>CPT total tetap satu</b> dan tidak menjumlahkan CWC + Path + TPH.</div><div class="detailKpis"><div class="detailKpi"><small>Circle Weeding Chemist</small><b>${fmt(totalCwc)} Ha</b></div><div class="detailKpi"><small>Path Chemist</small><b>${fmt(totalPath)} Ha</b></div><div class="detailKpi"><small>TPH Chemist</small><b>${fmt(totalTph)} Ha</b></div><div class="detailKpi"><small>CPT Total</small><b>${fmt(totalHa)} Ha</b></div></div><div class="card"><div class="head"><h3>Realisasi CPT per Blok</h3><span>HA item = maksimal 100% dari HA blok</span></div><div class="scroll"><table><thead><tr><th>Blok</th><th>Ha Blok</th><th>Circle Weeding Chemist</th><th>%</th><th>Path Chemist</th><th>%</th><th>TPH Chemist</th><th>%</th><th>CPT</th><th>% CPT</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${r.block}</b></td><td>${fmt(r.ha)}</td><td>${fmt(r.cwcHa)}</td><td>${fmt(r.cwcPct)}%</td><td>${fmt(r.pathHa)}</td><td>${fmt(r.pathPct)}%</td><td>${fmt(r.tphHa)}</td><td>${fmt(r.tphPct)}%</td><td><b>${fmt(r.cptHa)}</b></td><td>${fmt(r.cptPct)}%</td></tr>`).join('')||'<tr><td colspan="10" class="empty">Tidak ada realisasi CPT.</td></tr>'}</tbody></table></div></div>`;
+   cptPage.innerHTML=`<div class="eyebrow">WORKSTREAM · CPT</div><div class="detailTitle">CPT — Circle Weeding Chemist · Path Chemist · TPH Chemist</div><div class="meta">Realisasi setiap item berasal dari P4 T_SIC. HeStI hanya pembanding. CPT gabungan = nilai terbesar antar item (estimasi, bukan luas spasial unik).</div><div class="detailKpis"><div class="detailKpi"><small>Circle Weeding Chemist</small><b>${fmt(totalCwc)} Ha</b></div><div class="detailKpi"><small>Path Chemist</small><b>${fmt(totalPath)} Ha</b></div><div class="detailKpi"><small>TPH Chemist</small><b>${fmt(totalTph)} Ha</b></div><div class="detailKpi"><small>CPT Total</small><b>${fmt(totalHa)} Ha</b></div></div><div class="card"><div class="head"><h3>Realisasi CPT per Blok</h3><span>HA item = realisasi P4</span></div><div class="scroll"><table><thead><tr><th>Blok</th><th>Ha Blok</th><th>Circle Weeding Chemist</th><th>%</th><th>Path Chemist</th><th>%</th><th>TPH Chemist</th><th>%</th><th>CPT</th><th>% CPT</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${r.block}</b></td><td>${fmt(r.ha)}</td><td>${fmt(r.cwcHa)}</td><td>${fmt(r.cwcPct)}%</td><td>${fmt(r.pathHa)}</td><td>${fmt(r.pathPct)}%</td><td>${fmt(r.tphHa)}</td><td>${fmt(r.tphPct)}%</td><td><b>${fmt(r.cptHa)}</b></td><td>${fmt(r.cptPct)}%</td></tr>`).join('')||'<tr><td colspan="10" class="empty">Tidak ada realisasi CPT.</td></tr>'}</tbody></table></div></div>`;
  }
  // Dedicated Pupuk + Pruning detail pages. These read the same active dataset as the main dashboard.
  const pd=dashboardPupukData(d);
@@ -1403,19 +1315,35 @@ window.AMIRA_CALENDAR_V46_2={
 'use strict';
 function getTable(id){const b=document.getElementById(id);const t=b&&b.closest('table');if(!t)return{head:[],body:[]};return{head:[...(t.querySelector('thead tr')?.cells||[])].map(x=>(x.innerText||x.textContent||'').trim()),body:[...t.querySelectorAll('tbody tr')].map(r=>[...r.cells].map(x=>(x.innerText||x.textContent||'').trim())).filter(r=>r.length&&!/Belum ada|Tidak ada|Pilih/i.test(r.join(' ')))};}
 function csv(name,d){if(!d.body.length){alert('Data belum tersedia.');return;}const s='\\ufeff'+[d.head,...d.body].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\\r\\n');const u=URL.createObjectURL(new Blob([s],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-window.amiraDownloadMaterialUsageCSV=()=>csv('AMIRA_Material_Usage.csv',getTable('materialDetail'));
+function materialUsageXlsx(d){
+ const enc=new TextEncoder(), xml=v=>String(v??'').replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+ const ns='http://schemas.openxmlformats.org/spreadsheetml/2006/main', rel='http://schemas.openxmlformats.org/officeDocument/2006/relationships', pkg='http://schemas.openxmlformats.org/package/2006/relationships';
+ const rows=[d.head,...d.body], last=rows.length;
+ const body=rows.map((r,i)=>'<row r="'+(i+1)+'">'+r.map((v,j)=>{const ref=String.fromCharCode(65+j)+(i+1), raw=String(v??'').trim(), n=Number(raw.replace(/\./g,'').replace(',','.'));return i&&j===5&&raw&&Number.isFinite(n)?`<c r="${ref}" s="2"><v>${n}</v></c>`:`<c r="${ref}" s="${i?0:1}" t="inlineStr"><is><t xml:space="preserve">${xml(v)}</t></is></c>`;}).join('')+'</row>').join('');
+ const files={
+ '[Content_Types].xml':`<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`,
+ '_rels/.rels':`<Relationships xmlns="${pkg}"><Relationship Id="rId1" Type="${rel}/officeDocument" Target="xl/workbook.xml"/></Relationships>`,
+ 'xl/workbook.xml':`<workbook xmlns="${ns}" xmlns:r="${rel}"><sheets><sheet name="Material Usage" sheetId="1" r:id="rId1"/></sheets></workbook>`,
+ 'xl/_rels/workbook.xml.rels':`<Relationships xmlns="${pkg}"><Relationship Id="rId1" Type="${rel}/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${rel}/styles" Target="styles.xml"/></Relationships>`,
+ 'xl/styles.xml':`<styleSheet xmlns="${ns}"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF087052"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="2" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`,
+ 'xl/worksheets/sheet1.xml':`<worksheet xmlns="${ns}"><dimension ref="A1:H${last}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>${[15,15,28,38,18,15,12,16].map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')}</cols><sheetData>${body}</sheetData><autoFilter ref="A1:H${last}"/></worksheet>`};
+ const parts=[], central=[];let offset=0,cs=0;const crc=b=>{let c=-1;for(const x of b){c^=x;for(let i=0;i<8;i++)c=(c>>>1)^((c&1)?0xedb88320:0);}return(c^-1)>>>0;};
+ for(const [name,value] of Object.entries(files)){const n=enc.encode(name), b=enc.encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+value), c=crc(b), h=new Uint8Array(30),v=new DataView(h.buffer), k=new Uint8Array(46),w=new DataView(k.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint32(14,c,true);v.setUint32(18,b.length,true);v.setUint32(22,b.length,true);v.setUint16(26,n.length,true);w.setUint32(0,0x02014b50,true);w.setUint16(4,20,true);w.setUint16(6,20,true);w.setUint32(16,c,true);w.setUint32(20,b.length,true);w.setUint32(24,b.length,true);w.setUint16(28,n.length,true);w.setUint32(42,offset,true);parts.push(h,n,b);central.push(k,n);offset+=h.length+n.length+b.length;cs+=k.length+n.length;}
+ const end=new Uint8Array(22),e=new DataView(end.buffer);e.setUint32(0,0x06054b50,true);e.setUint16(8,central.length/2,true);e.setUint16(10,central.length/2,true);e.setUint32(12,cs,true);e.setUint32(16,offset,true);return new Blob([...parts,...central,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+window.amiraDownloadMaterialUsageCSV=()=>{const d=getTable('materialDetail');if(!d.body.length){alert('Data belum tersedia.');return;}const u=URL.createObjectURL(materialUsageXlsx(d)),a=document.createElement('a');a.href=u;a.download='AMIRA_Material_Usage.xlsx';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000);};
 window.amiraDownloadActivityWorkerCSV=()=>{const a=getTable('itemHKDetail'),b=getTable('workerDetail'),m=getTable('materialDetail');let rows=[['REKAP WORKER x ITEM'],a.head,...a.body,[''],['DETAIL WORKER ACTIVITY'],b.head,...b.body,[''],['MATERIAL / RACUN'],m.head,...m.body];csv('AMIRA_Activity_Worker.csv',{head:[],body:rows});};
 function logoSvgData(){const s=document.querySelector('.amiraMark svg');if(!s)return null;let x=new XMLSerializer().serializeToString(s);return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(x);}
 function pdf(title,sections,name){const J=window.jspdf&&window.jspdf.jsPDF;if(!J){alert('PDF engine belum siap. Muat ulang AMIRA lalu coba lagi.');return;}const d=new J({orientation:'landscape',unit:'mm',format:'a4'}),m=9,W=d.internal.pageSize.getWidth(),H=d.internal.pageSize.getHeight();const draw=()=>{const ld=logoSvgData();if(ld){const im=new Image();im.onload=()=>{try{d.addImage(im,'SVG',m,7,13,13)}catch(e){};finish()};im.onerror=finish;im.src=ld;}else finish();function finish(){d.setFont('helvetica','bold');d.setFontSize(15);d.text('AMIRA',25,13);d.setFont('helvetica','normal');d.setFontSize(7);d.text('Afdeling Material & Rawat Intelligence',25,18);d.setFont('helvetica','bold');d.setFontSize(13);d.text(title,m,28);let y=35;for(const sec of sections){if(y>H-30){d.addPage();y=18;}d.setFont('helvetica','bold');d.setFontSize(9);d.text(sec.title,m,y);y+=4;if(sec.data.body.length){d.autoTable({head:[sec.data.head],body:sec.data.body,startY:y,margin:{left:m,right:m},theme:'grid',styles:{fontSize:6.5,cellPadding:1.6,overflow:'linebreak'},headStyles:{fontStyle:'bold',halign:'center'},didDrawPage:()=>{d.setFontSize(7);d.setFont('helvetica','normal');d.text('AMIRA · Afdeling Material & Rawat Intelligence',m,H-5);d.text('Page '+d.internal.getNumberOfPages(),W-m,H-5,{align:'right'});}});y=d.lastAutoTable.finalY+7;}}d.save(name);}};draw();}
 window.amiraPdfMaterialUsageFixed=()=>pdf('Material Usage',[{title:'Material Usage — Actual',data:getTable('materialDetail')}],'AMIRA_Material_Usage.pdf');
 window.amiraPdfActivityWorkerFixed=()=>pdf('Activity & Worker',[{title:'Worker × Item — HK & Ha',data:getTable('itemHKDetail')},{title:'Detail Worker Activity',data:getTable('workerDetail')},{title:'Material / Racun Used',data:getTable('materialDetail')}],'AMIRA_Activity_Worker.pdf');
-function add(){const specs=[['page-material','amiraPdfMaterialUsageFixed','amiraDownloadMaterialUsageCSV','Material Usage'],['page-activity','amiraPdfActivityWorkerFixed','amiraDownloadActivityWorkerCSV','Activity & Worker']];for(const [id,pdfFn,csvFn,label] of specs){const sec=document.getElementById(id);if(!sec||sec.querySelector('[data-amira-fixed-download]'))continue;const bar=document.createElement('div');bar.setAttribute('data-amira-fixed-download','1');bar.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin:10px 0';for(const [fn,txt] of [[pdfFn,'📄 Download PDF'],[csvFn,'⬇ Download CSV']]){const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=txt;b.onclick=window[fn];bar.appendChild(b);}const title=sec.querySelector('.title');title?.insertAdjacentElement('afterend',bar);}}
+function add(){const specs=[['page-material','amiraPdfMaterialUsageFixed','amiraDownloadMaterialUsageCSV','Material Usage'],['page-activity','amiraPdfActivityWorkerFixed','amiraDownloadActivityWorkerCSV','Activity & Worker']];for(const [id,pdfFn,csvFn,label] of specs){const sec=document.getElementById(id);if(!sec||sec.querySelector('[data-amira-fixed-download]'))continue;const bar=document.createElement('div');bar.setAttribute('data-amira-fixed-download','1');bar.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin:10px 0';for(const [fn,txt] of [[pdfFn,'📄 Download PDF'],[csvFn,id==='page-material'?'⬇ Download Excel (.xlsx)':'⬇ Download CSV']]){const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=txt;b.onclick=window[fn];bar.appendChild(b);}const title=sec.querySelector('.title');title?.insertAdjacentElement('afterend',bar);}}
 add();new MutationObserver(add).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
 <style>.carry-over-table{min-width:1200px}.detailKpis .detailKpi{min-width:110px}@media(max-width:760px){#multiCarryTable,#monthlyCarryTable{font-size:10px}}</style>
 <script>
-/* AMIRA V46.8 — Monthly Material Balance Book Period (18 Aug 2026–Dec 2027) */
+/* AMIRA V46.15 — Monthly Material Balance Book Period (18 Aug 2026–Dec 2027) */
 (function(){
 'use strict';
 const START='2026-08-18';
