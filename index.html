@@ -1166,7 +1166,7 @@ $('today').textContent=state.dataset?.date?new Date(state.dataset.date+'T00:00:0
 (()=>{
 const URL='https://madkmszauebpojwjeeof.supabase.co', KEY='sb_publishable_0dEWKTuTyOKdgWx1l3YE_w_kUWttnaQ';
 let session=null,profile=null,busy=false;
-const panel=document.createElement('section');panel.style.cssText='position:fixed;right:12px;bottom:12px;z-index:99999;background:white;color:#164b36;border:1px solid #98b9ad;border-radius:10px;padding:12px;width:min(330px,90vw);box-shadow:0 3px 18px #0002;font:13px Arial';panel.innerHTML=`<b>AMIRA CLOUD • V47.9</b> <button id="acToggle" style="float:right">−</button><div id="acBody"><div id="acLogin"><input id="acEmail" type="text" placeholder="Username / Email" style="width:95%;margin:5px 0"><input id="acPass" type="password" placeholder="Password" style="width:95%;margin:5px 0"><button id="acIn">Login</button></div><div id="acActions" hidden><button id="acPush">Migrasi historical lokal</button> <button id="acPull">Tarik data cloud</button> <button id="acOut">Logout</button></div><div id="acStatus" style="margin-top:8px;white-space:pre-wrap">Mode lokal • belum login</div></div>`;document.body.append(panel); panel.id="amiraCloudPanel";const el=id=>document.getElementById(id), status=t=>{el('acStatus').textContent=t; document.getElementById('acHeader').textContent=profile?'Cloud • '+profile.nama:'Cloud • Login diperlukan';};
+const panel=document.createElement('section');panel.style.cssText='position:fixed;right:12px;bottom:12px;z-index:99999;background:white;color:#164b36;border:1px solid #98b9ad;border-radius:10px;padding:12px;width:min(330px,90vw);box-shadow:0 3px 18px #0002;font:13px Arial';panel.innerHTML=`<b>AMIRA CLOUD • V47.9.1</b> <button id="acToggle" style="float:right">−</button><div id="acBody"><div id="acLogin"><input id="acEmail" type="text" placeholder="Username / Email" style="width:95%;margin:5px 0"><input id="acPass" type="password" placeholder="Password" style="width:95%;margin:5px 0"><button id="acIn">Login</button></div><div id="acActions" hidden><button id="acPush">Migrasi historical lokal</button> <button id="acPull">Tarik data cloud</button> <button id="acOut">Logout</button></div><div id="acStatus" style="margin-top:8px;white-space:pre-wrap">Mode lokal • belum login</div></div>`;document.body.append(panel); panel.id="amiraCloudPanel";const el=id=>document.getElementById(id), status=t=>{el('acStatus').textContent=t; document.getElementById('acHeader').textContent=profile?'Cloud • '+profile.nama:'Cloud • Login diperlukan';};
 const header=document.createElement('button');header.id='acHeader';header.className='btn secondary';header.textContent='Cloud • Login diperlukan';header.onclick=()=>{panel.hidden=false;el('acBody').hidden=false};document.querySelector('.topbar').append(header);
 const app=document.querySelector('.app');function gate(on){app.inert=on;app.style.visibility=on?'hidden':'';panel.style.cssText=on?'position:fixed;inset:0;z-index:2147483647;margin:auto;width:min(390px,90vw);height:max-content;background:white;color:#164b36;border:1px solid #98b9ad;border-radius:14px;padding:25px;box-shadow:0 0 0 200vmax #003f35e8;font:15px Arial':'position:fixed;right:12px;top:110px;z-index:2147483647;background:white;color:#164b36;border:1px solid #98b9ad;border-radius:10px;padding:12px;width:min(330px,90vw);box-shadow:0 3px 18px #0002;font:13px Arial';panel.hidden=false;el('acToggle').hidden=on;el('acBody').hidden=false;}gate(true);
 const SK='amira-cloud-session-v471';function persist(){try{if(session)localStorage.setItem(SK,JSON.stringify(session));else localStorage.removeItem(SK)}catch(e){}}
@@ -1199,9 +1199,6 @@ window.addEventListener('online',()=>{if(session&&profile&&!locking)run(sync)});
 try{session=JSON.parse(localStorage.getItem(SK)||'null')}catch(e){}if(session)run(async()=>{try{await activate()}catch(e){session=null;profile=null;accessScope=null;persist();gate(true);throw e}});
 })();
 
-
-})();
-</script><script>
 /* AMIRA v46.2 — Calendar Master API */
 window.AMIRA_CALENDAR_V46_2={
   period:(dateISO)=>monthlyPeriodBounds(monthlyPeriodKey(dateISO)),
@@ -1209,200 +1206,6 @@ window.AMIRA_CALENDAR_V46_2={
   status:(bounds,todayISO)=>amiraCalendarBookStatus(bounds,todayISO),
   holidays:(year)=>[...amiraCalendarHolidays(year)]
 };
-</script>
-
-<!-- AMIRA v46.2 — Calendar/HK fixed-cost engine (isolated) -->
-<script>
-(function(){
-  const C={initialOpen:'2026-08-18',initialClose:'2026-09-20',holidays:new Set(['2026-08-17']),pad:n=>String(n).padStart(2,'0'),iso:d=>d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0'),parse:s=>new Date(String(s).slice(0,10)+'T00:00:00Z'),add(d,n){const x=new Date(d);x.setUTCDate(x.getUTCDate()+n);return x;},isHoliday(d){return d.getUTCDay()===0||this.holidays.has(this.iso(d));},workingDays(a,b){let n=0,d=this.parse(a),e=this.parse(b);while(d<=e){if(!this.isHoliday(d))n++;d=this.add(d,1)}return n;},bookFor(date){const d=this.parse(date),o=this.parse(this.initialOpen),c=this.parse(this.initialClose);if(d>=o&&d<=c)return{open:this.initialOpen,close:this.initialClose};const y=d.getUTCFullYear(),m=d.getUTCMonth();if(d.getUTCDate()>=21){const op=new Date(Date.UTC(y,m,21)),cl=new Date(Date.UTC(y,m+1,20));return{open:this.iso(op),close:this.iso(cl)}}const op=new Date(Date.UTC(m===0?y-1:y,m===0?11:m-1,21)),cl=new Date(Date.UTC(y,m,20));return{open:this.iso(op),close:this.iso(cl)};},hk(book){return this.workingDays(book.open,book.close)},costPerHK(fixedCost,book){const n=this.hk(book);return n?Number(fixedCost)/n:0}};
-  window.AMIRA_CALENDAR_V46_2=C;
-})();
-</script>
-\n<script>
-/* AMIRA PDF EXPORT — additive only. Existing calculations/rendering remain untouched. */
-(function(){
-  function esc(v){return String(v??'').replace(/\s+/g,' ').trim();}
-  function tableById(id){
-    const body=document.getElementById(id); if(!body) return {head:[],body:[]};
-    const table=body.closest('table'); if(!table) return {head:[],body:[]};
-    const head=Array.from(table.querySelectorAll('thead tr')).map(tr=>Array.from(tr.cells).map(c=>esc(c.innerText))).find(r=>r.length) || [];
-    const rows=Array.from(table.querySelectorAll('tbody tr')).map(tr=>Array.from(tr.cells).map(c=>esc(c.innerText))).filter(r=>r.length && !/Belum ada|Tidak ada|Pilih/i.test(r.join(' ')));
-    return {head,body:rows};
-  }
-  function logo(){
-    const img=document.querySelector('.aalLogo'); if(!img) return null;
-    try{const c=document.createElement('canvas'),w=img.naturalWidth||600,h=img.naturalHeight||300,s=Math.min(1,500/w);c.width=w*s;c.height=h*s;c.getContext('2d').drawImage(img,0,0,c.width,c.height);return c.toDataURL('image/png');}catch(e){return null;}
-  }
-  function doc(title,subtitle){
-    const J=window.jspdf?.jsPDF; if(!J){alert('PDF engine belum siap. Muat ulang AMIRA lalu coba lagi.');return null;}
-    const d=new J({orientation:'landscape',unit:'mm',format:'a4'}),m=9,W=d.internal.pageSize.getWidth(),H=d.internal.pageSize.getHeight();
-    const lg=logo(); if(lg)d.addImage(lg,'PNG',m,6,24,15);
-    d.setFont('helvetica','bold');d.setFontSize(16);d.text('AMIRA',38,13);
-    d.setFont('helvetica','normal');d.setFontSize(7);d.text('Afdeling Material & Rawat Intelligence',38,18);
-    d.setFont('helvetica','bold');d.setFontSize(13);d.text(title,m,28);
-    if(subtitle){d.setFont('helvetica','normal');d.setFontSize(7);d.text(esc(subtitle).slice(0,180),m,33);}
-    return {d,m,W,H,y:37};
-  }
-  function footer(d,m,W,H){d.setFont('helvetica','normal');d.setFontSize(7);d.text('AMIRA · Afdeling Material & Rawat Intelligence',m,H-5);d.text('Page '+d.internal.getNumberOfPages(),W-m,H-5,{align:'right'});}
-  function addTable(ctx,t,y){if(!t.head.length||!t.body.length)return y;ctx.d.autoTable({head:[t.head],body:t.body,startY:y,margin:{left:ctx.m,right:ctx.m},theme:'grid',styles:{font:'helvetica',fontSize:6.5,cellPadding:1.7,overflow:'linebreak'},headStyles:{fontStyle:'bold',halign:'center'},didDrawPage:()=>footer(ctx.d,ctx.m,ctx.W,ctx.H)});return ctx.d.lastAutoTable.finalY+7;}
-  function heading(d,text,y){d.setFont('helvetica','bold');d.setFontSize(9);d.text(text,9,y);return y+4;}
-  function save(d,name){d.save(name);}
-
-  window.amiraPdfMaterialUsage=function(){
-    const t=tableById('materialDetail');const c=doc('Material Usage','MAIN actual racun dari T_MATERIAL');if(!c)return;
-    c.y=heading(c.d,'Material Usage — Actual',c.y);c.y=addTable(c,t,c.y);footer(c.d,c.m,c.W,c.H);save(c.d,'AMIRA_Material_Usage_'+(state?.dataset?.date||'report')+'.pdf');
-  };
-  window.amiraPdfActivityWorker=function(){
-    const c=doc('Activity & Worker','HK + Ha per item, detail worker, dan material/racun yang digunakan');if(!c)return;
-    c.y=heading(c.d,'Rekap Worker × Item — HK & Ha',c.y);c.y=addTable(c,tableById('itemHKDetail'),c.y);
-    if(c.y>c.H-35){c.d.addPage();c.y=18;}
-    c.y=heading(c.d,'Detail Worker Activity — Ha',c.y);c.y=addTable(c,tableById('workerDetail'),c.y);
-    if(c.y>c.H-35){c.d.addPage();c.y=18;}
-    c.y=heading(c.d,'Racun / Material yang Digunakan',c.y);c.y=addTable(c,tableById('materialDetail'),c.y);
-    footer(c.d,c.m,c.W,c.H);save(c.d,'AMIRA_Activity_Worker_'+(state?.dataset?.date||'report')+'.pdf');
-  };
-  window.amiraPdfMultiAfdeling=function(){
-    const c=doc('Multi Afdeling & Akumulasi Pekerjaan','Akumulasi pekerjaan per blok dan rekap per afdeling');if(!c)return;
-    c.y=heading(c.d,'Akumulasi Pekerjaan per Blok',c.y);c.y=addTable(c,tableById('multiBlockTable'),c.y);
-    if(c.y>c.H-35){c.d.addPage();c.y=18;}
-    c.y=heading(c.d,'Rekap per Afdeling',c.y);c.y=addTable(c,tableById('multiAfdelingTable'),c.y);
-    if(c.y>c.H-35){c.d.addPage();c.y=18;}
-    c.y=heading(c.d,'Preview Laporan Daily',c.y);c.y=addTable(c,tableById('multiDailyTable'),c.y);
-    footer(c.d,c.m,c.W,c.H);save(c.d,'AMIRA_Multi_Afdeling_'+new Date().toISOString().slice(0,10)+'.pdf');
-  };
-  window.amiraPdfMonthlyCostHK=function(){
-    const period=document.getElementById('monthlyPeriodFilter')?.value||'period';
-    const afd=document.getElementById('monthlyAfdelingFilter')?.value||'';
-    const bounds=typeof window.monthlyPeriodBounds==='function'?window.monthlyPeriodBounds(period):null;
-    const subtitle='Periode Buku: '+(bounds?.label||period)+' · Afdeling: '+(afd||'Semua Afdeling')+' · Historical LOCKED';
-    const c=doc('Monthly Cost & HK',subtitle);if(!c)return;
-    if(typeof c.d.autoTable!=='function'){alert('PDF engine tabel belum siap. Muat ulang AMIRA lalu coba lagi.');return;}
-    const k=document.getElementById('monthlyKpis'); if(k){const cards=Array.from(k.querySelectorAll('.detailKpi')).map(x=>esc(x.innerText)).filter(Boolean);c.d.setFontSize(7);let x=c.m;cards.slice(0,10).forEach((v,i)=>{const col=i%5,row=Math.floor(i/5);const xx=c.m+col*57,yy=38+row*13;c.d.setDrawColor(210,220,215);c.d.roundedRect(xx,yy,53,10,1.5,1.5,'S');c.d.text(v.replace(/\n/g,' · ').slice(0,75),xx+2,yy+6);});c.y=66;}
-    c.y=heading(c.d,'Akumulasi per Blok',c.y);c.y=addTable(c,tableById('monthlyBlockTable'),c.y);
-    if(c.y>c.H-35){c.d.addPage();c.y=18;}
-    c.y=heading(c.d,'Rekap Afdeling',c.y);c.y=addTable(c,tableById('monthlyAfdelingTable'),c.y);
-    footer(c.d,c.m,c.W,c.H);save(c.d,'AMIRA_Monthly_Cost_HK_'+period+(afd?'_'+afd:'')+'.pdf');
-  };
-})();
-</script>
-
-
-<!-- AMIRA v46.2 CLEAN PATCH: download-only repairs.
-     Does not replace existing business logic. -->
-<script>
-(function(){
-  'use strict';
-
-  function tableData(selector){
-    const el = document.querySelector(selector);
-    const table = el ? (el.closest('table') || el.querySelector('table')) : null;
-    if(!table) return {head:[],body:[]};
-    const head = Array.from(table.querySelectorAll('thead tr')).map(tr =>
-      Array.from(tr.cells).map(td => (td.innerText||td.textContent||'').trim())
-    ).filter(r=>r.length);
-    const body = Array.from(table.querySelectorAll('tbody tr')).map(tr =>
-      Array.from(tr.cells).map(td => (td.innerText||td.textContent||'').trim())
-    ).filter(r=>r.length);
-    return {head:head[0]||[],body};
-  }
-
-  function csvEscape(v){
-    const s=String(v??'');
-    return '"' + s.replace(/"/g,'""') + '"';
-  }
-
-  function downloadCSV(name, data){
-    if(!data.head.length && !data.body.length){
-      alert('Data tabel belum tersedia.');
-      return;
-    }
-    const rows=[data.head,...data.body];
-    const csv='\uFEFF'+rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
-    const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);
-    a.download=name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  }
-
-  // Material Balance: selectors are intentionally broad so existing table IDs/classes are preserved.
-  window.amiraDownloadMaterialBalanceCSV=function(){
-    const candidates=[
-      '#materialBalanceBody',
-      '#materialBalanceTable',
-      '[id*="materialBalance"] tbody'
-    ];
-    let data={head:[],body:[]};
-    for(const s of candidates){
-      data=tableData(s);
-      if(data.body.length || data.head.length) break;
-    }
-    if(!data.body.length){
-      const t=Array.from(document.querySelectorAll('table')).find(x=>/material\s*balance/i.test(x.innerText||''));
-      if(t) data={head:Array.from(t.querySelectorAll('thead tr')[0]?.cells||[]).map(x=>(x.innerText||'').trim()),body:Array.from(t.querySelectorAll('tbody tr')).map(tr=>Array.from(tr.cells).map(x=>(x.innerText||'').trim())).filter(r=>r.length)};
-    }
-    downloadCSV('AMIRA_Material_Balance.csv',data);
-  };
-
-  // Add missing buttons only when a Material Balance section is present and no existing download button exists.
-  function ensureMaterialBalanceButtons(){
-    const title=Array.from(document.querySelectorAll('h1,h2,h3,h4,.sectionTitle,.cardTitle')).find(e=>/material\s*balance/i.test(e.innerText||''));
-    if(!title) return;
-    const container=title.closest('section,.card,.panel,div')||title.parentElement;
-    if(!container || container.querySelector('[data-amira-mb-downloads]')) return;
-    const bar=document.createElement('div');
-    bar.setAttribute('data-amira-mb-downloads','1');
-    bar.style.cssText='display:flex;gap:8px;justify-content:flex-end;margin:8px 0;';
-    const b=document.createElement('button');
-    b.type='button'; b.className='btn downloadBtn';
-    b.textContent='Download CSV';
-    b.onclick=window.amiraDownloadMaterialBalanceCSV;
-    bar.appendChild(b);
-    title.insertAdjacentElement('afterend',bar);
-  }
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ensureMaterialBalanceButtons);
-  else ensureMaterialBalanceButtons();
-  new MutationObserver(ensureMaterialBalanceButtons).observe(document.documentElement,{childList:true,subtree:true});
-})();
-</script>
-
-<script>
-(function(){
-'use strict';
-function getTable(id){const b=document.getElementById(id);const t=b&&b.closest('table');if(!t)return{head:[],body:[]};return{head:[...(t.querySelector('thead tr')?.cells||[])].map(x=>(x.innerText||x.textContent||'').trim()),body:[...t.querySelectorAll('tbody tr')].map(r=>[...r.cells].map(x=>(x.innerText||x.textContent||'').trim())).filter(r=>r.length&&!/Belum ada|Tidak ada|Pilih/i.test(r.join(' ')))};}
-function csv(name,d){if(!d.body.length){alert('Data belum tersedia.');return;}const s='\\ufeff'+[d.head,...d.body].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\\r\\n');const u=URL.createObjectURL(new Blob([s],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-function materialUsageXlsx(d){
- const enc=new TextEncoder(), xml=v=>String(v??'').replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
- const ns='http://schemas.openxmlformats.org/spreadsheetml/2006/main', rel='http://schemas.openxmlformats.org/officeDocument/2006/relationships', pkg='http://schemas.openxmlformats.org/package/2006/relationships';
- const rows=[d.head,...d.body], last=rows.length;
- const body=rows.map((r,i)=>'<row r="'+(i+1)+'">'+r.map((v,j)=>{const ref=String.fromCharCode(65+j)+(i+1), raw=String(v??'').trim(), n=Number(raw.replace(/\./g,'').replace(',','.'));return i&&j===5&&raw&&Number.isFinite(n)?`<c r="${ref}" s="2"><v>${n}</v></c>`:`<c r="${ref}" s="${i?0:1}" t="inlineStr"><is><t xml:space="preserve">${xml(v)}</t></is></c>`;}).join('')+'</row>').join('');
- const files={
- '[Content_Types].xml':`<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`,
- '_rels/.rels':`<Relationships xmlns="${pkg}"><Relationship Id="rId1" Type="${rel}/officeDocument" Target="xl/workbook.xml"/></Relationships>`,
- 'xl/workbook.xml':`<workbook xmlns="${ns}" xmlns:r="${rel}"><sheets><sheet name="Material Usage" sheetId="1" r:id="rId1"/></sheets></workbook>`,
- 'xl/_rels/workbook.xml.rels':`<Relationships xmlns="${pkg}"><Relationship Id="rId1" Type="${rel}/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${rel}/styles" Target="styles.xml"/></Relationships>`,
- 'xl/styles.xml':`<styleSheet xmlns="${ns}"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF087052"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="2" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`,
- 'xl/worksheets/sheet1.xml':`<worksheet xmlns="${ns}"><dimension ref="A1:H${last}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>${[15,15,28,38,18,15,12,16].map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')}</cols><sheetData>${body}</sheetData><autoFilter ref="A1:H${last}"/></worksheet>`};
- const parts=[], central=[];let offset=0,cs=0;const crc=b=>{let c=-1;for(const x of b){c^=x;for(let i=0;i<8;i++)c=(c>>>1)^((c&1)?0xedb88320:0);}return(c^-1)>>>0;};
- for(const [name,value] of Object.entries(files)){const n=enc.encode(name), b=enc.encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+value), c=crc(b), h=new Uint8Array(30),v=new DataView(h.buffer), k=new Uint8Array(46),w=new DataView(k.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint32(14,c,true);v.setUint32(18,b.length,true);v.setUint32(22,b.length,true);v.setUint16(26,n.length,true);w.setUint32(0,0x02014b50,true);w.setUint16(4,20,true);w.setUint16(6,20,true);w.setUint32(16,c,true);w.setUint32(20,b.length,true);w.setUint32(24,b.length,true);w.setUint16(28,n.length,true);w.setUint32(42,offset,true);parts.push(h,n,b);central.push(k,n);offset+=h.length+n.length+b.length;cs+=k.length+n.length;}
- const end=new Uint8Array(22),e=new DataView(end.buffer);e.setUint32(0,0x06054b50,true);e.setUint16(8,central.length/2,true);e.setUint16(10,central.length/2,true);e.setUint32(12,cs,true);e.setUint32(16,offset,true);return new Blob([...parts,...central,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-}
-window.amiraDownloadMaterialUsageCSV=()=>{const d=getTable('materialDetail');if(!d.body.length){alert('Data belum tersedia.');return;}const u=URL.createObjectURL(materialUsageXlsx(d)),a=document.createElement('a');a.href=u;a.download='AMIRA_Material_Usage.xlsx';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000);};
-window.amiraDownloadActivityWorkerCSV=()=>{const a=getTable('itemHKDetail'),b=getTable('workerDetail'),m=getTable('materialDetail');let rows=[['REKAP WORKER x ITEM'],a.head,...a.body,[''],['DETAIL WORKER ACTIVITY'],b.head,...b.body,[''],['MATERIAL / RACUN'],m.head,...m.body];csv('AMIRA_Activity_Worker.csv',{head:[],body:rows});};
-function logoSvgData(){const s=document.querySelector('.amiraMark svg');if(!s)return null;let x=new XMLSerializer().serializeToString(s);return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(x);}
-function pdf(title,sections,name){const J=window.jspdf&&window.jspdf.jsPDF;if(!J){alert('PDF engine belum siap. Muat ulang AMIRA lalu coba lagi.');return;}const d=new J({orientation:'landscape',unit:'mm',format:'a4'}),m=9,W=d.internal.pageSize.getWidth(),H=d.internal.pageSize.getHeight();const draw=()=>{const ld=logoSvgData();if(ld){const im=new Image();im.onload=()=>{try{d.addImage(im,'SVG',m,7,13,13)}catch(e){};finish()};im.onerror=finish;im.src=ld;}else finish();function finish(){d.setFont('helvetica','bold');d.setFontSize(15);d.text('AMIRA',25,13);d.setFont('helvetica','normal');d.setFontSize(7);d.text('Afdeling Material & Rawat Intelligence',25,18);d.setFont('helvetica','bold');d.setFontSize(13);d.text(title,m,28);let y=35;for(const sec of sections){if(y>H-30){d.addPage();y=18;}d.setFont('helvetica','bold');d.setFontSize(9);d.text(sec.title,m,y);y+=4;if(sec.data.body.length){d.autoTable({head:[sec.data.head],body:sec.data.body,startY:y,margin:{left:m,right:m},theme:'grid',styles:{fontSize:6.5,cellPadding:1.6,overflow:'linebreak'},headStyles:{fontStyle:'bold',halign:'center'},didDrawPage:()=>{d.setFontSize(7);d.setFont('helvetica','normal');d.text('AMIRA · Afdeling Material & Rawat Intelligence',m,H-5);d.text('Page '+d.internal.getNumberOfPages(),W-m,H-5,{align:'right'});}});y=d.lastAutoTable.finalY+7;}}d.save(name);}};draw();}
-window.amiraPdfMaterialUsageFixed=()=>pdf('Material Usage',[{title:'Material Usage — Actual',data:getTable('materialDetail')}],'AMIRA_Material_Usage.pdf');
-window.amiraPdfActivityWorkerFixed=()=>pdf('Activity & Worker',[{title:'Worker × Item — HK & Ha',data:getTable('itemHKDetail')},{title:'Detail Worker Activity',data:getTable('workerDetail')},{title:'Material / Racun Used',data:getTable('materialDetail')}],'AMIRA_Activity_Worker.pdf');
-function add(){const specs=[['page-material','amiraPdfMaterialUsageFixed','amiraDownloadMaterialUsageCSV','Material Usage'],['page-activity','amiraPdfActivityWorkerFixed','amiraDownloadActivityWorkerCSV','Activity & Worker']];for(const [id,pdfFn,csvFn,label] of specs){const sec=document.getElementById(id);if(!sec||sec.querySelector('[data-amira-fixed-download]'))continue;const bar=document.createElement('div');bar.setAttribute('data-amira-fixed-download','1');bar.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin:10px 0';for(const [fn,txt] of [[pdfFn,'📄 Download PDF'],[csvFn,id==='page-material'?'⬇ Download Excel (.xlsx)':'⬇ Download CSV']]){const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=txt;b.onclick=window[fn];bar.appendChild(b);}const title=sec.querySelector('.title');title?.insertAdjacentElement('afterend',bar);}}
-add();new MutationObserver(add).observe(document.documentElement,{childList:true,subtree:true});
-})();
-</script>
-<style>.carry-over-table{min-width:1200px}.detailKpis .detailKpi{min-width:110px}@media(max-width:760px){#multiCarryTable,#monthlyCarryTable{font-size:10px}}</style>
-<script>
 /* AMIRA V46.15 — Monthly Material Balance Book Period (18 Aug 2026–Dec 2027) */
 (function(){
 'use strict';
@@ -1596,7 +1399,202 @@ function addDownloads(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{bind();addDownloads()});else{bind();addDownloads()}
 })();
+
+})();
 </script>
+
+<!-- AMIRA v46.2 — Calendar/HK fixed-cost engine (isolated) -->
+<script>
+(function(){
+  const C={initialOpen:'2026-08-18',initialClose:'2026-09-20',holidays:new Set(['2026-08-17']),pad:n=>String(n).padStart(2,'0'),iso:d=>d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0'),parse:s=>new Date(String(s).slice(0,10)+'T00:00:00Z'),add(d,n){const x=new Date(d);x.setUTCDate(x.getUTCDate()+n);return x;},isHoliday(d){return d.getUTCDay()===0||this.holidays.has(this.iso(d));},workingDays(a,b){let n=0,d=this.parse(a),e=this.parse(b);while(d<=e){if(!this.isHoliday(d))n++;d=this.add(d,1)}return n;},bookFor(date){const d=this.parse(date),o=this.parse(this.initialOpen),c=this.parse(this.initialClose);if(d>=o&&d<=c)return{open:this.initialOpen,close:this.initialClose};const y=d.getUTCFullYear(),m=d.getUTCMonth();if(d.getUTCDate()>=21){const op=new Date(Date.UTC(y,m,21)),cl=new Date(Date.UTC(y,m+1,20));return{open:this.iso(op),close:this.iso(cl)}}const op=new Date(Date.UTC(m===0?y-1:y,m===0?11:m-1,21)),cl=new Date(Date.UTC(y,m,20));return{open:this.iso(op),close:this.iso(cl)};},hk(book){return this.workingDays(book.open,book.close)},costPerHK(fixedCost,book){const n=this.hk(book);return n?Number(fixedCost)/n:0}};
+  window.AMIRA_CALENDAR_V46_2=C;
+})();
+</script>
+\n<script>
+/* AMIRA PDF EXPORT — additive only. Existing calculations/rendering remain untouched. */
+(function(){
+  function esc(v){return String(v??'').replace(/\s+/g,' ').trim();}
+  function tableById(id){
+    const body=document.getElementById(id); if(!body) return {head:[],body:[]};
+    const table=body.closest('table'); if(!table) return {head:[],body:[]};
+    const head=Array.from(table.querySelectorAll('thead tr')).map(tr=>Array.from(tr.cells).map(c=>esc(c.innerText))).find(r=>r.length) || [];
+    const rows=Array.from(table.querySelectorAll('tbody tr')).map(tr=>Array.from(tr.cells).map(c=>esc(c.innerText))).filter(r=>r.length && !/Belum ada|Tidak ada|Pilih/i.test(r.join(' ')));
+    return {head,body:rows};
+  }
+  function logo(){
+    const img=document.querySelector('.aalLogo'); if(!img) return null;
+    try{const c=document.createElement('canvas'),w=img.naturalWidth||600,h=img.naturalHeight||300,s=Math.min(1,500/w);c.width=w*s;c.height=h*s;c.getContext('2d').drawImage(img,0,0,c.width,c.height);return c.toDataURL('image/png');}catch(e){return null;}
+  }
+  function doc(title,subtitle){
+    const J=window.jspdf?.jsPDF; if(!J){alert('PDF engine belum siap. Muat ulang AMIRA lalu coba lagi.');return null;}
+    const d=new J({orientation:'landscape',unit:'mm',format:'a4'}),m=9,W=d.internal.pageSize.getWidth(),H=d.internal.pageSize.getHeight();
+    const lg=logo(); if(lg)d.addImage(lg,'PNG',m,6,24,15);
+    d.setFont('helvetica','bold');d.setFontSize(16);d.text('AMIRA',38,13);
+    d.setFont('helvetica','normal');d.setFontSize(7);d.text('Afdeling Material & Rawat Intelligence',38,18);
+    d.setFont('helvetica','bold');d.setFontSize(13);d.text(title,m,28);
+    if(subtitle){d.setFont('helvetica','normal');d.setFontSize(7);d.text(esc(subtitle).slice(0,180),m,33);}
+    return {d,m,W,H,y:37};
+  }
+  function footer(d,m,W,H){d.setFont('helvetica','normal');d.setFontSize(7);d.text('AMIRA · Afdeling Material & Rawat Intelligence',m,H-5);d.text('Page '+d.internal.getNumberOfPages(),W-m,H-5,{align:'right'});}
+  function addTable(ctx,t,y){if(!t.head.length||!t.body.length)return y;ctx.d.autoTable({head:[t.head],body:t.body,startY:y,margin:{left:ctx.m,right:ctx.m},theme:'grid',styles:{font:'helvetica',fontSize:6.5,cellPadding:1.7,overflow:'linebreak'},headStyles:{fontStyle:'bold',halign:'center'},didDrawPage:()=>footer(ctx.d,ctx.m,ctx.W,ctx.H)});return ctx.d.lastAutoTable.finalY+7;}
+  function heading(d,text,y){d.setFont('helvetica','bold');d.setFontSize(9);d.text(text,9,y);return y+4;}
+  function save(d,name){d.save(name);}
+
+  window.amiraPdfMaterialUsage=function(){
+    const t=tableById('materialDetail');const c=doc('Material Usage','MAIN actual racun dari T_MATERIAL');if(!c)return;
+    c.y=heading(c.d,'Material Usage — Actual',c.y);c.y=addTable(c,t,c.y);footer(c.d,c.m,c.W,c.H);save(c.d,'AMIRA_Material_Usage_'+(state?.dataset?.date||'report')+'.pdf');
+  };
+  window.amiraPdfActivityWorker=function(){
+    const c=doc('Activity & Worker','HK + Ha per item, detail worker, dan material/racun yang digunakan');if(!c)return;
+    c.y=heading(c.d,'Rekap Worker × Item — HK & Ha',c.y);c.y=addTable(c,tableById('itemHKDetail'),c.y);
+    if(c.y>c.H-35){c.d.addPage();c.y=18;}
+    c.y=heading(c.d,'Detail Worker Activity — Ha',c.y);c.y=addTable(c,tableById('workerDetail'),c.y);
+    if(c.y>c.H-35){c.d.addPage();c.y=18;}
+    c.y=heading(c.d,'Racun / Material yang Digunakan',c.y);c.y=addTable(c,tableById('materialDetail'),c.y);
+    footer(c.d,c.m,c.W,c.H);save(c.d,'AMIRA_Activity_Worker_'+(state?.dataset?.date||'report')+'.pdf');
+  };
+  window.amiraPdfMultiAfdeling=function(){
+    const c=doc('Multi Afdeling & Akumulasi Pekerjaan','Akumulasi pekerjaan per blok dan rekap per afdeling');if(!c)return;
+    c.y=heading(c.d,'Akumulasi Pekerjaan per Blok',c.y);c.y=addTable(c,tableById('multiBlockTable'),c.y);
+    if(c.y>c.H-35){c.d.addPage();c.y=18;}
+    c.y=heading(c.d,'Rekap per Afdeling',c.y);c.y=addTable(c,tableById('multiAfdelingTable'),c.y);
+    if(c.y>c.H-35){c.d.addPage();c.y=18;}
+    c.y=heading(c.d,'Preview Laporan Daily',c.y);c.y=addTable(c,tableById('multiDailyTable'),c.y);
+    footer(c.d,c.m,c.W,c.H);save(c.d,'AMIRA_Multi_Afdeling_'+new Date().toISOString().slice(0,10)+'.pdf');
+  };
+  window.amiraPdfMonthlyCostHK=function(){
+    const period=document.getElementById('monthlyPeriodFilter')?.value||'period';
+    const afd=document.getElementById('monthlyAfdelingFilter')?.value||'';
+    const bounds=typeof window.monthlyPeriodBounds==='function'?window.monthlyPeriodBounds(period):null;
+    const subtitle='Periode Buku: '+(bounds?.label||period)+' · Afdeling: '+(afd||'Semua Afdeling')+' · Historical LOCKED';
+    const c=doc('Monthly Cost & HK',subtitle);if(!c)return;
+    if(typeof c.d.autoTable!=='function'){alert('PDF engine tabel belum siap. Muat ulang AMIRA lalu coba lagi.');return;}
+    const k=document.getElementById('monthlyKpis'); if(k){const cards=Array.from(k.querySelectorAll('.detailKpi')).map(x=>esc(x.innerText)).filter(Boolean);c.d.setFontSize(7);let x=c.m;cards.slice(0,10).forEach((v,i)=>{const col=i%5,row=Math.floor(i/5);const xx=c.m+col*57,yy=38+row*13;c.d.setDrawColor(210,220,215);c.d.roundedRect(xx,yy,53,10,1.5,1.5,'S');c.d.text(v.replace(/\n/g,' · ').slice(0,75),xx+2,yy+6);});c.y=66;}
+    c.y=heading(c.d,'Akumulasi per Blok',c.y);c.y=addTable(c,tableById('monthlyBlockTable'),c.y);
+    if(c.y>c.H-35){c.d.addPage();c.y=18;}
+    c.y=heading(c.d,'Rekap Afdeling',c.y);c.y=addTable(c,tableById('monthlyAfdelingTable'),c.y);
+    footer(c.d,c.m,c.W,c.H);save(c.d,'AMIRA_Monthly_Cost_HK_'+period+(afd?'_'+afd:'')+'.pdf');
+  };
+})();
+</script>
+
+
+<!-- AMIRA v46.2 CLEAN PATCH: download-only repairs.
+     Does not replace existing business logic. -->
+<script>
+(function(){
+  'use strict';
+
+  function tableData(selector){
+    const el = document.querySelector(selector);
+    const table = el ? (el.closest('table') || el.querySelector('table')) : null;
+    if(!table) return {head:[],body:[]};
+    const head = Array.from(table.querySelectorAll('thead tr')).map(tr =>
+      Array.from(tr.cells).map(td => (td.innerText||td.textContent||'').trim())
+    ).filter(r=>r.length);
+    const body = Array.from(table.querySelectorAll('tbody tr')).map(tr =>
+      Array.from(tr.cells).map(td => (td.innerText||td.textContent||'').trim())
+    ).filter(r=>r.length);
+    return {head:head[0]||[],body};
+  }
+
+  function csvEscape(v){
+    const s=String(v??'');
+    return '"' + s.replace(/"/g,'""') + '"';
+  }
+
+  function downloadCSV(name, data){
+    if(!data.head.length && !data.body.length){
+      alert('Data tabel belum tersedia.');
+      return;
+    }
+    const rows=[data.head,...data.body];
+    const csv='\uFEFF'+rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+    const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  }
+
+  // Material Balance: selectors are intentionally broad so existing table IDs/classes are preserved.
+  window.amiraDownloadMaterialBalanceCSV=function(){
+    const candidates=[
+      '#materialBalanceBody',
+      '#materialBalanceTable',
+      '[id*="materialBalance"] tbody'
+    ];
+    let data={head:[],body:[]};
+    for(const s of candidates){
+      data=tableData(s);
+      if(data.body.length || data.head.length) break;
+    }
+    if(!data.body.length){
+      const t=Array.from(document.querySelectorAll('table')).find(x=>/material\s*balance/i.test(x.innerText||''));
+      if(t) data={head:Array.from(t.querySelectorAll('thead tr')[0]?.cells||[]).map(x=>(x.innerText||'').trim()),body:Array.from(t.querySelectorAll('tbody tr')).map(tr=>Array.from(tr.cells).map(x=>(x.innerText||'').trim())).filter(r=>r.length)};
+    }
+    downloadCSV('AMIRA_Material_Balance.csv',data);
+  };
+
+  // Add missing buttons only when a Material Balance section is present and no existing download button exists.
+  function ensureMaterialBalanceButtons(){
+    const title=Array.from(document.querySelectorAll('h1,h2,h3,h4,.sectionTitle,.cardTitle')).find(e=>/material\s*balance/i.test(e.innerText||''));
+    if(!title) return;
+    const container=title.closest('section,.card,.panel,div')||title.parentElement;
+    if(!container || container.querySelector('[data-amira-mb-downloads]')) return;
+    const bar=document.createElement('div');
+    bar.setAttribute('data-amira-mb-downloads','1');
+    bar.style.cssText='display:flex;gap:8px;justify-content:flex-end;margin:8px 0;';
+    const b=document.createElement('button');
+    b.type='button'; b.className='btn downloadBtn';
+    b.textContent='Download CSV';
+    b.onclick=window.amiraDownloadMaterialBalanceCSV;
+    bar.appendChild(b);
+    title.insertAdjacentElement('afterend',bar);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ensureMaterialBalanceButtons);
+  else ensureMaterialBalanceButtons();
+  new MutationObserver(ensureMaterialBalanceButtons).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+
+<script>
+(function(){
+'use strict';
+function getTable(id){const b=document.getElementById(id);const t=b&&b.closest('table');if(!t)return{head:[],body:[]};return{head:[...(t.querySelector('thead tr')?.cells||[])].map(x=>(x.innerText||x.textContent||'').trim()),body:[...t.querySelectorAll('tbody tr')].map(r=>[...r.cells].map(x=>(x.innerText||x.textContent||'').trim())).filter(r=>r.length&&!/Belum ada|Tidak ada|Pilih/i.test(r.join(' ')))};}
+function csv(name,d){if(!d.body.length){alert('Data belum tersedia.');return;}const s='\\ufeff'+[d.head,...d.body].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\\r\\n');const u=URL.createObjectURL(new Blob([s],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+function materialUsageXlsx(d){
+ const enc=new TextEncoder(), xml=v=>String(v??'').replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+ const ns='http://schemas.openxmlformats.org/spreadsheetml/2006/main', rel='http://schemas.openxmlformats.org/officeDocument/2006/relationships', pkg='http://schemas.openxmlformats.org/package/2006/relationships';
+ const rows=[d.head,...d.body], last=rows.length;
+ const body=rows.map((r,i)=>'<row r="'+(i+1)+'">'+r.map((v,j)=>{const ref=String.fromCharCode(65+j)+(i+1), raw=String(v??'').trim(), n=Number(raw.replace(/\./g,'').replace(',','.'));return i&&j===5&&raw&&Number.isFinite(n)?`<c r="${ref}" s="2"><v>${n}</v></c>`:`<c r="${ref}" s="${i?0:1}" t="inlineStr"><is><t xml:space="preserve">${xml(v)}</t></is></c>`;}).join('')+'</row>').join('');
+ const files={
+ '[Content_Types].xml':`<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`,
+ '_rels/.rels':`<Relationships xmlns="${pkg}"><Relationship Id="rId1" Type="${rel}/officeDocument" Target="xl/workbook.xml"/></Relationships>`,
+ 'xl/workbook.xml':`<workbook xmlns="${ns}" xmlns:r="${rel}"><sheets><sheet name="Material Usage" sheetId="1" r:id="rId1"/></sheets></workbook>`,
+ 'xl/_rels/workbook.xml.rels':`<Relationships xmlns="${pkg}"><Relationship Id="rId1" Type="${rel}/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${rel}/styles" Target="styles.xml"/></Relationships>`,
+ 'xl/styles.xml':`<styleSheet xmlns="${ns}"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF087052"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="2" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`,
+ 'xl/worksheets/sheet1.xml':`<worksheet xmlns="${ns}"><dimension ref="A1:H${last}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>${[15,15,28,38,18,15,12,16].map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')}</cols><sheetData>${body}</sheetData><autoFilter ref="A1:H${last}"/></worksheet>`};
+ const parts=[], central=[];let offset=0,cs=0;const crc=b=>{let c=-1;for(const x of b){c^=x;for(let i=0;i<8;i++)c=(c>>>1)^((c&1)?0xedb88320:0);}return(c^-1)>>>0;};
+ for(const [name,value] of Object.entries(files)){const n=enc.encode(name), b=enc.encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+value), c=crc(b), h=new Uint8Array(30),v=new DataView(h.buffer), k=new Uint8Array(46),w=new DataView(k.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint32(14,c,true);v.setUint32(18,b.length,true);v.setUint32(22,b.length,true);v.setUint16(26,n.length,true);w.setUint32(0,0x02014b50,true);w.setUint16(4,20,true);w.setUint16(6,20,true);w.setUint32(16,c,true);w.setUint32(20,b.length,true);w.setUint32(24,b.length,true);w.setUint16(28,n.length,true);w.setUint32(42,offset,true);parts.push(h,n,b);central.push(k,n);offset+=h.length+n.length+b.length;cs+=k.length+n.length;}
+ const end=new Uint8Array(22),e=new DataView(end.buffer);e.setUint32(0,0x06054b50,true);e.setUint16(8,central.length/2,true);e.setUint16(10,central.length/2,true);e.setUint32(12,cs,true);e.setUint32(16,offset,true);return new Blob([...parts,...central,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+window.amiraDownloadMaterialUsageCSV=()=>{const d=getTable('materialDetail');if(!d.body.length){alert('Data belum tersedia.');return;}const u=URL.createObjectURL(materialUsageXlsx(d)),a=document.createElement('a');a.href=u;a.download='AMIRA_Material_Usage.xlsx';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000);};
+window.amiraDownloadActivityWorkerCSV=()=>{const a=getTable('itemHKDetail'),b=getTable('workerDetail'),m=getTable('materialDetail');let rows=[['REKAP WORKER x ITEM'],a.head,...a.body,[''],['DETAIL WORKER ACTIVITY'],b.head,...b.body,[''],['MATERIAL / RACUN'],m.head,...m.body];csv('AMIRA_Activity_Worker.csv',{head:[],body:rows});};
+function logoSvgData(){const s=document.querySelector('.amiraMark svg');if(!s)return null;let x=new XMLSerializer().serializeToString(s);return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(x);}
+function pdf(title,sections,name){const J=window.jspdf&&window.jspdf.jsPDF;if(!J){alert('PDF engine belum siap. Muat ulang AMIRA lalu coba lagi.');return;}const d=new J({orientation:'landscape',unit:'mm',format:'a4'}),m=9,W=d.internal.pageSize.getWidth(),H=d.internal.pageSize.getHeight();const draw=()=>{const ld=logoSvgData();if(ld){const im=new Image();im.onload=()=>{try{d.addImage(im,'SVG',m,7,13,13)}catch(e){};finish()};im.onerror=finish;im.src=ld;}else finish();function finish(){d.setFont('helvetica','bold');d.setFontSize(15);d.text('AMIRA',25,13);d.setFont('helvetica','normal');d.setFontSize(7);d.text('Afdeling Material & Rawat Intelligence',25,18);d.setFont('helvetica','bold');d.setFontSize(13);d.text(title,m,28);let y=35;for(const sec of sections){if(y>H-30){d.addPage();y=18;}d.setFont('helvetica','bold');d.setFontSize(9);d.text(sec.title,m,y);y+=4;if(sec.data.body.length){d.autoTable({head:[sec.data.head],body:sec.data.body,startY:y,margin:{left:m,right:m},theme:'grid',styles:{fontSize:6.5,cellPadding:1.6,overflow:'linebreak'},headStyles:{fontStyle:'bold',halign:'center'},didDrawPage:()=>{d.setFontSize(7);d.setFont('helvetica','normal');d.text('AMIRA · Afdeling Material & Rawat Intelligence',m,H-5);d.text('Page '+d.internal.getNumberOfPages(),W-m,H-5,{align:'right'});}});y=d.lastAutoTable.finalY+7;}}d.save(name);}};draw();}
+window.amiraPdfMaterialUsageFixed=()=>pdf('Material Usage',[{title:'Material Usage — Actual',data:getTable('materialDetail')}],'AMIRA_Material_Usage.pdf');
+window.amiraPdfActivityWorkerFixed=()=>pdf('Activity & Worker',[{title:'Worker × Item — HK & Ha',data:getTable('itemHKDetail')},{title:'Detail Worker Activity',data:getTable('workerDetail')},{title:'Material / Racun Used',data:getTable('materialDetail')}],'AMIRA_Activity_Worker.pdf');
+function add(){const specs=[['page-material','amiraPdfMaterialUsageFixed','amiraDownloadMaterialUsageCSV','Material Usage'],['page-activity','amiraPdfActivityWorkerFixed','amiraDownloadActivityWorkerCSV','Activity & Worker']];for(const [id,pdfFn,csvFn,label] of specs){const sec=document.getElementById(id);if(!sec||sec.querySelector('[data-amira-fixed-download]'))continue;const bar=document.createElement('div');bar.setAttribute('data-amira-fixed-download','1');bar.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin:10px 0';for(const [fn,txt] of [[pdfFn,'📄 Download PDF'],[csvFn,id==='page-material'?'⬇ Download Excel (.xlsx)':'⬇ Download CSV']]){const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=txt;b.onclick=window[fn];bar.appendChild(b);}const title=sec.querySelector('.title');title?.insertAdjacentElement('afterend',bar);}}
+add();new MutationObserver(add).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+<style>.carry-over-table{min-width:1200px}.detailKpis .detailKpi{min-width:110px}@media(max-width:760px){#multiCarryTable,#monthlyCarryTable{font-size:10px}}</style>
+
 
 
 <script>
